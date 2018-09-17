@@ -1,0 +1,121 @@
+/*购物车流程*/
+.cart-step{
+    padding:30px 0;
+    overflow: hidden;
+}
+.cart-step li{
+    float:left;
+    width:410px;
+    position: relative;
+    border-top:5px solid #ccc;
+    padding-top:15px;
+}
+.cart-step li.done{
+    border-color:#F7D89B;
+ }
+.cart-step li.doing{
+    font-weight:bold;
+    border-color:#D7B470;
+}
+.cart-step li.next{
+    border-color:#ccc;
+}
+.cart-step li.done .s-num{
+    background:#F7D89B;
+}
+.cart-step li.doing .s-num{
+    background:#D7B470;
+    width:28px;
+    height:28px;
+    line-height:28px;
+}
+.cart-step li.next .s-num{
+    background:#ccc;
+}
+.cart-step li.done .s-text, .cart-step li.done .s-text a{
+    color:#F7D89B;
+}
+.cart-step li.doing .s-text{
+    font-weight:bold;
+    color:#D7B470;
+}
+.cart-step li.next .s-text{
+    color:#ccc;
+}
+
+.cart-step .s-num{
+    position: absolute;
+    width:24px;
+    height:24px;
+    line-height:24px;
+    background:#ccc;
+    color:#fff;
+    border-radius:50%;
+    text-align:center;
+    left:50%;
+    margin-left:-12px;
+    margin-top:-30px;
+}
+
+.cart-step .s-num a {
+    color: #fff;
+}
+.cart-step .s-text{
+    font-size:12px;
+    text-align: center;
+    color:#ccc;
+}
+/* 订单计算模块 */
+.cart-count li {
+    margin-bottom: 10px;
+}
+
+/*购物车列表*/
+.goods-cart-list.table>tbody>tr>td {
+    vertical-align: middle;
+}
+/*购物车数量按钮*/
+.sum-cal{
+    display:inline-block;
+    height:36px;
+    line-height:36px;
+    border:1px solid #e8e8e8;
+}
+.sum-cal .num-add,
+.sum-cal .num-reduce
+{
+    display:inline-block;
+    text-align: center;
+    width:40px;
+    font-size:14px;
+}
+.sum-cal .num-input{
+    height:30px;
+    border:none;
+    width:60px;
+    text-align: center;
+}
+.sum-cal .num-add{
+    border-left: 1px solid #e8e8e8;
+}
+.sum-cal .num-reduce{
+    border-right: 1px solid #e8e8e8;
+}
+
+.label-header{
+    border-bottom:1px solid #eee;
+    line-height:22px;
+}
+/*订单留言*/
+input.message-input{
+    width:400px;
+    height:40px;
+    font-size:12px;
+    line-height:40px;
+    border:none;
+    outline:none;
+    border-bottom:1px solid #ccc;
+}
+input.message-input:focus{
+    border-color:#D7B470;
+}

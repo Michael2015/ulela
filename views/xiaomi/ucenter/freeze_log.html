@@ -1,0 +1,86 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li ><a href="{url:/ucenter/myteam}">我的团队</a></li>
+            <li class="active">销售记录</li>
+        </ul>
+
+        <div class="media tips-media">
+            <div class="media-left">
+                <img src="{skin:xiaomi/images/freeze-log.png}" alt="">
+            </div>
+            <div class="media-body">
+                <p>您当前的可用余额： <span class="color-red f-w-b">￥{$this->memberRow['balance']}</span></p>
+                <p>待返还金额： <span class="color-orange f-w-b">￥{$this->memberRow['balance_freeze']}</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white">
+            <h5 class="m-b-20">奖励记录</h5>
+            {set:$user_id = $this->user['user_id']}
+            {set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+            {set:$queryFreezeLog = Api::run('getFreezeLogList',$user_id)}
+            {set:$items = $queryFreezeLog->find()}
+            {if:$items}
+            <table class="table table-bordered f-12 m-b-20">
+                <tbody>
+                <tr class="active text-muted">
+                    <td>记录</td>
+                    <td>奖励金额</td>
+                    <td>返还时间</td>
+                    <td>状态</td>
+                </tr>
+                {foreach:items = $items}
+                    {if: $item['status'] == 0}
+                        {if: $item['type'] == 0}
+                            {set: $time = '<span class="text-muted">（预计）</span>'.date('Y-m-d H:i:s', strtotime('+'.($this->order_finish_time / 1440 + $this->order_reward_time).' days', strtotime($item['time'])));}
+                        {elseif: $item['type'] == 1}
+                            {set: $time = '<span class="text-muted">（预计）</span>'.date('Y-m-d H:i:s', strtotime('+'.($this->order_finish_time / 1440 + $this->order_my_reward_time).' days', strtotime($item['time'])));}
+                        {/if}
+                        {set: $status = '<span>冻结中</span>';}
+                    {elseif: $item['status'] == 2}
+                        {set: $time = '-';}
+                        {set: $status = '<span class="gray">因退货取消</span>';}
+                        {else: $item['status'] == 1}
+                        {set: $time = $item['finish_time'];}
+                        {set: $status = '<strong class="orange">已返还</strong>';}
+                    {/if}
+                    <tr>
+                        <td>
+                            {$item['note']}
+                        </td>
+                        <td>
+                            ￥{$item['amount']}
+                        </td>
+                        <td>
+                            {$time}
+                        </td>
+                        <td >
+                            {$status}
+                        </td>
+                    </tr>
+                {/foreach}
+                </tbody>
+            </table>
+            <div class="pagebar">
+                {$queryFreezeLog->getPageBar()}
+            </div>
+
+            {else:}
+            <div class="m-t-40 m-b-20">
+                <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+                <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+            </div>
+            {/if}
+        </div>
+    </div>
+
+</div>

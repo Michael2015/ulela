@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	{js:jquery}
+	{js:validate}
+	{js:dialog}
+	{js:form}
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+	<ul class="nav nav-pills">
+		<li><input type="button" onclick="window.location.href='{url:/plugins/seller_group_edit}';" class="btn btn-info" value="添加商盟" /></li>
+	</ul>
+
+	<table class="table table-bordered">
+		<colgroup>
+			<col />
+			<col />
+			<col />
+			<col width="150px" />
+		</colgroup>
+
+		<thead>
+			<tr>
+				<th>商盟ID</th>
+				<th>商盟名称</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{query: name=seller_group as g fields=g.* order=g.id desc}
+			<tr>
+				<td>{$item['id']}</td>
+				<td>{$item['name']}</td>
+				<td>
+					<button type="button" class="btn btn-default glyphicon glyphicon-pencil" alt="编辑" title="编辑" onclick="window.location.href='{url:/plugins/seller_group_edit/id/$item['id']}';"></button>
+					<button type="button" class="btn btn-default glyphicon glyphicon-remove" alt="删除" title="删除" onclick="window.location.href='{url:/plugins/seller_group_del/id/$item['id']}';"></button>
+				</td>
+			</tr>
+			{/query}
+		</tbody>
+	</table>
+</div>
+</body>
+</html>

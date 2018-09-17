@@ -1,0 +1,63 @@
+<div class="body-contain bg-gray clearfix">
+    <div class="login-form w600 margin-0-auto m-b-60 m-t-60 ">
+        <div class="p-30 bg-white">
+            <div class="login-container margin-0-auto">
+                <h3 class="m-t-0 m-b-20 text-center">会员注册</h3>
+                <form action='{url:/simple/reg_act}' method='post' class="info-form">
+                    <div class="form-item m-t-10 clearfix">
+                        <div class="form-item-left email pull-left"></div>
+                        <div class="info-input pull-left">
+                            <input class="info-text" initmsg="输入正确" type="text" name='email' value="{if:isset($email)}{$email}{/if}" pattern="email" alt="填写正确的邮箱格式" placeholder="填写您的邮箱地址" />
+                        </div>
+                    </div>
+                    <div class="form-item m-t-10 clearfix">
+                        <div class="form-item-left phone pull-left"></div>
+                        <div class="info-input pull-left">
+                            <input class="info-text" initmsg="输入正确" type="text" name='username' value="{if:isset($username)}{$username}{/if}" pattern="mobi" alt="填写正确的手机号" placeholder="填写您的手机号"/>
+                        </div>
+                    </div>
+                    <div class="form-item m-t-10 clearfix">
+                        <div class="form-item-left pass pull-left"></div>
+                        <div class="info-input pull-left">
+                            <input class="info-text" type="password" name='password' pattern="^\S{6,32}$" alt='填写6-32个字符' placeholder="填写6-32个字符作密码"/>
+                        </div>
+                    </div>
+                    <div class="form-item m-t-10 clearfix">
+                        <div class="form-item-left re-pass pull-left"></div>
+                        <div class="info-input pull-left">
+                            <input class="info-text" type="password" name='repassword' pattern="^\S{6,32}$" bind='password' alt='重复上面的密码' placeholder="重复上面的密码"/>
+                        </div>
+                    </div>
+                    <div class="form-item m-t-10 clearfix">
+                        {set: $inviter = isset($_GET['inviter'])?$_GET['inviter']:ISafe::get('wx_ticket_user_name','cookie')}
+                        <div class="form-item-left inviter pull-left"></div>
+                        <div class="info-input pull-left">
+                            <input class="info-text" pattern="mobi" empty type="text" name='inviter' value="{if:isset($inviter)}{$inviter}{/if}" initmsg="填写邀请人的手机号（注册后终身绑定）" alt="填写邀请人的手机号（注册后终身绑定）" placeholder="填写邀请人的手机号,终身绑定" {if: $inviter} value="{$inviter}" readonly="readonly" {/if} />
+                        </div>
+                    </div>
+                    <div class="form-item m-t-10 clearfix">
+                        <div class="form-item captcha clearfix">
+                            <div class="form-item-left pull-left">
+                                <a href="javascript:changeCaptcha('{url:/simple/getCaptcha}');">
+                                    <img src='{url:/simple/getCaptcha}' id='captchaImg' />
+                                </a>
+                            </div>
+                            <div class="info-input small-input">
+                                <input class="info-text" type='text' initmsg="输入正确" name='captcha' pattern='^\w{5,10}$' alt='填写左边的验证码' placeholder="点图片更换"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-t-20 clearfix">
+                        <button type="submit" class='btn btn-block btn-warning p-l-0 p-r-0'>同意以下条款，提交</button>
+                    </div>
+                    <div class="m-t-10 clearfix text-center">
+                        <a class="color-orange" href="/site/help/id/54" target="_blank">《{echo: $this->_siteConfig->name}用户注册协议》</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

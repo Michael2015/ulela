@@ -1,0 +1,95 @@
+
+<link rel="stylesheet" href="{skin:xiaomi/css/cart.css?v=20161019}" />
+
+
+<div class="body-contain bg-white ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+            <li class="active">成功提交订单</li>
+        </ol>
+        <!--position-->
+
+        <!--step-->
+        <div class="clearfix">
+            <ul class="cart-step">
+                <li class="done">
+                    <span class="s-num">1</span>
+                    <p class="s-text">1.我的购物车</p>
+                </li>
+                <li class="done">
+                    <span class="s-num">2</span>
+                    <p class="s-text">2.填写核对订单信息</p>
+                </li>
+                <li class="doing">
+                    <span class="s-num">3</span>
+                    <p class="s-text">3.成功提交订单</p>
+                </li>
+            </ul>
+        </div>
+        <!--step-->
+		
+		<div class="w600 margin-0-auto">
+			<div class="m-t-20 m-b-60">
+				<div class="media tips-media m-b-40" style="margin-left:100px;">
+					<div class="media-left">
+						<img src="{skin:xiaomi/images/success.jpg}" alt="success" height="90">
+					</div>
+					<div class="media-body">
+						<h3 class="media-heading">
+							订单提交成功
+						</h3>
+						{if:$this->deliveryType != 1  && $this->paymentType == 1}
+						{set:$orderId=$this->order_id;}
+						<form action='{url:/block/doPay/order_id/$orderId}' method='post' target='_blank'>
+							<button class="btn btn-danger" type="submit" onclick="return dopay();">立即支付</button>
+						</form>
+						{/if}
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading text-center">订单信息</div>
+					<div class="panel-body f-12">
+						<dl class="dl-horizontal m-b-10">
+							<dt class="m-b-10 text-muted">订单编号</dt>
+							<dd><a title="查看订单" href="{url:/ucenter/order_detail/id/$this->order_id}">{$this->order_num}</a></dd>
+							<dt class="m-b-10 text-muted">订单金额</dt>
+							<dd class="color-red">￥{$this->final_sum}</dd>
+							{if:$this->tax_title!=''}
+								<dt>发票抬头</dt>
+								<dd>{$this->tax_title}</dd>
+							{/if}
+							<dt class="m-b-10 text-muted">备货时间</dt>
+							<dd>{$this->stockup_time}天</dd>
+							<dt class="m-b-10 text-muted">支付方式</dt>
+							<dd>{$this->payment}</dd>
+							<dt class="m-b-10 text-muted">配送方式</dt>
+							<dd>{$this->delivery}</dd>
+							<dt class="m-b-10 text-muted">收货人</dt>
+							<dd>{$accept_name}</dd>
+							<dt class="m-b-10 text-muted">联系方式</dt>
+							<dd>{$mobile}</dd>
+						</dl>
+						<p class="text-center m-b-0">
+							<a class="btn btn-xs btn-warning" href="{url:/ucenter/order_detail/id/$this->order_id}"> 查看订单详情 </a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function dopay()
+    {
+    	layer.confirm('支付是否成功？', {icon: 3, title:"提示", btn: ['已支付', '支付出现问题']},function(index){
+    		window.location.href='{url:/ucenter/order_detail/id/$orderId}';
+    		layer.close(index);
+    	}, function(index){
+    		window.location.href='{url:/ucenter/order}';
+    		layer.close(index);
+    	});
+    }
+</script>

@@ -1,0 +1,42 @@
+<div class="bg-white p-5">
+	{set:$defaultWhere = array('search' => $this->word, 'category_extend' => $this->cat_id)}
+	{set:$goodsObj = search_goods::find($defaultWhere, 10);$resultData = $goodsObj->find();}
+	{if:$resultData}
+
+	{foreach:items=$resultData}
+	<ul class="pro-list container-fluid bg-white">
+		<li class="row">
+			<div class="col-xs-4">
+				<a href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item['img']/w/200/h/200}" class="img-responsive" alt=""></a>
+			</div>
+			<div class="col-xs-8 p-5">
+				<p class="ov-h pro-list-title"><a href="{url:/site/products/id/$item['id']}">{$item['name']}</a></p>
+				<div>
+					<span class="color-light-red">￥{$item['sell_price']}</span>
+				</div>
+			</div>
+		</li>
+	</ul>
+	{/foreach}
+
+	{$goodsObj->getPageBar()}
+
+	{else:}
+
+	<div class="msg bg-white">
+		<p><i class="iconfont icon-31wentifankui"></i></p>
+		<p><span>“</span>对不起，没有找到相关商品<span>”</span></p>
+	</div>
+
+	{/if}
+
+</div>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="{skin:css/home_ext.css}" type="text/css">
+	<div class="main f_r " >
+	<div class="yui3-u-1-1 kros_title">{$sellerRow['true_name']}</div>
+		{set:$goodsObj = search_goods::find(array('seller_id' => $seller_id));$resultData = $goodsObj->find();}
+		{if:$resultData}
+		{set:$listSize = search_goods::getListSize(IFilter::act(IReq::get('show_type')))}
+		<div class="row">
+			{foreach:items=$resultData}
+			<div class="col-md-6 col-xs-6">
+				<div class="thumbnail">
+					<a title="{$item['name']}" href="{url:/site/products/id/$item['id']}">
+						<img src="{url:/pic/thumb/img/$item['img']/w/$listSize['width']/h/$listSize['height']}"  alt="{$item['name']}" title="{$item['name']}" />
+					</a>
+
+					<div class="caption">
+						<h6>
+							<a href="{url:/site/products/id/$item['id']}">{$item['name']}</a>
+						</h6>
+					</div>
+				</div>
+			</div>
+			{/foreach}
+		</div>
+		{$goodsObj->getPageBar()}
+
+		{else:}
+		<p class="display_list mt_10" style='margin-top:50px;margin-bottom:50px'>
+			<strong class="gray f14">对不起，没有找到相关商品</strong>
+		</p>
+		{/if}
+	</div>
+</div>

@@ -1,0 +1,178 @@
+{js:artTemplate}
+{js:areaSelect}
+{js:my97date}
+<div class="u-section-right bg-white m-b-20 pull-left">
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li class="active">个人资料</li>
+        </ul>
+        <!--<h5>会员信息</h5>-->
+        <div class="clearfix">
+            <div class="media tips-media">
+                <div class="media-left">
+                    {set:$user_ico = $this->userRow['head_ico']}
+                    <div class="media-object">
+                        <img class="user_ico_img" src="{webroot:$user_ico}" width="100" height="100" onerror="this.src='{skin:xiaomi/images/avatar-bg_1.png}'"/>
+                    </div>
+                    <div class="text-center">
+                        <a class="f-12 color-orange" href="javascript:;" onclick="select_ico();"><i class="icon-18 icon-cam"></i>修改头像</a>
+                    </div>
+                </div>
+                <div class="media-body">
+                    <p>
+                        <span class="text-muted">登录名：</span>{$this->userRow['username']}
+                    </p>
+                    <p>
+                        <span class="text-muted">邮箱：</span>{$this->userRow['email']}
+                    </p>
+                    <p>
+                        <span class="text-muted">会员等级：</span>
+                        <a href="{url:/ucenter/experience}">{$this->userGroupRow['group_name']}</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white ">
+            <h5 class="m-b-20">个人信息</h5>
+            <form action='{url:/ucenter/info_edit_act}' method='post' name='user_info'>
+            <ul class="info-form form-content">
+                <li class="clearfix">
+                    <div class="info-label pull-left text-right"><span class="color-orange f-w-b">* </span>姓名</div>
+                    <div class="info-input pull-left">
+                        <div class="form-item clearfix">
+                            <div class="form-item-right">
+                                <input class="info-text" type="text" name="true_name" pattern='required' alt='请填写真实姓名'>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="info-label pull-left text-right"><span class="color-orange f-w-b">* </span>性别</div>
+                    <div class="info-input pull-left checkbox-item">
+                        <ul class="checkbox-list">
+                            <li class="dis-i-b checkbox-item">
+                                <input class="checkbox-item-radio" type="radio" name='sex' value='1' id="sex1"/>
+                                <label for="sex1" class="label-xs text-center">
+                                    <span class="checkbox-item-line">男</span><br/>
+                                    <i class="icon-18 icon-checked"></i>
+                                </label>
+                            </li>
+                            <li class="dis-i-b checkbox-item">
+                                <input class="checkbox-item-radio" type="radio" name='sex' value='2' id="sex2"/>
+                                <label for="sex2" class="label-xs text-center">
+                                    <span class="checkbox-item-line">女</span><br/>
+                                    <i class="icon-18 icon-checked"></i>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="info-label pull-left text-right">出生日期</div>
+                    <div class="info-input pull-left">
+                        <div class="form-item clearfix">
+                            <div class="form-item-right">
+                                <input class="info-text" type="text" name="birthday" class="Wdate" pattern='date' empty onFocus="WdatePicker()" />
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="info-label pull-left text-right">所在地区</div>
+                    <div class="info-input pull-left">
+                        <div class="common-select">
+                            <select class="select-sm" name="province" child="city,area"></select>
+                        </div>
+                        <div class="common-select">
+                            <select class="select-sm" name="city" child="area"></select>
+                        </div>
+                        <div class="common-select">
+                            <select class="select-sm" name="area"></select>
+                        </div>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="info-label pull-left text-right"><span class="color-orange f-w-b">*</span> 联系地址</div>
+                    <div class="info-input pull-left">
+                        <div class="form-item clearfix">
+                            <div class="form-item-right">
+                                <input class="info-text" type="text" name='contact_addr' pattern='required' alt='请填写联系地址'>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="info-label pull-left text-right"><span class="color-orange f-w-b">*</span> 手机号码</div>
+                    <div class="info-input pull-left">
+                        <div class="form-item clearfix">
+                            <div class="form-item-right">
+                                <input class="info-text" type="text" name='mobile' pattern='mobi' alt='请填写正确的手机号码'>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="info-label pull-left text-right">邮编</div>
+                    <div class="info-input pull-left">
+                        <div class="form-item clearfix">
+                            <div class="form-item-right">
+                                <input class="info-text" type="text" name='zip' pattern='zip' empty alt='请填写正确的邮政编码'>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="info-label pull-left text-right">固定电话</div>
+                    <div class="info-input pull-left">
+                        <div class="form-item clearfix">
+                            <div class="form-item-right">
+                                <input class="info-text" type="text" name='telephone' pattern='phone' empty alt='请填写正确的固定电话'>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="info-label pull-left text-right">QQ</div>
+                    <div class="info-input pull-left">
+                        <div class="form-item clearfix">
+                            <div class="form-item-right">
+                                <input class="info-text" type="text" name='qq' pattern='qq' empty alt='请填写正确的QQ号'>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="info-label pull-left text-right"></div>
+                    <div class="info-input pull-left">
+                        <button type="submit" class='btn  btn-warning' >保存基本信息</button>
+                    </div>
+                </li>
+            </ul>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type='text/javascript'>
+    
+    //表单回填
+    var areaInstance = new areaSelect('province');
+    {if:$this->memberRow}
+    {set:$area = explode(',',trim($this->memberRow['area'],','))}
+    areaInstance.init({"province":"{$area[0]}","city":"{$area[1]}","area":"{$area[2]}"});
+    {else:}
+    areaInstance.init();
+    {/if}
+
+    var formObj = new Form('user_info');
+    formObj.init({echo:JSON::encode($this->memberRow)});
+</script>

@@ -1,0 +1,138 @@
+.u-info{
+    color:#fff;
+    background:#fc6e51;
+    position:relative;
+}
+.u-info .u-content{
+    position:absolute;
+    width:100%;
+    left:0;
+    top:15px;
+    padding:0 5px;
+}
+.u-info .u-bg{
+    height:10.5rem;
+}
+.u-info .u-bg img{
+    width:100%;
+    height:100%
+}
+.u-info .user-name{
+    text-align:center;
+}
+.u-info .col-xs-4{
+    padding-left:5px;
+    padding-right:5px;
+}
+.u-info .user-pic {
+    text-align:center;
+    padding-bottom:5px;
+}
+.u-info .user-pic img{
+    outline: none;
+    width:50px;
+    height:50px;
+    border-radius:50%;
+}
+
+.user{
+    background-color:#eee;
+    padding-bottom:15px;
+}
+.user-box{ padding:10px 5px;}
+.user-box li {
+    margin-bottom:10px;
+}
+.user-box li a{
+    color:#666;
+    background-color:#fff;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+    padding:10px 0 15px 0;
+}
+
+.user-box li i{
+    color:#fc6e51;
+    font-size:2.2rem;
+    text-shadow: 1px 1px 0 #c6c6c6;
+}
+
+.is-default i{
+    color:#58D68D;
+}
+
+.user-info li{
+    padding-bottom:10px;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    background-color: #fff;
+    border-bottom: 2px solid #f7762e;
+    color: #555;
+    cursor: default;
+    border-left:none;
+    border-top:none;
+    border-right:none;
+}
+.nav.nav-tabs {
+    width: 100%;
+}
+.nav.nav-tabs.nav-2-tabs > li {
+    width: 50%;
+    text-align: center;
+}
+
+.order-list {
+    position: relative;
+}
+
+.order-list li.list-group-item:nth-child(odd){
+    background-color: #f9f9f9;
+}
+.order-thumbnail .thumbnail{
+    margin-bottom:0;
+    padding:2px;
+}
+.order-arrow{
+    position:absolute;
+    right:5px;
+    top:50%;
+    transform: translateY(-50%);
+    color:#ccc;
+}
+.reply-msg{
+    border:1px solid #ddd;
+    padding:5px 10px;
+}
+
+.custom-table{
+    border-top:1px solid #ddd;
+}
+.custom-table .row{
+    border-bottom:1px solid #ddd;
+    padding:5px 0;
+}
+.custom-table .row:last-child{
+    border-bottom:none;
+}
+.custom-table .row>.col-xs-6:first-child{
+    border-right:1px solid #ddd;
+}
+.custom-table .row:nth-child(odd){
+    background-color: #f9f9f9;
+}
+
+/*ÐÇÐÇÆÀ·Ö*/
+.star-point li{
+    display: inline-block;
+}
+.star-point li i{
+    font-size:1.5rem;
+}
+.star-point .icon-favorfill{
+    color: #ffcc11;
+}
+
+
+
+

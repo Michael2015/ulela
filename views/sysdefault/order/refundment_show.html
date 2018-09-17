@@ -1,0 +1,57 @@
+<div class="headbar clearfix">
+	<div class="position">订单<span>></span><span>单据管理</span><span>></span><span>退款单信息</span></div>
+</div>
+
+<div class="content">
+	<table width="100%" class="border_table" style="margin:10px auto">
+		<col width="200px" />
+		<col />
+		<tbody>
+			<tr class='t_l'>
+				<th>订单号:</th><td>{$order_no}</td>
+			</tr>
+			<tr class='t_l'>
+				<th>订单时间:</th><td>{$create_time}</td>
+			</tr>
+			<tr class='t_l'>
+				<th>用户名:</th><td>{$username}</td>
+			</tr>
+			<tr class='t_l'>
+				<th>退款金额:</th><td>{$amount}</td>
+			</tr>
+			<tr class='t_l'>
+				<th>退款商品:</th>
+				<td>
+					{query:name=order_goods where=id in ($order_goods_id)}
+					{set:$goods = JSON::decode($item['goods_array'])}
+					<p>
+					{$goods['name']} X {$item['goods_nums']}
+					【{echo:Order_Class::goodsSendStatus($item['is_send'])}】
+
+					{if:$seller_id}
+					<a href="{url:/site/home/id/$seller_id}" target="_blank"><img src="{skin:images/admin/seller_ico.png}" /></a>
+					{/if}
+					</p>
+					{/query}
+				</td>
+			</tr>
+			<tr class='t_l'>
+				<th>退款方式</th>
+				<td>{echo:Order_Class::refundWay($way)}</td>
+			</tr>
+			<tr class='t_l'>
+				<th>处理状态</th>
+				<td>{echo:Order_Class::refundmentText($pay_status)}</td>
+			</tr>
+			<tr class='t_l'>
+				<th>处理时间:</th><td>{$dispose_time}</td>
+			</tr>
+			<tr class='t_l'>
+				<th>退款原因:</th><td>{$content}</td>
+			</tr>
+			<tr class='t_l'>
+				<th>处理意见:</th><td>{$dispose_idea}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

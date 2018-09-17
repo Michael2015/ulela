@@ -1,0 +1,109 @@
+<div class="position"> <span>您当前的位置：</span> <a href="{url:}"> 首页</a> &raquo; 商品品牌 </div>
+<div class="wrapper clearfix container_2">
+	<div class="sidebar f_l">
+		<div class="box_2  m_10" style="padding:0">
+			<div class="title">销售排行榜</div>
+			<div class="content">
+			  <ul class="ranklist" id="ranklist">
+
+
+			  	{foreach:items=Api::run('getGoodsListBrandSum',array('#brandid#',$brandId),10)}
+			  	<li><span>{echo:intval($key+1)}</span><a href="{url:/site/products/id/$item[id]}"><img src="{webroot:}{echo:Thumb::get($item['img'],58,58)}" width="58px" height="58px" /></a><a href="{url:/site/products/id/$item[id]}">{$item['name']}</a><b>￥{$item['sell_price']}</b></li>
+			  	{/foreach}
+			  </ul>
+			</div>
+		</div>
+
+		<div class="box_2  m_10" style="padding:0">
+			<div class="title">热卖商品</div>
+			<div class="cont">
+				<ul class="ranklist">
+					{foreach:items=Api::run('getCommendHotBrand',array('#brandid#',$brandId),10)}
+					<li class='current' style="height:83px"><a href="{url:/site/products/id/$item[id]}"><img src="{webroot:}{echo:Thumb::get($item['img'],58,58)}" width="58" height="58" /></a><a href="{url:/site/products/id/$item[id]}">{$item['name']}</a><b>￥{$item['sell_price']}</b></li>
+					{/foreach}
+				</ul>
+			</div>
+		</div>
+
+		<div class="box_2 " style="padding:0">
+			<div class="title">更多品牌</div>
+			<div class="cont">
+			  <ul class="brand_list">
+			  	{foreach:items=Api::run('getBrandList',10)}
+			  	<li><a href="{url:/site/brand_zone/id/$item[id]}">{$item['name']}</a></li>
+			  	{/foreach}
+			  </ul>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="main f_r">
+		<div class="box m_10">
+			<div class="title">品牌专区</div>
+			<div class="cont">
+				<div class="c_box">
+					<dl class="clearfix">
+						<dt><img src="{webroot:$brandRow[logo]}" width="220" height="100" /></dt>
+						<dd><strong>{$brandRow['name']}</strong></dd>
+						<dd>官方站点：{$brandRow['url']}</dd>
+					</dl>
+					<p>{$brandRow['description']}</p>
+				</div>
+			</div>
+		</div>
+
+		{set:$goodsObj = search_goods::find(' go.brand_id = '.$brandId,20);$resultData = $goodsObj->find();}
+		
+		<!--商品条件筛选-->
+		{include:_goods_list_filter}
+		
+		{if:$resultData}
+		<!--gallery-show-->
+			<div id="gallery_show" class="gallery-show">
+				<!--gallery-grid-->
+				<div class="gallery-grid">
+					<ul class="clearfix">
+						{foreach:items=$resultData}
+						<li class="goods-item" style="width: 204px;">
+				            <div class="goods-pic" style="width:180px;height:180px;line-height:178px;*font-size:162px;">
+								<a target="_blank" href="{url:/site/products/id/$item[id]}">
+								<img class="action-goods-img" alt="{$item['name']}" style="max-width:180px;max-height:180px;" src="{webroot:}{echo:Thumb::get($item['img'],180,180)}"></a>
+				            </div>
+						    <div class="goods-info">
+						        <h3 class="goods-name">
+						      		<a target="_blank" href="{url:/site/products/id/$item[id]}">
+						        		{$item['name']}
+						        	</a>
+						        </h3>
+						    	<div class="goods-price">
+						          	<ins class="price">
+										{$item['sell_price']}
+							      	</ins>
+				                    <span class="goods-comment">
+				                    	<a href="{url:/site/products/id/$item[id]}"><b>{$item['comments']}</b>条评论</a>
+				                    </span>
+				                    <del class="price">￥{$item['market_price']}</del>
+				                </div>
+						    </div>
+						    <div class="goods-action">
+						    	<a href="{url:/site/products/id/$item[id]}" class="hl_a_btn">立即购买</a>
+						    </div>
+						</li>
+						{/foreach}
+					</ul>
+
+					<div class="hl_page">
+						{$goodsObj->getPageBar()}
+					</div>
+				</div>
+				<!--gallery-grid-->
+			</div>
+			<!--gallery-show-->
+		{else:}
+		<p class="display_list mt_10" style='margin-top:50px;margin-bottom:50px'>
+			<strong class="gray f14">对不起，没有找到相关商品</strong>
+		</p>
+		{/if}
+	</div>
+</div>

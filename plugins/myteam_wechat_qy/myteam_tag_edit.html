@@ -1,0 +1,50 @@
+<div class="headbar">
+	<div class="position"><span>插件管理</span><span>></span><span>插件</span><span>></span><span>配置团队信息</span></div>
+</div>
+
+<div class="content_box">
+	<div class="content form_content">
+		<form action="{url:/plugins/myteam_tag_update}" method="post" name="wechat">
+			<input name='id' type='hidden' />
+			<table class="form_table">
+				<colgroup>
+					<col width="150px" />
+					<col />
+				</colgroup>
+				<tr>
+					<th>队名：</th>
+					<td>
+						<input name='teamname' type='text' class='normal' pattern='required' />
+						<label>队伍名称，标识队伍</label>
+					</td>
+				</tr>
+
+				<tr>
+					<th>队长用户名：</th>
+					<td>
+						<input name='username' type='text' class='normal' pattern='required' />
+						<label>队长的用户名</label>
+					</td>
+				</tr>
+
+				<tr>
+					<th>标签ID：</th>
+					<td>
+						<input name='tag_id' type='text' class='normal' pattern='required' />
+						<label>微信企业号通讯录内的标签ID</label>
+					</td>
+				</tr>
+
+				<tr><td></td><td><button class="submit" type="submit"><span>保 存</span></button></td></tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+jQuery(function()
+{
+	var formObj = new Form();
+	formObj.init({echo:JSON::encode($myteamData)});
+});
+</script>

@@ -1,0 +1,108 @@
+<div class="headbar">
+	<div class="position">
+		<span>会员</span><span>></span><span>商户管理</span><span>></span><span>商户列表</span>
+	</div>
+	<div class="operating">
+		<div class="search f_r">
+			<form name="searchseller" action="{url:/}" method="get">
+				<input type='hidden' name='controller' value='member' />
+				<input type='hidden' name='action' value='seller_list' />
+				<select class="auto" name="search[like]">
+					<option value="seller_name">登录名</option>
+					<option value="true_name">真实名称</option>
+					<option value="mobile">手机</option>
+					<option value="email">Email</option>
+				</select>
+				<input class="small" name="search[likeValue]" type="text" value="" />
+				<button class="btn" type="submit"><span class="sch">搜 索</span></button>
+			</form>
+		</div>
+		<a href="javascript:void(0);"><button class="operating_btn" type="button" onclick="window.location='{url:/member/seller_edit}'"><span class="addition">添加商户</span></button></a>
+		<a href="javascript:void(0);" onclick="selectAll('id[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
+		<a href="javascript:void(0);" onclick="delModel({form:'seller_list',msg:'确定要删除所选中的商户吗？<br />删除的商户可以从回收站找回。'})"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
+		<a href="javascript:void(0);"><button class="operating_btn" type="button" onclick="window.location='{url:/member/seller_recycle_list}'"><span class="recycle">回收站</span></button></a>
+	</div>
+</div>
+
+<form action="{url:/member/seller_del}" method="post" name="seller_list" onsubmit="return checkboxCheck('id[]','尚未选中任何记录！')">
+	<div class="content">
+		<table class="list_table">
+			<colgroup>
+				<col width="40px" />
+				<col width="140px" />
+				<col width="140px" />
+				<col width="100px" />
+				<col width="110px" />
+				<col width="70px" />
+				<col width="80px" />
+				<col width="80px" />
+				<col width="80px" />
+				<col width="150px"/>
+				<col width="80px" />
+			</colgroup>
+
+			<thead>
+				<tr>
+					<th>选择</th>
+					<th>登录用户名</th>
+					<th>真实名称</th>
+					<th>座机</th>
+					<th>移动电话</th>
+					<th>VIP</th>
+					<th>销量</th>
+					<th>评分</th>
+					<th>状态</th>
+					<th>注册日期</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+				{set:$where = Util::search(IReq::get('search'));}
+				{query:name=seller where=is_del eq 0 and $where order=id desc page=$page pagesize=20}
+				<tr>
+					<td><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
+					<td title="{echo:htmlspecialchars($item['seller_name'])}">{$item['seller_name']}</td>
+					<td title="{echo:htmlspecialchars($item['true_name'])}">{$item['true_name']}</td>
+					<td title="{echo:htmlspecialchars($item['phone'])}">{$item['phone']}</td>
+					<td title="{echo:htmlspecialchars($item['mobile'])}">{$item['mobile']}</td>
+					<td>{echo:$item['is_vip'] == 0 ? '否':'是'}</td>
+					<td>{echo:statistics::sellCountSeller($item['id'])} 件</td>
+					<td>{echo:statistics::gradeSeller($item['id'])} 分</td>
+					<td>
+						<select onchange="changeStatus({$item['id']},this)">
+							<option value="0" {if:$item['is_lock'] == 0}selected="selected"{/if}>正常</option>
+							<option value="1" {if:$item['is_lock'] == 1}selected="selected"{/if}>待审核</option>
+						</select>
+					</td>
+					<td title="{$item['create_time']}">{$item['create_time']}</td>
+					<td>
+						<a href="{url:/member/seller_edit/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" alt="修改" /></a>
+						<a href="javascript:void(0)" onclick="delModel({link:'{url:/member/seller_del/id/$item[id]}'})"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a>
+					</td>
+				</tr>
+				{/query}
+			</tbody>
+		</table>
+	</div>
+	{$query->getPageBar()}
+</form>
+
+<script language="javascript">
+//预加载
+$(function(){
+	var searchData = {echo:JSON::encode(IReq::get('search'))};
+	for(var index in searchData)
+	{
+		$('[name="search['+index+']"]').val(searchData[index]);
+	}
+})
+
+//商户状态修改
+function changeStatus(sid,obj)
+{
+	var lockVal = obj.value;
+	$.getJSON("{url:/member/ajax_seller_lock}",{"id":sid,"lock":lockVal});
+}
+</script>

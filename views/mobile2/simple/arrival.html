@@ -1,0 +1,28 @@
+{set:$goods_id = IFilter::act(IReq::get('goods_id'),'int');}
+<section class="login bg-white mb-15">
+	<div class="p-10 pt-10">
+		<h3 class="text-center font-lg mb-10">订阅到货通知</h3>
+		<p class="text-muted font-sm mb-10 text-center">如果商品到货，我们会用邮件或短信通知您</p>
+	    <form action='{url:/simple/arrival_notice}' method='post'>
+			<input name="goods_id" type="hidden" value="{$goods_id}"/>
+	        <ul class="list-unstyled pb-15">
+	            <li class="pb-10">
+					<div class="input-group input-style">
+						<div class="input-group-addon font-sm"><span>邮箱</span></div>
+	                	<input type="text" class="form-control input-sm" name="email" pattern='email' alt='填写正确的邮箱地址' placeholder="接收通知的邮箱" />
+					</div>
+	            </li>
+	            <li class="pb-10">
+					<div class="input-group input-style">
+						<div class="input-group-addon font-sm"><span>手机号</span></div>
+						<input type="text" class="form-control input-sm" name="mobile" pattern='mobi' empty alt='手机号码格式不正确' placeholder="接收通知的手机号（选填）"  />
+					</div>
+	            </li>
+					
+	            <li class="pb-10 mt-10">
+	                <button type="submit" class='btn btn-block btn-warning'>订阅到货通知</button>
+	            </li>
+	        </ul>
+	    </form>
+	</div>
+</section>

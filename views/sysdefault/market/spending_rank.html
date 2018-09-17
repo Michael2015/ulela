@@ -1,0 +1,48 @@
+{set:
+	$start = IFilter::act(IReq::get('start'));
+	$end   = IFilter::act(IReq::get('end'));
+}
+
+{js:my97date}
+{js:chart}
+<div class="headbar">
+	<div class="position"><span>统计</span><span>></span><span>基础数据统计</span><span>></span><span>消费排名</span></div>
+	<form action='{url:/market/spending_rank}' method='get'>
+		<input type='hidden' name='controller' value='market' />
+		<input type='hidden' name='action' value='spending_rank' />
+		<div class="operating">
+			<div class="search f_l">
+				<input type="text" name='start' empty class="Wdate" id="date_start" pattern='date' value="{$start}" alt='' onFocus="WdatePicker()" /> —— <input type="text" empty name='end' value="{$end}" pattern='date' class="Wdate" id="date_end" onFocus="WdatePicker()" />
+				<button class="btn"><span>查 询</span></button>
+			</div>
+		</div>
+    </form>
+</div>
+
+<div class="content">
+	<table class="list_table">
+		<thead>
+			<tr>
+				<th>用户名</th>
+				<th>真实姓名</th>
+				<th>用户等级</th>
+				<th>总额</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{foreach:items = $this->spendingList}
+			<tr>
+				<td>{$item['username']}</td>
+				<td>{$item['true_name']}</td>
+				<td>{$this->group[$item['group_id']]}</td>
+				<td>{$item['count']}</td>
+				<td><a href="{url: /member/member_list?search=u.id&keywords=$item['user_id']}" target="_blank">用户详情</a></td>
+			</tr>
+			{/foreach}
+		</tbody>
+	</table>
+</div>
+
+{$this->db->getPageBar()}

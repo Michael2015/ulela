@@ -1,0 +1,99 @@
+{set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+{set:$user_id = $this->user['user_id']}
+{set:$queryWithdrawList = Api::run('getWithdrawList',$user_id)}
+{set:$withdrawList = $queryWithdrawList->find()}
+
+<div class="bg-white p-10">
+	<ul class="nav nav-tabs table-tabs mb-10 pb-10 font-sm">
+		<li class="active"><a href="#withdraw-apply" data-toggle="tab">提现申请</a></li>
+		<li><a href="#withdraw-record" data-toggle="tab">历史提现</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane active" id="withdraw-apply">
+			<div class="p-10 bd-btm-1s mb-15 bd-color-gray text-center">
+				<h2 class="text-warning font-xxl">
+					<strong>{$this->memberRow['balance']}</strong>
+				</h2>
+				<p class="text-muted">账户余额</p>
+			</div>
+
+			<form action="{url:/ucenter/withdraw_act}" name="withdraw" method="post">
+				<ul class="list-unstyled">
+					<li class="pb-10">
+						<div class="input-group input-style">
+							<div class="input-group-addon font-sm"><span>支付宝账号</span></div>
+							<input class="form-control input-sm" initmsg="输入正确" type="text" name='note' pattern="required" alt="请填写支付宝账号" placeholder="填写提现支付宝账号"/>
+						</div>
+					</li>
+
+					<li class="pb-10">
+						<div class="input-group input-style">
+							<div class="input-group-addon font-sm"><span>收款人姓名</span></div>
+							<input class="form-control input-sm" initmsg="输入正确" type="text" name='name' pattern="required" alt="请填写收款人姓名" placeholder="填写收款人姓名"/>
+						</div>
+					</li>
+
+					<li class="pb-10">
+						<div class="input-group input-style">
+							<div class="input-group-addon font-sm"><span>提现金额</span></div>
+							<input class="form-control input-sm" initmsg="输入正确" type="text" name='amount' pattern="float" alt="请填写正确的金额" placeholder="填写提现金额"/>
+						</div>
+					</li> 
+
+					<li class="enter text-right pb-10">
+						<button type="submit" class="btn btn-block btn-warning">提交提现申请</button>
+					</li>
+				</ul>
+			</form>
+
+		</div>
+		<div class="tab-pane" id="withdraw-record">
+			{if:$withdrawList}
+			<table class="table table-striped text-center font-sm mb-0 mt-15">
+				<tr>
+	    			<th class="text-center">申请时间</th>
+	    			<th class="text-center">金额</th>
+	    			<th class="text-center">状态</th>
+	    			<th>&nbsp;</th>
+	    		</tr>
+				{foreach:items = $withdrawList}
+					<tr>
+						<td class="text-muted">{$item['time']}</td>
+						<td class="text-danger">{$item['amount']}</td>
+						<td>{echo:AccountLog::getWithdrawStatus($item['status'])}</td>
+						<td>
+							{if: $item['re_note']}
+								<div class="info-tips">
+									<i class="iconfont icon-infofill text-muted" data-tips='{$item['re_note']}'></i>
+								</div>
+							{elseif: $item['status']==0}
+								<i class="iconfont icon-repeal text-danger" onclick="delModel({link:'{url:/ucenter/withdraw_del/id/$item[id]}'});"></i>
+							{/if}
+						</td>
+					</tr>
+				{/foreach}
+			</table>
+			{$queryWithdrawList->getPageBar()}
+			
+			{else:}
+				<p class="text-center text-muted mb-10">暂无提现记录</p>
+			{/if}
+		</div>
+	</div>
+</div>
+
+<script type='text/javascript'>
+	var formObj = new Form('withdraw');
+	formObj.init({
+		'name':'{$this->withdrawRow['name']}',
+		'note':'{$this->withdrawRow['note']}',
+		'amount':'{$this->withdrawRow['amount']}'
+	});
+
+	$(document).ready(function(){
+		$('.info-tips .iconfont').on('click', function(){
+			layer.tips($(this).attr('data-tips'), this, {tips: 1});
+		});
+	});
+</script>

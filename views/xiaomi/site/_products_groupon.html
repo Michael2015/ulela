@@ -1,0 +1,47 @@
+<!--团购正常-->
+{set:$free_time = ITime::getDiffSec($groupon['end_time']);}
+
+<dl>
+	<dt class="pull-left info-left text-muted">价格</dt>
+	<dd class="pull-left normal-price"><span class="rmb">￥</span><span class="data_sellPrice">{$sell_price}</span></dd>
+</dl>
+
+<dl class="sell-price-line">
+	<dt class="pull-left info-left text-muted">团购价</dt>
+	<dd class="pull-left sell-price">
+		<span class="rmb">￥</span>{$groupon['regiment_price']}
+		<span class="time f-14 text-muted" id="grouponCount">
+			还剩 <strong class="text-danger" id='cd_hour_grouponCount'>{echo:floor($free_time/3600);}</strong>
+			小时 <strong class="text-danger" id='cd_minute_grouponCount'>{echo:floor(($free_time%3600)/60);}</strong>
+			分 <strong class="text-danger" id='cd_second_grouponCount'>{echo:$free_time%60;}</strong>
+			秒结束
+		</span>
+	</dd>
+</dl>
+<dl>
+	<dt class="pull-left info-left text-muted">已售出</dt>
+	<dd class="pull-left text-muted"><span class="text-danger">{$groupon['sum_count']}</span> 件</dd>
+</dl>
+<dl>
+	<dt class="pull-left info-left text-muted">限购量</dt>
+	<dd class="pull-left text-danger">{$groupon['limit_min_count']} <span class="text-muted">至</span> {$groupon['limit_max_count']}</dd>
+</dl>
+
+<script type="text/javascript">
+//开启倒计时功能
+var cd_timer = new countdown();
+cd_timer.add('grouponCount');
+
+//DOM加载完毕开始
+jQuery(function()
+{
+	//团购活动的库存量
+	var regimentStoreNums = "{echo:$groupon['store_nums'] - $groupon['sum_count']}";
+	$('#data_storeNums').text(regimentStoreNums);
+
+	//团购最小购买数量
+	$('#buyNums').attr("minNums","{$groupon['limit_min_count']}");
+	$('#buyNums').attr("maxNums","{$groupon['limit_max_count']}");
+	$('#buyNums').val("{$groupon['limit_min_count']}");
+});
+</script>

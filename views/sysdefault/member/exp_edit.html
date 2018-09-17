@@ -1,0 +1,48 @@
+<div class="headbar">
+	<div class="position"><span>会员</span><span>></span><span>会员管理</span><span>></span><span>编辑经验</span></div>
+</div>
+<div class="content_box">
+	<div class="content form_content">
+		<form action="{url:/member/exp_save}" method="post" name="memberForm">
+			<input name="user_id" value="" type="hidden" />
+			<table class="form_table">
+				<col width="150px" />
+				<col />
+				<tbody>
+					<tr>
+						<td><input class="normal" name="userid" type="hidden" value="" /></td>
+					</tr>
+					<tr>
+						<td><input class="normal" name="exp" type="hidden" value="" /></td>
+					</tr>
+					<tr>
+						<th>用户名：</th>
+						<td><input type="text" class="normal" name="username" readonly="readonly" /></td>
+					</tr>
+					<tr>
+						<th>添加或减少经验值：</th>
+						<td><input type="text" class="normal" name="value" pattern="required" alt="经验值不能为空"/></td>
+					</tr>
+					<tr>
+						<th>原因备注：</th>
+						<td><input type="text" class="normal" name="intro" pattern="required" alt="经验值不能为空"/></td>
+					</tr>
+					<tr>
+						<td></td><td><button class="submit" type="submit"><span>确 定</span></button></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script language="javascript">
+//DOM加载完毕
+$(function(){
+	//修改模式
+	{if:isset($this->userInfo)}
+		var formObj = new Form('memberForm');
+		formObj.init({echo:JSON::encode($this->userInfo)});
+	{/if}
+});
+</script>

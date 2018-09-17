@@ -1,0 +1,82 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li class="active">短消息</li>
+        </ul>
+
+        <div>
+            {set:$queryMessageList = Api::run('getUcenterMessageList',$msgIds)}
+            {set:$items = $queryMessageList->find()}
+            {if:$items}
+            <table class="table table-bordered text-center f-12 m-b-20">
+                <tbody>
+                <tr class="active text-muted">
+                    <td>标题</td>
+                    <td>发送时间</td>
+                    <td>状态</td>
+                    <td>操作</td>
+                </tr>
+                {foreach:items = $items}
+                <tr>
+                    <td>
+                        {$item['title']}
+                    </td>
+                    <td class="text-muted">
+                        {$item['time']}
+                    </td>
+                    <td id="msg_id_{$item['id']}">
+                        {if:$msgObj->is_read($item['id'])}已读{else:}未读{/if}
+                    </td>
+                    <td >
+                        <a class="color-orange" href="javascript:void(0)" onclick='show_msg(this,{echo:JSON::encode($item)})'>查看</a>
+                        <span class="text-muted">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                        <a href="{url:/ucenter/message_del/id/$item['id']}">删除</a>
+                        
+                    </td>
+                </tr>
+                {/foreach}
+                <tr id='show_msg' class="text-left" style="display:none;">
+                    <td colspan="4" class="f-12 ">
+                        <a class="color-orange pull-right" href="javascript:void(0);" onclick='$(this).parent().parent().hide()'>
+                            <span class="glyphicon glyphicon-remove"></span> 关闭
+                        </a>
+                        <h6 class="text-muted">详细内容：</h6>
+                        <p id='content'></p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="pagebar">
+                {$queryMessageList->getPageBar()}
+            </div>
+
+            {else:}
+            <div class="m-t-40 m-b-20">
+                <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+                <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+            </div>
+            {/if}
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //阅读消息
+    function show_msg(_self,obj)
+    {
+        $('#show_msg').insertAfter($(_self).parent().parent());
+        $('#show_msg #content').html(obj.content);
+        $('#show_msg').show();
+
+        $.get("{url:/ucenter/message_read}",{"id":obj.id},function(data){
+            if(data == 1)
+            {
+                $("#msg_id_"+obj.id).addClass('bold');
+                $("#msg_id_"+obj.id).html('已读');
+            }
+        });
+    }
+</script>

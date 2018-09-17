@@ -1,0 +1,59 @@
+
+<div class="u-section-right bg-white m-b-20 pull-left">
+    <div class="p-30">
+        <div>
+            <ul class="nav nav-tabs ucenter-tabs">
+                <li class="active">未评价</li>
+                <li><a href="{url:/ucenter/isevaluation}">已评价</a></li>
+            </ul>
+
+            {set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+            {set:$user_id = $this->user['user_id']}
+            {set:$queryEvaluationList = Api::run('getUcenterEvaluation',$user_id)}
+            {set:$items = $queryEvaluationList->find();}
+            {if:$items}
+                {foreach:items = $items key = $_key}
+                {if: !($_key > 1 && $items[$_key-1]['order_no'] == $item['order_no']) }
+                    <table class="table table-bordered vm table goods-cart-list f-12 m-b-20">
+                        <tbody>
+                        <tr class="active">
+                            <td colspan="3" class="text-left text-muted">
+                                订单号：
+                                {$item['order_no']}
+                                <span class="pull-right">确认时间：{$item['time']}</span>
+                            </td>
+                        </tr>
+                {/if}
+
+                    <tr>
+    					<td class="no-border-lr" width="65">
+    						<a class="show m-l-15" href="{url:/site/products/id/$item['goods_id']}">
+    							<img src="{webroot:}{echo:Thumb::get($item['img'],66,66)}" width="66px" height="66px" alt="{$item['name']}" title="{$item['name']}" />
+    						</a>
+    					</td>
+                        <td class="no-border-lr">
+                            <a href="{url:/site/products/id/$item[goods_id]}">{$item['name']}</a>
+                        </td>
+                        <td width="100" class="no-border-lr text-center">
+                            <a class="color-orange" href="{url:/site/comments/id/$item['id']}">写评价</a>
+                        </td>
+                    </tr>
+
+                    {if: (isset($items[$_key+1]) && $items[$_key+1]['order_no'] != $item['order_no']) || !isset($items[$_key+1]) }
+                        </tbody>
+                    </table>
+                    {/if}
+                {/foreach}
+                <div class="pagebar">
+                    {$queryEvaluationList->getPageBar()}
+                </div>
+            {else:}
+                <div class="m-t-40 m-b-20">
+                    <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+                    <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+                </div>
+            {/if}
+        </div>
+
+    </div>
+</div>

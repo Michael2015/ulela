@@ -1,0 +1,64 @@
+{js:kindeditor}
+<div class="headbar">
+	<div class="position"><span>商品</span><span>></span><span>商品分类管理</span><span>></span><span>编辑分类</span></div>
+</div>
+<div class="content_box">
+	<div class="content form_content">
+		<form action="{url:/goods/category_save}" method="post">
+			<input name="id" value="" type="hidden" />
+			<table class="form_table" cellpadding="0" cellspacing="0">
+				<colgroup>
+					<col width="150px" />
+					<col />
+				</colgroup>
+
+				<tr>
+					<th>分类名称：</th>
+					<td>
+						<input class="normal" name="name" type="text" value="" pattern="required" alt="分类名称不能为空" /><label>* 必选项</label>
+					</td>
+				</tr>
+				<tr>
+					<th>上级分类：</th>
+					<td>
+						<!--分类数据显示-->
+						<span id="__categoryBox" style="margin-bottom:8px"></span>
+						<button class="btn" type="button" name="_goodsCategoryButton"><span class="add">设置分类</span></button>
+						{set:plugin::trigger('goodsCategoryWidget',array("name" => "parent_id","value" => isset($this->categoryRow['parent_id']) ? $this->categoryRow['parent_id'] : ""))}
+						<label>如果不选择上级分类，默认为顶级分类</label>
+					</td>
+				</tr>
+				<tr>
+					<th>首页是否显示：</th>
+					<td>
+						<label class='attr'><input name="visibility" type="radio" value="1" checked="checked" /> 是 </label>
+						<label class='attr'><input name="visibility" type="radio" value="0" /> 否 </label>
+					</td>
+				</tr>
+				<tr>
+					<th>排序：</th><td><input class="normal" name="sort" pattern='int' empty alt='排序必须是一个数字' type="text" value=""/></td>
+				</tr>
+				<tr>
+					<th>SEO标题：</th><td><input class="normal" name="title" type="text" value="" /></td>
+				</tr>
+				<tr>
+					<th>SEO关键词：</th><td><input class="normal" name="keywords" type="text" value="" /></td>
+				</tr>
+				<tr>
+					<th>SEO描述：</th><td><textarea name="descript" cols="" rows=""></textarea></td>
+				</tr>
+				<tr>
+					<td></td><td><button class="submit" type="submit"><span>确 定</span></button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function()
+{
+	var formObj = new Form();
+	formObj.init({echo:JSON::encode($this->categoryRow)});
+})
+</script>

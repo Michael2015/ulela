@@ -1,0 +1,43 @@
+{js:my97date}
+<div class="headbar">
+	<div class="position"><span>插件管理</span><span>></span><span>插件</span><span>></span><span>设置单个业绩考核</span></div>
+</div>
+
+<div class="content_box">
+	<div class="content form_content">
+		<form action="{url:/plugins/count_sells_update}" method="post" name="count_sells">
+			<input name='id' type='hidden' value="" />
+			<table class="form_table">
+				<colgroup>
+					<col width="150px" />
+					<col />
+				</colgroup>
+				<tr>
+					<th>用户名：</th>
+					<td>
+						<input name='username' type='text' class='normal' pattern='required' value="" />
+						<label>填写用户名</label>
+					</td>
+				</tr>
+
+				<tr>
+					<th>考核开始日期：</th>
+					<td>
+						<input type="text" name='count_start' value='' class="Wdate" pattern='date' alt='' onFocus="WdatePicker()" />
+						<label>假如1-3月不考核，则这里填写4月1日</label>
+					</td>
+				</tr>
+
+				<tr><td></td><td><button class="submit" type="submit"><span>保 存</span></button></td></tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+jQuery(function()
+{
+	var formObj = new Form("count_sells");
+	formObj.init({echo:JSON::encode($uncountData)});
+});
+</script>

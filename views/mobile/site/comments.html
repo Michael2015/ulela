@@ -1,0 +1,90 @@
+<div class="bg-white p-10">
+	<div class="info-head"><span>评论商品</span></div>
+	<ul class="mb-10">
+		<li class="mb-10">
+			<p>商品名称：</p>
+			<p><a href="{url:/site/products/id/$this->goods['goods_id']}">{$this->goods['name']}</a></p>
+		</li>
+
+		<li class="mb-10">
+			<p >评论等级：</p>
+			<ul class="star-point">
+				<li data-index="1"><i class="iconfont icon-favorfill"></i></li>
+				<li data-index="2"><i class="iconfont icon-favor"></i></li>
+				<li data-index="3"><i class="iconfont icon-favor"></i></li>
+				<li data-index="4"><i class="iconfont icon-favor"></i></li>
+				<li data-index="5"><i class="iconfont icon-favor"></i></li>
+			</ul>
+		</li>
+
+		<li class="mb-10">
+			<p>评论内容：</p>
+			<p><textarea class="form-control" name="contents" id="contents"></textarea></p>
+		</li>
+
+		<li>
+			<button  class="btn btn-no-shadow btn sm" onclick="comment_add();">保存</button>
+		</li>
+	</ul>
+</div>
+
+<script>
+	/*
+	 * dyg_lzq 20150829星星评分
+	 */
+
+	var starPoint = {
+		star_objs : $('.star-point li'),
+		star_icons: $('.star-point li i'),
+		star_length: $('.star-point li').length,
+
+		change_star_state: function(index){
+			starPoint.star_icons.each(function(i,ele){
+				$(ele).removeClass('icon-favorfill').addClass('icon-favor');
+			});
+			for(var i=0;i<index;i++){
+
+				$(starPoint.star_icons[i]).removeClass('icon-favor').addClass('icon-favorfill');
+			}
+		},
+
+		star_point: function(obj){
+			var points = $(obj).attr('data-index');
+			console.log(points);
+			starPoint.change_star_state(points);
+		}
+	};
+	for(var i=0;i<starPoint.star_length;i++){
+
+		starPoint.star_objs[i].onclick = function(){
+			starPoint.star_point(this);
+		}
+	}
+
+	function comment_add()
+	{
+		var point = 0;
+		for(var i=0;i<starPoint.star_length;i++){
+			if($(starPoint.star_icons[i]).hasClass('icon-favorfill')){
+				point++;
+			}
+		}
+		if(point==0)
+		{
+			tips("请选择评论等级");
+			return;
+		}
+
+		var contents=$("#contents").val();
+		var data={'point':point,'contents':contents,'id':{$this->comment['id']}};
+		$.post("{url:/site/comment_add}",data,function(c)
+		{
+			if(c==='success')
+			{
+				location="{url:/site/comments_list/id/$this->goods['goods_id']}";
+			}
+			else
+				alert(c);
+		});
+	}
+</script>

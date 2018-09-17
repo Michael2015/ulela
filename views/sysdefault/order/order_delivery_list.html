@@ -1,0 +1,64 @@
+{js:my97date}
+<div class="headbar">
+	<div class="position">订单<span>></span><span>单据管理</span><span>></span><span>发货单列表</span></div>
+	<div class="operating">
+		<div class="f_l">
+			<a href="javascript:void(0)" onclick="selectAll('id[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
+			<a href="javascript:void(0)" onclick="delModel()"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
+			<a href="javascript:void(0)"><button class="operating_btn" type="button" onclick="location.href='{url:/order/delivery_recycle_list}'"><span class="recycle">回收站</span></button></a>
+		</div>
+		<div class="search f_r">
+			<form name="serachuser" action="{url:/}" method="post" target="_blank">
+				<input type='hidden' name='controller' value='order' />
+				<input type='hidden' name='action' value='order_deliver_output' />
+				发货时间从 <input type="text" name='startDate' value='' class="Wdate" pattern='date' alt='' onFocus="WdatePicker()" empty /> 到 <input type="text" name='endDate' value='' empty pattern='date' class="Wdate" onFocus="WdatePicker()" />
+				<button class="btn" type="submit"><span>导 出</span></button>
+			</form>
+		</div>
+	</div>
+</div>
+<form name="orderForm" action="{url:/order/delivery_del}" method="post">
+<div class="content">
+	<table class="list_table">
+		<colgroup>
+			<col width="30px" />
+			<col width="30px" />
+			<col width="200px" />
+			<col width="105px" />
+			<col />
+		</colgroup>
+
+		<thead>
+			<tr>
+				<th>选择</th>
+				<th></th>
+				<th>订单号</th>
+				<th>收货人</th>
+				<th>物流单号</th>
+				<th>物流公司</th>
+				<th>运费</th>
+				<th>会员名</th>
+				<th>完成时间</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+			{query: name=delivery_doc as c join=left join order as o on c.order_id eq o.id left join user as m on m.id eq c.user_id left join freight_company as fr on c.freight_id eq fr.id fields=o.order_no,c.name,c.delivery_code,fr.freight_name,c.id,c.time,c.freight,m.username where=c.if_del eq 0 order= o.id desc page=$page }
+			<tr>
+				<td><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
+				<td><a href="{url:/order/delivery_show/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a></td>
+				<td>{$item['order_no']}</td>
+				<td>{$item['name']}</td>
+				<td>{$item['delivery_code']}</td>
+				<td>{$item['freight_name']}</td>
+				<td>{$item['freight']}</td>
+				<td>{echo:$item['username']=='' ? '游客' : $item['username']}</td>
+				<td>{$item['time']}</td>
+			</tr>
+			{/query}
+		</tbody>
+	</table>
+</div>
+{$query->getPageBar()}
+</form>

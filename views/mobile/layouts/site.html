@@ -1,0 +1,262 @@
+{set: 
+	$controller_id = $this->getId();
+	$action_id = IReq::get('action');
+	$action_id = $action_id ? $action_id : 'index';
+
+	$title_arr = array(
+					'site' => array(
+								'index' => $this->_siteConfig->name,
+								'products' => '商品详情',
+								'sitemap' => '分类',
+								'pro_list' => '分类列表',
+								'search_list' => '搜索结果',
+								'pro_detail' => '商品详情介绍',
+								'success' => '成功提示',
+								'error' => '错误提示',
+								'comments' => '评价商品',
+								'comments_list' => '商品评价',
+								'article' => '最新资讯',
+								'article_detail' => '文章详情',
+								'default' => $this->_siteConfig->name
+							),
+					'simple' => array(
+								'cart' => '购物车',
+								'cart2' => '填写和提交订单信息',
+								'cart3' => '订单提交',
+								'login' => '登录',
+								'reg' => '登录',
+								'find_password' => '找回密码',
+								'find_password_m' => '找回密码',
+								'restore_password' => '找回密码',
+								'default' => $this->_siteConfig->name
+							),
+					'ucenter' => array(
+								'order' => '我的订单',
+								'order_detail' => '我的订单',
+								'integral' => '我的积分',
+								'redpacket' => '我的代金劵',
+								'account_log' => '账户余额',
+								'withdraw' => '提现申请',
+								'refunds' => '我的退款',
+								'favorite' => '我的收藏',
+								'evaluation' => '商品评价',
+								'isevaluation' => '商品评价',
+								'consult' => '商品咨询',
+								'info' => '个人资料',
+								'address' => '地址管理',
+								'password' => '密码修改',
+								'myteam' => '我的团队',
+								'freeze_log' => '团队奖励',
+								'online_recharge' => '在线充值',
+								'default' => '个人中心',
+							),
+
+				);
+}
+
+{if: isset($title_arr[$controller_id])}
+	{if: isset($title_arr[$controller_id][$action_id])}
+		{set: $mobile_page_name = $title_arr[$controller_id][$action_id]; }
+	{else:}
+		{set: $mobile_page_name = $title_arr[$controller_id]['default']; }
+	{/if}
+{else:}
+	{set: $mobile_page_name = $this->_siteConfig->name; }
+{/if}
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{echo: $mobile_page_name}</title>
+	<link type="image/x-icon" href="/favicon.ico" rel="icon">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="apple-touch-icon-precomposed" href="{skin:images/front/logo.gif}">
+	<!--bootstrap-->
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css">
+	<!--iconfont-->
+	<link rel="stylesheet" href="{skin:font/css/iconfont-taobao.css}"/>
+	<!--css reset-->
+	<link rel="stylesheet" href="{skin:css/reset.css}"/>
+	<!--my css-->
+	<link rel="stylesheet" href="{skin:css/base.css?v=20160727}"/>
+	<link rel="stylesheet" href="{skin:css/index.css}"/>
+	<link rel="stylesheet" href="{skin:css/user.css}"/>
+	<link rel="stylesheet" href="{skin:css/category.css}"/>
+	<link rel="stylesheet" href="{skin:css/cart.css}"/>	
+
+	<!--Javascript-->
+	<!--{js:jquery}-->
+	<script type='text/javascript' src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'></script>
+	{js:form}
+	<script type='text/javascript' src='{theme:javascript/site.js}'></script>
+	<script type='text/javascript' src='{theme:javascript/validate2.js}'></script>
+	<!--{js:validate}-->
+	<!--{js:dialog}-->
+	{js:artTemplate}
+	<!-- Start of KF5 supportbox script -->
+	<script src="//assets.kf5.com/supportbox/main.js" id="kf5-provide-supportBox" kf5-domain="dyg.kf5.com"></script>
+	<!-- End of KF5 supportbox script -->
+</head>
+<body>
+	<!--头部信息 开始-->
+
+
+	<!--头部信息 结束-->
+		<!--搜索框 开始-->
+		<div class="kros-search">
+			<form method='get' action='{url:/}'>
+				<input type='hidden' name='controller' value='site' />
+				<input type='hidden' name='action' value='search_list' />
+				 	<div class="input-group">
+						<input class="form-control" type="text" name='word' placeholder="输入搜索关键字..." value="" />
+						<span class="input-group-btn ov-h">
+							<button type="submit" class='btn btn-no-shadow'>搜索</button>
+						</span>
+					</div>
+			</form>
+		</div>
+		<!--搜索框 结束-->
+		
+		{if: isset($mobile_page_name) && ! IClient::isWechat() }
+		<!--标题栏 开始-->
+		<div class="container-fluid">
+			<div class="header row">
+				<div class="col-xs-1 header-item"><a href="javascript:window.history.back();" title="返回"><i
+						class="iconfont icon-fenxiang3"></i></a></div>
+				<div class="col-xs-10 text-center">
+					{echo: $mobile_page_name}
+				</div>
+				<div class="col-xs-1 header-item"><a href="javascript:void(0);" onclick="$('.kros-search').toggle('slow');"><i
+						class="iconfont icon-31sousuo"></i></a></div>
+			</div>
+		</div>
+		<!--标题栏 结束-->
+		{/if}
+		
+		{viewcontent}
+
+
+<div class="container-fluid">
+	<!--页脚 开始-->
+
+	<div class="page-bottom row bg-white">
+		{if:$this->user}
+		<div class="col-xs-8">
+            <span class="text-muted">{echo:$this->user['username']} 您好!</span>&nbsp;&nbsp;<a href="{url:/simple/logout}">安全退出</a>
+        </div>
+		{else:}
+		<div class="col-xs-8">
+			<a href="{url:simple/login}">登录</a>
+			<span>|</span>
+			<a href="{url:simple/reg}">注册</a>
+		</div>
+		{/if}
+		<div class="col-xs-4 text-right">
+			<a href="#">回顶部</a>
+		</div>
+
+		<div class="copyright col-xs-12 text-center">
+			<p>Copyright 2013-2015 东阳光大健康电商dyg.cn</p>
+			<p>版权所有</p>
+		</div>
+	</div>
+    <!--页脚 结束-->
+</div> 	
+    
+	<!--底部导航 开始-->
+	<div class="footer-fixed-nav">
+		<div class="container-fluid">
+			<ul class="row common-nav">
+				<li class="col-xs-3"><a href="{url:/}"><i class="iconfont icon-shouye"></i><span>首页</span></a></li>
+				<li class="col-xs-3" name="mycart"><a href="{url:simple/cart}"><i class="iconfont icon-gouwuche1"></i><i class="cart-num" name="mycart_count">0</i><span>购物车</span></a></li>
+				<li class="col-xs-3"><a href="{url:ucenter}"><i class="iconfont icon-wo1"></i><span>个人中心</span></a></li>
+				<li class="col-xs-3"><a href="{url:site/sitemap}"><i class="iconfont icon-tabulation"></i><span>分类</span></a></li>
+			</ul>
+		</div>
+	</div>
+
+	<!--bootstarp模态框-->
+	<div class="modal fade" id="btdialog-alert" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 id="btdialog-alert-title" class="modal-title">提示：</h4>
+				</div>
+				<div class="modal-body">
+					<span id="btdialog-alert-content"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="btdialog-alert-btn" class="btn btn-no-shadow" data-dismiss="modal">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="btdialog-tips" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+
+				<div class="modal-body text-center">
+					<span id="btdialog-tips-content"></span>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- dyg_lzq 20160318 增加loadding模块 -->
+	<div class="modal fade" id="btdialog-loading" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+
+				<div class="modal-body text-center">
+					<p class="loading"></p>
+					<span id="btdialog-loading-content"></span>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="btdialog-confirm" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" aria-label="Close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+					<h4 id="btdialog-confirm-title" class="modal-title">提示：</h4>
+				</div>
+				<div class="modal-body">
+					<span id="btdialog-confirm-content"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="confirm-btn" class="btn btn-no-shadow" data-dismiss="modal">确定</button>
+					<button type="button" class="btn btn-no-shadow btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!--底部导航 结束-->
+	<script src="http://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script type='text/javascript' src="{theme:javascript/common.js?v=20160823}"></script>
+	<script src="http://apps.bdimg.com/libs/jquery-lazyload/1.9.5/jquery.lazyload.js"></script>
+	<script>
+		$("img.lazy").lazyload();
+	</script>
+	
+	<div style="display:none">
+	<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253803396'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1253803396' type='text/javascript'%3E%3C/script%3E"));</script>
+	</div>
+
+	<!--kf5 css fixed-->
+	<style type="text/css">
+		#kf5-support-123456789.kf5-support-123456789, #kf5-support-123456789.kf5-support-123456789 .kf5-support-btn {
+			z-index: 999;
+		}
+	</style>
+</body>
+</html>

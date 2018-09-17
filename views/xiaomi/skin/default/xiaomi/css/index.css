@@ -1,0 +1,223 @@
+/*xiaomi index.css by dyg_jzw */
+
+/*index banner*/
+.index-bn {
+	height: 480px;
+}
+
+
+
+/* 首页菜单 */
+.index-menu {
+	position: absolute;
+	width: 238px;
+	height: 480px;
+	z-index: 20;
+	top: 0;
+	left: 0;
+}
+
+.index-menu .category-content {
+	display: block;
+	padding: 0;	
+}
+.index-menu .category-content .cat-list {
+	padding: 18px 0 0 0;
+	border: 0;
+	width: 238px;
+	height: 462px;
+	background-color: rgba(104,104,104,0.8);
+	filter: Alpha(opacity=80) \9;
+  	position: static \9;
+  	*zoom:1; 
+  	background-color: rgb(104,104,104)\9;
+}
+
+.index-menu .category-content .cat-list li {
+	color: #FFFFFF;
+    position: relative \9; 
+    padding-bottom: 14px;
+}
+
+.index-menu .category-content .cat-list .list-item .title {
+	padding-left: 20px;
+	color: #fff;
+}
+
+.index-menu .category-content .cat-list .list-item .cat-sec {
+    padding-left: 20px;
+    font-size: 12px;
+    overflow: hidden;
+    height: 18px;
+}
+
+.index-menu .category-content .cat-list .list-item .cat-sec a {
+	color: #ccc;
+	display: inline-block;
+	padding-right: 7px;
+}
+
+.index-menu .category-content .cat-list .list-item.active {
+	background: #E0B45C;
+}
+
+.index-menu .category-content .cat-list .list-item.active .cat-sec a {
+	color: #fafafa;
+}
+
+.index-menu .category-content .cat-list .list-item.active .title {
+	color: #fff;
+}
+
+.index-menu.category .cat-pop {
+	background: #fafafa;
+	left: 238px;
+	border-color: #eee
+
+}
+.index-menu.category .cat-layer .level-title .glyphicon {
+	color:#ddd;
+}
+.index-menu.category .cat-layer p a {
+	border-color: #ddd;
+}
+
+.index-menu.category .cat-layer p {
+	border-color: #eee;
+}
+
+/* 首页banner下的四块广告 */
+.four-promote {
+	margin-top: 15px;
+	margin-left:-20px;
+}
+
+.four-promote .item {
+	width: 292px;
+	height: 170px;
+	margin-left: 20px;
+}
+
+.four-promote .item img, .four-promote .item a {
+	display: block;
+	width: 292px;
+	height: 170px;
+}
+
+/* 楼层 */
+
+
+
+.section-header a.more  .glyphicon {
+	background: #B9B9B9;
+	color: #fff;
+	border-radius: 16px;
+	-webkit-border-radius: 16px;
+	width: 12px;
+    height: 12px;
+    padding: 4px;
+    margin-left: 6px;
+    font-size: 12px;
+    line-height: 12px;
+    vertical-align: 1px;
+}
+
+.section-header a.more:hover .glyphicon {
+	background: #E0B45C;
+}
+
+
+
+/* floor */
+.index-floor {
+	margin-top: 20px;
+}
+
+.section-left {
+	width: 238px;
+}
+
+.index-floor .section-right, .index-floor .product-list {
+	width: 992px;
+}
+
+.left-promotion img {
+	width: 238px;
+	height: 584px;
+}
+
+.product-item .item-tag {
+	height: 20px;
+	width: 68px;
+	line-height: 20px;
+	top: 0;
+	left: 50%;
+	margin-left: -34px;
+	z-index: 2;
+	color: #fff;
+}
+
+/* 推荐列表 */
+.index-recommend {
+	margin-left: -18px;
+}
+.recommend-list {
+	border-top: 2px solid #fff;
+	margin-left: 18px;
+	width: 274px;
+	height: 388px;
+	padding: 18px 10px 10px;
+	background-color: #fff;
+}
+
+.recommend-list h3 {
+	font-size: 20px;
+	height: 24px;
+	line-height: 24px;
+	margin: 0 0 14px 0;
+}
+
+.recommend-list .rlist li {
+	margin-bottom: 9px;
+    padding-top: 9px;
+    border-top: 1px solid #fafafa;
+}
+
+.recommend-list .media .media-object img {
+	width: 50px;
+	height: 50px;
+}
+
+.recommend-list .media .media-left {
+	padding-right: 6px;
+}
+
+.recommend-list .media .media-right {
+	padding-left: 6px;
+}
+
+.recommend-list .media .media-right h4 {
+	color: #FF6709;
+	width: 56px;
+}
+
+.index-recommend .recommend-list:nth-child(1)
+{
+	border-top-color: #ff3839;
+}
+
+.index-recommend .recommend-list:nth-child(2)
+{
+	border-top-color: #0085ff;
+}
+
+.index-recommend .recommend-list:nth-child(3)
+{
+	border-top-color: #ffe400;
+}
+
+.index-recommend .recommend-list:nth-child(4)
+{
+	border-top-color: #11b160;
+}
+

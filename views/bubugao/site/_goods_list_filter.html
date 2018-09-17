@@ -1,0 +1,159 @@
+<!--商品条件检索-->
+<div class="bbg-tab tab-for-list">
+    <!--tab-title clearfix-->
+    <div class="tab-title clearfix"><a>检索条件</a></div>
+    <!--tab-title clearfix-->
+</div>
+
+<div id="filter_container" class="filter-container">
+    <div id="gallery_filter" class="gallery-filter">
+        <div id="filter_lists" class="filter-lists-container">
+            <!--品牌展示-->
+            {set:$brandList = search_goods::$brandSearch}
+            {if:$brandList}
+            <dl class="filter-entries clearfix">
+                <dt class="filter-entries-label">品牌：</dt>
+                <dd class="filter-entries-values" id='brand_dd'>
+                    <span class="filter-item active">
+	                   <a class="handle action-select-filter" href="{echo:search_goods::searchUrl('brand','')}">不限</a>
+	              </span> {foreach:items = $brandList}
+                    <span class="filter-item" id='brand_{$item['id']}'>
+	              <a class="handle action-select-filter"  href="{echo:search_goods::searchUrl('brand',$item['id'])}">{$item['name']}</a>
+	              </span> {/foreach}
+                </dd>
+            </dl>
+            {/if}
+            <!--品牌展示-->
+            <!--商品属性-->
+            {foreach:items = search_goods::$attrSearch}
+            <dl class="filter-entries clearfix">
+                <dt class="filter-entries-label">{$item['name']}：</dt>
+                <dd id='attr_dd_{$item['id']}' class="filter-entries-values">
+                    <span class="filter-item active">
+	                 <a class="handle action-select-filter" href="{echo:search_goods::searchUrl('attr['.$item["id"].']','')}">不限</a>
+	                </span> {foreach:items=$item['value'] item=$attr}
+                    <span class="filter-item" id="attr_{$item['id']}_{echo:md5($attr)}">
+	              <a class="handle action-select-filter"  href="{echo:search_goods::searchUrl('attr['.$item["id"].']',$attr)}" >{$attr}</a>
+	              </span> {/foreach}
+                </dd>
+            </dl>
+            {/foreach}
+            <!--商品属性-->
+            <dl class="filter-entries clearfix">
+                <dt class="filter-entries-label">价格：</dt>
+                <dd id="price_dd" class="filter-entries-values">
+                    <span class="filter-item active">
+	                 <a class="handle action-select-filter" href="{echo:search_goods::searchUrl(array('min_price','max_price'),'')}">不限</a>
+	                </span> {foreach:items=search_goods::$priceSearch}
+	                {set:$priceZone = explode('-',$item)}
+                    <span class="filter-item" id="{$item}">
+		              <a class="handle action-select-filter"  href="{echo:search_goods::searchUrl(array('min_price','max_price'),array($priceZone[0],$priceZone[1]))}" >{$item}</a>
+		              </span> {/foreach}
+                    <p class="f_r" style="width:300px;">
+                        <input type="text" class="mini f_l" name="min_price" value="" />
+                        <font class="f_l">至</font>
+                        <input type="text" class="mini f_l" name="max_price" value="" />
+                        <font class="f_l">元</font>
+                        <label class="btn_gray_s">
+                            <input type="button" onclick="priceLink();" value="确定">
+                        </label>
+                    </p>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<!--商品条件检索-->
+
+<!--商品排序展示-->
+<div class="display_title">
+    <span class="l"></span>
+    <span class="r"></span>
+    <span class="f_l">排序：</span>
+    <ul>
+        {foreach:items=search_goods::getOrderType()}
+        <li id="order_{$key}">
+            <span class="l"></span><span class="r"></span>
+			<a href="{echo:search_goods::searchUrl(array('order','by'),array($key,search_goods::getOrderBy($key)))}">{$item}<span id="by_{$key}">&nbsp;</span></a>
+        </li>
+        {/foreach}
+    </ul>
+</div>
+<!--商品排序展示-->
+
+<script type='text/javascript'>
+//价格跳转
+function priceLink()
+{
+	var minVal = $('input[name="min_price"]').val();
+	var maxVal = $('input[name="max_price"]').val();
+	if(isNaN(minVal) || isNaN(maxVal))
+	{
+		alert('价格填写不正确');
+		return '';
+	}
+	var searchUrl = "{echo:search_goods::searchUrl(array('min_price','max_price'),array('__min_price__','__max_price__'))}";
+	searchUrl     = searchUrl.replace("__min_price__",minVal).replace("__max_price__",maxVal);
+	window.location.href = searchUrl;
+}
+
+//筛选条件按钮高亮
+jQuery(function(){
+	//品牌模块高亮和预填充
+	{set:$brand = IFilter::act(IReq::get('brand'),'int');}
+	{if:$brand}
+	$('#brand_dd>*').removeClass('active');
+	$('#brand_{$brand}').addClass('active');
+	{/if}
+
+	//属性模块高亮和预填充
+	{set:$tempArray = IFilter::act(IReq::get('attr'))}
+	{if:$tempArray}
+		{set:$json = JSON::encode(array_map('md5',$tempArray))}
+		var attrArray = {$json};
+		for(val in attrArray)
+		{
+			if(attrArray[val])
+			{
+				$('#attr_dd_'+val+'>*').removeClass('active');
+				$('#attr_'+val+'_'+attrArray[val]).addClass('active');
+			}
+		}
+	{/if}
+
+	//价格模块高亮和预填充
+	{if:IReq::get('min_price') || IReq::get('max_price')}
+	{set:$priceId = IFilter::act(IReq::get('min_price'))."-".IFilter::act(IReq::get('max_price'))}
+	$('#price_dd>*').removeClass('active');
+	$('#{$priceId}').addClass('active');
+	$('input[name="min_price"]').val("{echo:IFilter::act(IReq::get('min_price'))}");
+	$('input[name="max_price"]').val("{echo:IFilter::act(IReq::get('max_price'))}");
+	{/if}
+
+	//排序字段
+	{set:$orderValue = IFilter::act(IReq::get('order'))}
+	{if:$orderValue}
+	$('#order_{$orderValue}').addClass('current');
+	{/if}
+
+	//顺序
+	{set:$byValue = IReq::get('by')}
+	{if:$byValue == "desc"}
+	$('#by_{$orderValue}').addClass('desc');
+	{else:}
+	$('#by_{$orderValue}').addClass('asc');
+	{/if}
+
+	//显示方式
+	{set:$showType = IReq::get('show_type');}
+	{if:$showType == "win"}
+	$('[name="goodsItems"]').attr({"class":"goods-item"});
+	$('[name="goodsImage"]').css({"width":200,"height":200});
+	$('#winButton').addClass('active');
+	{elseif:$showType == "list"}
+	$('[name="goodsItems"]').attr({"class":"clearfix list"});
+	$('[name="goodsImage"]').css({"width":115,"height":115});
+	$('#listButton').addClass('active');
+	{/if}
+});
+</script>

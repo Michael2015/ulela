@@ -1,0 +1,169 @@
+{set:$isWrite = ($pay_status == 0 && Order_Class::isSellerRefund($id,$this->seller['seller_id']) == 2) ? true : false}
+<article class="module width_full">
+	<header>
+		<h3 class="tabs_involved">商品退款详情</h3>
+	</header>
+
+	<form action="{url:/seller/refundment_update}" name="refundForm" method="post">
+		<div class="module_content">
+			<fieldset>
+				<label>订单号:</label>
+				<div class="box">{$order_no}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>订单时间:</label>
+				<div class="box">{$create_time}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>订单商品应付金额:</label>
+				<div class="box">￥{$payable_amount}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>订单商品实付金额:</label>
+				<div class="box">￥{$real_amount}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>订单运费应付金额:</label>
+				<div class="box">￥{$payable_freight}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>订单运费实付金额:</label>
+				<div class="box">￥{$real_freight}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>订单保价金额:</label>
+				<div class="box">￥{$insured}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>订单税金金额:</label>
+				<div class="box">￥{$taxes}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>订单促销活动优惠金额:</label>
+				<div class="box">￥{$promotions}</div>
+			</fieldset>
+
+			{if:$discount}
+			<fieldset>
+				<label>订单金额增减:</label>
+				<div class="box">￥{$discount}</div>
+			</fieldset>
+			{/if}
+
+			<fieldset>
+				<label>订单总额:</label>
+				<div class="box">￥{$order_amount}</div>
+			</fieldset>
+			{query:name=order where=id eq $order_id items=$orderList}{/query}
+			{set:$refundRowCount = CountSum::countSellerOrderFee($orderList)}
+			<fieldset>
+				<label>订单此前已退金额:</label>
+				<div class="box">￥{$refundRowCount['refundFee']}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>退款商品:</label>
+				<div class="box">
+					{query:name=order_goods where=id in ($order_goods_id)}
+					{set:$goods = JSON::decode($item['goods_array'])}
+					<p>
+					{$goods['name']} X {$item['goods_nums']}
+					<span class="green">【{echo:Order_Class::goodsSendStatus($item['is_send'])}】</span>
+					<span class="red">【商品金额：￥{echo:$item['goods_nums'] * $item['real_price']}】</span>
+					</p>
+					{/query}
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<label>此退款单退款金额:</label>
+				<div class="box">￥{$amount}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>退款原因:</label>
+				<div class="box">{$content}</div>
+			</fieldset>
+
+			{if:$isWrite == true}
+			<input type="hidden" name="id" value="{$id}" />
+			<fieldset>
+				<label>处理状态</label>
+				<div class="box">
+					<label><input type='radio' name='pay_status' value='2' />同意</label>
+					<label><input type='radio' name='pay_status' value='1' />拒绝</label>
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<label>退款金额</label>
+				<div class="box">
+					<label><input type="radio" name="isAuto" onclick="closeCustom();" checked="checked" />自动计算【默认】</label>
+					<label>
+						<input type="radio" name="isAuto" onclick="openCustom();" />手动填写
+						<input type="text" class="small" name="amount" pattern="float" empty disabled="disabled" />
+					</label>
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<label>处理回复:</label>
+				<div class="box"><textarea class="textarea" name="dispose_idea"></textarea></div>
+			</fieldset>
+
+			{else:}
+
+			<fieldset>
+				<label>退款方式</label>
+				<div class="box">{echo:Order_Class::refundWay($way)}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>处理状态</label>
+				<div class="box">{echo:Order_Class::refundmentText($pay_status)}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>处理时间:</label>
+				<div class="box">{$dispose_time}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>处理回复:</label>
+				<div class="box">{$dispose_idea}</div>
+			</fieldset>
+			{/if}
+		</div>
+
+		<footer>
+			<div class="submit_link">
+				{if:$isWrite == true}
+				<input type="submit" class="alt_btn" value="确 定" />
+				<input type="reset" value="重 置" />
+				{else:}
+				<input type="button" onclick="window.location.href='{url:/seller/refundment_list}';" class="alt_btn" value="返 回" />
+				{/if}
+			</div>
+		</footer>
+	</form>
+</article>
+<script type="text/javascript">
+function openCustom()
+{
+	$('[name="amount"]').prop('disabled',false);
+}
+
+function closeCustom()
+{
+	$('[name="amount"]').prop('disabled',true);
+	$('[name="amount"]').val('');
+}
+</script>

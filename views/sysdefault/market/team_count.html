@@ -1,0 +1,101 @@
+{js:my97date}
+<div class="headbar">
+	<div class="position"><span>统计</span><span>></span><span>基础数据统计</span><span>></span><span>团队业绩统计</span></div>
+</div>
+
+<div class="content_box">
+	<div class="content">
+		<form name="team_count" id="team_count" action="{url:/market/team_count}" method="get" target="_blank">
+			<input type='hidden' name='controller' value='market' />
+			<input type='hidden' name='action' value='team_count' />
+			<table class="form_table" cellpadding="0" cellspacing="0">
+				<colgroup>
+					<col width="200px" />
+					<col />
+				</colgroup>
+
+				<tr>
+					<th>统计开始：</th>
+					<td><input type="text" name='start' value='{$this->startDate}' class="Wdate" pattern='date' alt='' onclick="WdatePicker()" /></td>
+				</tr>
+
+				<tr>
+					<th>统计结束：</th>
+					<td><input type="text" name='end' value='{$this->endDate}' class="Wdate" pattern='date' alt='' onclick="WdatePicker()" /></td>
+				</tr>
+
+				<tr>
+					<th>统计分类：</th>
+					<td>
+						<?php foreach($this->cat_arr as $_cat): ?>
+							<?php if($_cat['parent_id'] == 0): ?>
+								<input type="checkbox" name="cats[]" value="<?php echo $_cat['id']; ?>" <?php if(in_array($_cat['id'], $this->normal_cats)): ?>checked="checked"<?php endif; ?>> <?php echo $_cat['name']; ?> | 
+								<?php foreach($this->cat_arr as $_cat2): ?>
+									<?php if($_cat2['parent_id'] == $_cat['id']): ?>
+										<input type="checkbox" name="cats[]" value="<?php echo $_cat2['id']; ?>" <?php if(in_array($_cat2['id'], $this->normal_cats)): ?>checked="checked"<?php endif; ?>> <?php echo $_cat2['name']; ?>
+									<?php endif; ?>
+								<?php endforeach; ?>
+								<br>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					</td>
+				</tr>
+				<tr>
+					<th></th>
+					<td>
+						<button class="submit" type='submit'><span>导 出</span></button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<!--数据录入模板-->
+<script type='text/html' id='paramTemplate'>
+<%for(var item in templateData){%>
+<%var key = item;%>
+<%var item = templateData[item];%>
+<%var valueItems = item['value'];%>
+<tr>
+	<th><%=item["name"]%>：</th>
+	<td>
+		<%if(item['type'] == "radio"){%>
+			<%for(var tempKey in valueItems){%>
+			<%tempVal = valueItems[tempKey]%>
+				<label class="attr"><input type="radio" name="<%=key%>" value="<%=tempVal%>" /><%=tempKey%></label>
+			<%}%>
+		<%}else if(item['type'] == "checkbox"){%>
+			<%for(var tempKey in valueItems){%>
+			<%tempVal = valueItems[tempKey]%>
+				<label class="attr"><input type="checkbox" name="<%=key%>[]" value="<%=tempVal%>" /><%=tempKey%></label>
+			<%}%>
+		<%}else if(item['type'] == "select"){%>
+			<select class="auto" name="<%=key%>" pattern="<%=item['pattern']%>">
+			<%for(var tempKey in valueItems){%>
+			<%tempVal = valueItems[tempKey]%>
+			<option value="<%=tempVal%>"><%=tempKey%></option>
+			<%}%>
+			</select>
+		<%}else if(item['type'] == "text"){%>
+			<input type="text" name="<%=key%>" value="<%=item['value']%>" class="normal" pattern="<%=item['pattern']%>" />
+		<%}%>
+	</td>
+</tr>
+<%}%>
+</script>
+
+<script language="javascript">
+//DOM加载完毕
+$(function()
+{
+	//加载插件配置
+	var paramHtml = template.render('paramTemplate',{'templateData':{echo:JSON::encode($this->pluginRow['config_name'])}});
+	$('.form_table tr:eq(1)').after(paramHtml);
+
+	//数据加载
+	var formInstance = new Form();
+	formInstance.init({echo:JSON::encode($this->pluginRow['config_param'])});
+	formInstance.init({echo:JSON::encode($this->pluginRow)});
+});
+</script>

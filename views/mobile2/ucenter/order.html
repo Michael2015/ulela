@@ -1,0 +1,69 @@
+
+    {set:$queryOrderList = Api::run('getOrderList',$this->user['user_id'])}
+    {set:$items = $queryOrderList->find()}
+    
+	
+    {if: $items}
+		<ul class="list-unstyled">
+			{foreach:items = $items}
+			{set: $orderStatus = Order_Class::getOrderStatus($item)}
+				<li class="bg-white p-10 mb-10">
+					<a class="show" href="{url:/ucenter/order_detail/id/$item['id']}">
+						<div class="mb-10 pb-5 bd-btm-1s bd-color-gray font-sm">
+							<?php
+                                switch($orderStatus)
+                                {
+                                    case 2: //等待付款
+                                        $status_class = "text-danger";
+                                        break;
+                                    case 3: //已发货
+                                    case 11:
+                                        $status_class = "text-success";
+                                        break;
+                                    case 4: //等待发货
+                                        $status_class = "text-primary";
+                                        break;
+                                    default: 
+                                        $status_class = "text-muted";
+                                }
+                            ?>
+							<span class="pull-right {$status_class}">{echo:Order_Class::orderStatusText($orderStatus)}</span>
+							<p>下单日期：{$item['create_time']}</p>
+							<p class="text-muted">订单编号：{$item['order_no']}</p>
+						</div>
+
+						<!--订单商品预览-->
+						<div class="clearfix mb-6 ov-h">
+							<div class="ov-h">
+								{set:$order_id=$item['id']}
+								{foreach:items=Api::run('getOrderGoodsListByGoodsid_cache',array('#order_id#',$order_id)) item=$good key=$index}
+								{set:$good_info = JSON::decode($good['goods_array'])}
+								{if: $index > 3}
+									<div class="pull-left font-xl pt-15 text-muted">
+										<i class="iconfont icon-more"></i>
+									</div>
+									{set: break;}
+								{/if}
+								<div class="pull-left pr-10">
+									<div class="thumbnail bd-color-gray m-0">
+										<img src="{url:/pic/thumb/img/$good['img']/w/66/h/66}" width="50" height="50" alt="{$good_info['name']}">
+									</div>
+								</div>
+								{/foreach}
+
+							</div>
+						</div>
+					</a>
+				</li>
+			{/foreach}
+			<li>
+				{$queryOrderList->getPageBar()}
+			</li>
+		</ul>
+	{else:}
+
+		<div class="msg bg-white">
+			<p><i class="iconfont icon-31wentifankui"></i></p>
+			<p>暂无订单，赶紧去下单吧</p>
+		</div>
+	{/if}

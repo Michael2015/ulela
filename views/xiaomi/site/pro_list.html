@@ -1,0 +1,184 @@
+<link rel="stylesheet" href="{skin:xiaomi/css/product.css?v=20160929}" />
+
+{set:$breadGuide = goods_class::catRecursion($this->catId)}
+
+<div class="body-contain bg-gray ov-hidden">
+	<div class="w1230 margin-0-auto">
+		<!--position-->
+		<ol class="breadcrumb f-12">
+			<li><a href='{url:}'>首页</a></li>
+			{foreach:items=$breadGuide key=$_index}
+			<li {if:$_index == count($breadGuide)-1}class="active"{/if}>
+			<a href='{url:/site/pro_list/cat/$item[id]}'>{$item['name']}</a>
+			</li>
+			{/foreach}
+		</ol>
+		<!--position-->
+		<!--    start  显示优惠券   --->
+		{if:$this->ticket}
+		<div class="btn-default" style="padding: 10px 0;text-align: center">
+			优惠券:{$this->ticket['name']}  面额:{$this->ticket['value']}
+		</div>
+		{/if}
+		<!--    end  显示优惠券   --->
+		<!--筛选条件-->
+		{set:$catSide = goods_class::catTree($this->catId)}
+		{include:_goods_list_filter}
+		<!--筛选条件-->
+	</div>
+
+	<!--商品列表-->
+	<div class="w1230 margin-0-auto">
+		<div class="cat-goods-list">
+			{if:$this->resultData}
+			<ul class="list-unstyled product-list ov-hidden">
+				{foreach:items=$this->resultData}
+				{set: $keyword_arr = explode("#|#",$item['keywords']); }
+				{set: $keyword_title = array_shift($keyword_arr); }
+				{set: $keyword_desc = array_shift($keyword_arr); }
+				<li class="product-item item-hover pos-relative">
+					<div class="item-image">
+						<a href="{url:/site/products/id/$item['id']}" target="_blank">
+							<img src="{webroot:}{echo:Thumb::get($item['img'],200,200)}" alt="{$item['name']}">
+						</a>
+					</div>
+					<div class="item-title margin-0-auto ov-hidden">
+						<h4 class="text-center">
+							<a href="{url:/site/products/id/$item['id']}" target="_blank" title="{$item['name']}">{$keyword_title}</a>
+						</h4>
+						<p class="text-center text-muted">{$keyword_desc}</p>
+					</div>
+					<h4 class="text-center item-price">{echo: floatval($item['sell_price'])}元</h4>
+
+					<!--评价数 与 购物车显示-->
+					<div class="item-cart pos-absolute f-14">
+						<div class="pull-left text-muted f-12">
+							<span class="text-warning f-14">{$item['comments']}</span> 人评价
+						</div>
+						<div class="pull-right text-muted f-12">
+							<!-- 好评率 -->
+							{set: $_point_info = Api::run('getGoodsPointInfo', $item['id'])}
+							{if: $_point_info['comment_total']}
+							{set: $_good_persent = ceil($_point_info['point_grade']['good'] / $_point_info['comment_total'] * 100);}
+							{else:}
+							{set: $_good_persent = 100;}
+							{/if}
+							好评 <span class="text-warning f-14">{$_good_persent}%</span>
+						</div>
+					</div>
+
+					{set: $commend_ids = Api::run('getCommendIdByGoods',$item['id']);}
+					{if: $commend_ids}
+					{foreach:items=$commend_ids item=$_commend}
+					{if: $_commend['commend_id'] == 1 }
+					<div class="item-tag bg-blue pos-absolute f-12 text-center">新品上市</div>
+					{set: break;}
+					{elseif: $_commend['commend_id'] == 2}
+					<div class="item-tag bg-orange pos-absolute f-12 text-center">特价商品</div>
+					{set: break;}
+					{elseif: $_commend['commend_id'] == 3}
+					<div class="item-tag bg-red pos-absolute f-12 text-center">热卖推荐</div>
+					{set: break;}
+					{elseif: $_commend['commend_id'] == 4}
+					<div class="item-tag bg-green pos-absolute f-12 text-center">商家推荐</div>
+					{set: break;}
+					{/if}
+					{/foreach}
+					{/if}
+				</li>
+				{/foreach}
+			</ul>
+			<div class="pagebar">
+				{$this->goodsObj->getPageBar()}
+			</div>
+			{else:}
+			<div class="m-t-40 m-b-20">
+				<p class="text-center"><img src="{skin:xiaomi/images/no-result.jpg}" alt=""></p>
+				<p class="text-center f-18 text-muted">对不起，没有找到相关商品 :-)</p>
+			</div>
+			{/if}
+		</div>
+	</div>
+	<!--商品列表-->
+
+	<!--热卖推荐-->
+	<div class="w1230 margin-0-auto">
+		<div class="hot-sell list-page">
+			<div class="section-header clearfix">
+				<h3 class="header-title pull-left">热卖推荐</h3>
+				<div class="switch pull-right">
+					<a class="pull-left" id="switch-left" href="javascript:;"><span class="glyphicon glyphicon-chevron-left"></span></a>
+					<a class="pull-right" id="switch-right" href="javascript:;"><span class="glyphicon glyphicon-chevron-right"></span></a>
+				</div>
+			</div>
+			<div class="section-body clearfix">
+				<ul class="list-unstyled hot-sell-list" id="hot-sell-list">
+					{set: $tmp_index = 0}
+					{foreach:items=Api::run('getCommendHot',10)}
+					{set: $keyword_arr = explode("#|#",$item['keywords']); }
+					{set: $keyword_title = array_shift($keyword_arr); }
+					{set: $keyword_desc = array_shift($keyword_arr); }
+					{if: $tmp_index % 5 == 0}
+					{if: $tmp_index==0}
+					<li class="hot-sell-line" style="display:block">
+						{else:}
+					</li>
+					<li class="hot-sell-line">
+						{/if}
+						{/if}
+						<div class="product-item hot-sell-item item-hover">
+							<div class="item-image">
+								<a href="{url:/site/products/id/$item['id']}" target="_blank">
+									<img src="{webroot:}{echo:Thumb::get($item['img'],220,220)}" alt="{$item['name']}">
+								</a>
+							</div>
+							<h4 class="text-center"><a href="{url:/site/products/id/$item['id']}" target="_blank" title="{$item['name']}">{$keyword_title}</a></h4>
+							<p class="text-center text-muted">{$keyword_desc}</p>
+							<h4 class="text-center item-price">{set: echo floatval($item['sell_price']);}元</h4>
+						</div>
+						{set: $tmp_index++; }
+						{/foreach}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+    jQuery(function()
+    {
+        hot_list_switch.init();
+
+        $('.product-item').hover(function(){
+            $(this).find('.item-cart').fadeIn(300);
+        },function(){
+            $(this).find('.item-cart').hide();
+        });
+//start判断是否弹框
+        var cid = {echo:$this->catId};
+        var is_agree = "{echo:ISafe::get("is_agree",'cookie')}";
+        if(cid == 41 && !is_agree)
+        {
+            layer.confirm('尊敬的客户:您好！<br>为了您更好地选购海外商品，请您在购买前务必认真、详细阅读并完全理解本告知书的全部内容，并对自身风险承担做出客观判断，同意本告知书内容后再下单购买:<br><br><b>1.您在本（公司）网站购买的海外商品为原装进口产品，因此商品本身无中文标签，如果需要，您可以通过我们产品详情页查看相关商品标签中文翻译或联系客服。</b><br><br><b>2.根据相关法律政策，您选购的海外商品仅限于个人自用，不得进行二次销售。</b><br><br><b>3.您购买的境外商品符合原产地有关品质、健康、标识的相关标准，与我国产品标准或有所不同，由此可能造成的危害、损失或其他风险，本（公司）网站不承担责任。</b><br><br><b>4.建议您对境外商品有一定了解并评估是否适合自己使用后再下单，感谢您的配合。</b><br><br><font color=\'red\'>严控每一个环节，为您提供100%原装正品，让你拥有健康、品质、生活！谢谢！</font>', {
+                btn: ['我清楚了'],//按钮
+                area: ['50%', 'auto'], //宽高
+            }, function(){
+                time: 5000, //20s后自动关闭
+                    layer.msg('谢谢您的支持', {icon: 1});
+                <?php ISafe::set("is_agree",'1','cookie'); ?>
+				/* $.ajax({
+				 type: 'POST',
+				 url: "{url:/site/pro_list/cat/41}",
+				 data: {'is_agree':'1'},
+				 success: function(){
+				 layer.msg('谢谢您的支持', {icon: 1});
+				 },
+				 dataType: 'JSON'
+				 });*/
+            });
+
+        }
+//end判断是否弹框
+    });
+</script>

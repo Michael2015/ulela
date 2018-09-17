@@ -1,0 +1,306 @@
+{js:my97date}
+<div class="headbar">
+	<div class="position">订单<span>></span><span>订单管理</span><span>></span><span>订单列表</span></div>
+	<div class="operating">
+		<a href="javascript:void(0);"><button class="operating_btn" type="button" onclick="window.location='{url:/order/order_edit}'"><span class="addition">添加订单</span></button></a>
+		<a href="javascript:void(0);" onclick="selectAll('id[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
+		<a href="javascript:void(0);" onclick="delModel({form:'orderForm',name:'id[]'})"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
+		<a href="javascript:void(0);" onclick="$('#orderForm').attr('action','{url:/order/expresswaybill_template}');$('#orderForm').submit();"><button class="operating_btn"><span class="export">批量打印快递单</span></button></a>
+		<a href="javascript:void(0);"><button class="operating_btn" onclick="location.href='{url:/order/print_template}'"><span class="export">单据模板</span></button></a>
+		<a href="javascript:void(0);"><button class="operating_btn" type="button" onclick="location.href='{url:/order/order_recycle_list}'"><span class="recycle">回收站</span></button></a>
+	</div>
+	<div class="searchbar">
+		<form action="{url:/}" method="get" name="order_list">
+			<input type='hidden' name='controller' value='order' />
+			<input type='hidden' name='action' value='order_list' />
+			<select name="search[is_seller]" class="auto">
+				<option value="">选择类型</option>
+				<option value="self">平台自营</option>
+				<option value="seller">商家订单</option>
+			</select>
+
+			<select name="search[pay_status]" class="auto">
+				<option value="">选择支付状态</option>
+				<option value="0">未支付</option>
+				<option value="1">已支付</option>
+			</select>
+
+			<select name="search[distribution_status]" class="auto">
+				<option value="">选择发货状态</option>
+				<option value="0">未发货</option>
+				<option value="1">已发货</option>
+				<option value="2">部分发货</option>
+			</select>
+
+			<select name="search[status]" class="auto">
+				<option value="">选择订单状态</option>
+				<option value="1">新订单</option>
+				<option value="2">确认订单</option>
+				<option value="3">取消订单</option>
+				<option value="4">作废订单</option>
+				<option value="5">完成订单</option>
+				<option value="6">退款</option>
+				<option value="7">部分退款</option>
+			</select>
+
+			<select class="auto" name="search[name]">
+				<option value="">选择订单条件</option>
+				<option value="accept_name">收件人姓名</option>
+				<option value="order_no">订单号</option>
+				<option value="seller_name">商户真实名称</option>
+				<option value="buyer_name">下单人用户名</option>
+			</select>
+			<input class="small" name="search[keywords]" type="text" value="" />
+			<button class="btn" type="button" onclick='initSearchbar(1)'><span class="add">更 多</span></button>
+			<button class="btn" type="submit"  onclick='changeAction(false)'><span class="sel">筛 选</span></button>
+			<button class="btn" onclick='changeAction(true)'><span class="sel">导出Excel</span></button>
+			<input type="hidden" name="search[adv_search]" value="" />
+			<input type="hidden" name="search[send_time]" value="" />
+			<input type="hidden" name="search[create_time]" value="" />
+			<input type="hidden" name="search[completion_time]" value="" />
+			<input type="hidden" name="search[order_amount]" value="" />
+		</form>
+	</div>
+	<div class="searchbar" id="adv_searchbar" style="display:none;">
+		订单总额：<input type="text" class="tiny" name="order_amount_start" id="order_amount_start" pattern="float" value="" />-
+		<input type="text" class="tiny" name="order_amount_end" id="order_amount_end" pattern="float" value="" />
+		下单：<input class="small" type="text" name="create_time_start" id="create_time_start" onfocus="WdatePicker()" value="" />-
+		<input class="small" type="text" name="create_time_end" id="create_time_end" onfocus="WdatePicker()" value="" />
+		发货：<input class="small" type="text" name="send_time_start" id="send_time_start" onfocus="WdatePicker()" value="" />-
+		<input class="small" type="text" name="send_time_end" id="send_time_end" onfocus="WdatePicker()" value="" />
+		完成：<input class="small" type="text" name="completion_time_start" id="completion_time_start" onfocus="WdatePicker()" value="" />-
+		<input class="small" type="text" name="completion_time_end" id="completion_time_end" onfocus="WdatePicker()" value="" />
+	</div>
+</div>
+
+<form name="orderForm" id="orderForm" action="{url:/order/order_del}" method="post">
+	<div class="content">
+		<table class="list_table">
+			<colgroup>
+				<col width="30px" />
+				<col width="130px" />
+				<col width="70px" />
+				<col width="75px" />
+				<col width="75px" />
+				<col width="75px" />
+				<col width="115px" />
+				<col width="70px" />
+				<col width="70px" />
+				<col width="115px" />
+				<col width="110px" />
+			</colgroup>
+
+			<thead>
+				<tr>
+					<th>选择</th>
+					<th>订单号</th>
+					<th>收货人</th>
+					<th>支付状态</th>
+					<th>发货状态</th>
+					<th>配送方式</th>
+					<th>打印</th>
+					<th>支付方式</th>
+					<th>用户名</th>
+					<th>下单时间</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{foreach:items = $this->orderHandle->find()}
+				<tr>
+					<td><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
+					<td title="{$item['order_no']}" name="orderStatusColor{$item['status']}">{$item['order_no']}</td>
+					<td title="{$item['accept_name']}">{$item['accept_name']}</td>
+					<td name="payStatusColor{$item['pay_status']}">{echo:Order_Class::getOrderPayStatusText($item)}</td>
+					<td name="disStatusColor{$item['distribution_status']}">{echo:Order_Class::getOrderDistributionStatusText($item)}</td>
+					<td title="{$item['distribute_name']}">{$item['distribute_name']}</td>
+					<td>
+						<span class="prt" title="购物清单打印" onclick="window.open('{url:/order/shop_template/id/$item[id]}');">购</span>
+						<span class="prt" title="配货单打印" onclick="window.open('{url:/order/pick_template/id/$item[id]}');">配</span>
+						<span class="prt" title="联合打印" onclick="window.open('{url:/order/merge_template/id/$item[id]}');">合</span>
+						<span class="prt" title="快递单打印" onclick="window.open('{url:/order/expresswaybill_template/id/$item[id]}');">递</span>
+					</td>
+					<td>{$item['payment_name']}</td>
+					<td>
+						{if:$item['user_id'] == 0}
+						游客
+						{else:}
+						{query:name=user where=id eq $item[user_id] item=$user}
+						{$user['username']}
+						{/query}
+						{/if}
+					</td>
+					<td title="{$item['create_time']}">{$item['create_time']}</td>
+					<td>
+						<a href="{url:/order/order_show/id/$item[id]}" target="_blank"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a>
+						{if:Order_class::getOrderStatus($item) < 3}
+						<a href="{url:/order/order_edit/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" title="编辑"/></a>
+						{/if}
+						<a href="javascript:void(0)" onclick="delModel({link:'{url:/order/order_del/id/$item[id]}'})" ><img class="operator" src="{skin:images/admin/icon_del.gif}" title="删除"/></a>
+
+						{if:$item['seller_id']}
+						<a href="{url:/site/home/id/$item[seller_id]}" target="_blank"><img src="{skin:images/admin/seller_ico.png}" /></a>
+						{/if}
+					</td>
+				</tr>
+				{/foreach}
+			</tbody>
+		</table>
+	</div>
+	{$this->orderHandle->getPageBar()}
+</form>
+
+<script type='text/javascript'>
+//DOM加载结束
+$(function(){
+	{if:$this->search}
+	var searchData = {echo:JSON::encode($this->search)};
+	for(var index in searchData)
+	{
+		$('[name="search['+index+']"]').val(searchData[index]);
+	}
+	{/if}
+	$("#order_amount_start").blur(function(){
+		setOrderAmountVal();
+	});
+	$("#order_amount_end").blur(function(){
+		setOrderAmountVal();
+	});
+	initSearchbar(0);
+
+	//高亮色彩
+	$('[name="payStatusColor1"]').addClass('green');
+	$('[name="disStatusColor1"]').addClass('green');
+	$('[name="orderStatusColor3"]').addClass('red');
+	$('[name="orderStatusColor4"]').addClass('red');
+	$('[name="orderStatusColor5"]').addClass('green');
+});
+function changeAction(excel)
+{
+	setDatetimeVal('send_time');
+	setDatetimeVal('create_time');
+	setDatetimeVal('completion_time');
+	if (excel){
+		$("input[name=\"action\"]").val("order_report");
+		$("form[name=\"order_list\"]").attr("target", "_blank");
+	}else{
+		$("input[name=\"action\"]").val("order_list");
+		$("form[name=\"order_list\"]").attr("target", "_self");
+	}
+}
+
+// 设置订单总额的值
+function setOrderAmountVal()
+{
+	var order_amount_start = $('#order_amount_start').val();
+	var order_amount_end = $('#order_amount_end').val();
+	var order_amount = '';
+	order_amount_start = parseFloat(order_amount_start);
+	order_amount_end = parseFloat(order_amount_end);
+	if(isNaN(order_amount_start))
+	{
+		order_amount_start = 0;
+	}
+	if(isNaN(order_amount_end))
+	{
+		order_amount_end = 0;
+	}
+	if(order_amount_start!=0 || order_amount_end!=0)
+	{
+		if(order_amount_start > order_amount_end)
+		{
+			order_amount = order_amount_end + ',' + order_amount_start;
+		}
+		else
+		{
+			order_amount = order_amount_start + ',' + order_amount_end;
+		}
+	}
+	$('input[name="search[order_amount]"]').val(order_amount);
+	return true;
+}
+
+// 设置日期的值
+function setDatetimeVal(name)
+{
+	var date_start = $('#'+ name +'_start').val();
+	var date_end = $('#'+ name +'_end').val();
+	var date_val = '';
+	if('' != date_start && '' != date_end)
+	{
+		var start_time = Date.parse(date_start);
+		var end_time = Date.parse(date_end);
+		if(start_time > end_time)
+		{
+			date_val = date_end + ',' + date_start;
+		}
+		else
+		{
+			date_val = date_start + ',' + date_end;
+		}
+	}
+	else if ('' != date_start)
+	{
+		date_val = date_start;
+	}
+	else if ('' != date_end)
+	{
+		date_val = date_end;
+	}
+	$('input[name="search['+ name +']"]').val(date_val);
+	return true;
+}
+
+// 初始化高级筛选
+function initSearchbar(from)
+{
+	var adv_search = $('input[name="search[adv_search]"]').val();
+	if(1 == from)
+	{
+		// 更多按钮
+		adv_search = '1'==adv_search ? '' : '1';
+		$('input[name="search[adv_search]"]').val(adv_search);
+	}
+	if('1' == adv_search)
+	{
+		$('#adv_searchbar').show();
+		var order_amount = $('input[name="search[order_amount]"]').val();
+		if('' != order_amount)
+		{
+			var order_amount_arr = order_amount.split(",");
+			$('#order_amount_start').val(order_amount_arr[0]);
+			$('#order_amount_end').val(order_amount_arr[1]);
+		}
+		convertDatetimeVal('send_time');
+		convertDatetimeVal('create_time');
+		convertDatetimeVal('completion_time');
+	}
+	else
+	{
+		$('#adv_searchbar').hide();
+	}
+}
+
+// 转换日期的值，设置高级筛选的初始值
+function convertDatetimeVal(name)
+{
+	var date_val = $('input[name="search['+ name +']"]').val();
+	if('' != date_val)
+	{
+		var date_arr = date_val.split(",");
+		var len = date_arr.length;
+		switch(len)
+		{
+			case 1:
+				$('#'+ name +'_start').val(date_arr[0]);
+				break;
+			case 2:
+				$('#'+ name +'_start').val(date_arr[0]);
+				$('#'+ name +'_end').val(date_arr[1]);
+				break;
+		}
+	}
+	return true;
+}
+</script>

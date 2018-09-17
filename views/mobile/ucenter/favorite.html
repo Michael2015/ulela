@@ -1,0 +1,52 @@
+{set:$favoriteObj = Api::run('getFavorite',$this->user['user_id'],IReq::get('cat_id')); $favoriteList = $favoriteObj->find()}
+
+<div class="bg-white p-10">
+	<div class="info-head"><span>收藏列表</span></div>
+	{if:$favoriteList}
+	{foreach:items=$favoriteList}
+	<ul class="common-list container-fluid mb-10">
+		<li class="row">
+			<div class="col-xs-3 pt-10">
+				<a href="{url:/site/products/id/$item['goods_id']}"><img src="{url:/pic/thumb/img/$item['img']/w/88/h/88}" class="img-responsive" alt=""></a>
+			</div>
+			<div class="col-xs-9">
+				<p><a href="{url:/site/products/id/$tmp}">{$item['data']['name']}</a></p>
+				<div class="mb-10">
+					<input class="form-control input-sm" id="summary_show_{$item['id']}" placeholder="备注" value="{$item['summary']}" >
+				</div>
+				<div>
+					<button class='btn btn-no-shadow btn-sm' onclick="edit_summary({$item['id']});">保存</button>
+					<button class='btn btn-no-shadow btn-default btn-sm' onclick="delModel({link:'{url:/ucenter/favorite_del/id/$item[id]}}',msg:'是否取消收藏？'});">取消关注</button>
+				</div>
+			</div>
+		</li>
+	</ul>
+	{/foreach}
+
+	{else:}
+	<div class="msg bg-white">
+		<p><i class="iconfont icon-31wentifankui"></i></p>
+		<p><span>“</span>当前暂无数据<span>”</span></p>
+	</div>
+	{/if}
+</div>
+
+<script type="text/javascript">
+//修改备注信息
+function edit_summary(idVal)
+{
+	var summary = $("#summary_show_"+idVal).val();
+	if($.trim(summary))
+	{
+		$.getJSON('{url:/ucenter/edit_summary}',{id:idVal,summary:summary},function(content){
+			if(content.isError == true)
+			{
+				alert(content.message);
+			}
+			else{
+				tips("保存备注成功");
+			}
+		});
+	}
+}
+</script>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>选择自提点</title>
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">
+    {js:artTemplate}
+</head>
+<body>
+
+<table class="table table-striped table-condensed">
+    <tbody>
+    <tr>
+        <td>省份</td>
+        <td><select class="form-control input-sm" name="province" onchange="getData('province');">
+            <option value="">请选择省份</option>
+            {query:name=takeself as ts join=left join areas as a on a.area_id eq ts.province fields=a.* order=ts.sort asc group=ts.province}
+            <option value="{$item['area_id']}">{$item['area_name']}</option>
+            {/query}
+        </select></td>
+    </tr>
+    <tr>
+        <td>市区</td>
+        <td><select class="form-control input-sm" name="city" onchange="getData('city');">
+            <option value="">请选择城市</option>
+        </select></td>
+    </tr>
+    <tr>
+        <td>地区</td>
+        <td><select class="form-control input-sm" name="area" onchange="getData('area');">
+            <option value="">请选择区域</option>
+        </select></td>
+    </tr>
+    </tbody>
+    <tfoot id="takeselfBox">
+    </tfoot>
+    <!--自提点模板-->
+    <script type="text/html" id="takeselfRowTemplate">
+        <tr class="info">
+            <td colspan="2">
+                <div class="radio">
+                    <label style="font-size:12px">
+                        <input type='radio' value='<%=jsonToString(item)%>' name='takeselfItem'/>
+                       
+                        <%=item['address']%>
+
+                        <%if(item['phone']){%>
+                            ，电话：<%=item['phone']%>
+                        <%}%>
+
+                        <%if(item['mobile']){%>
+                            ，手机：<%=item['mobile']%>
+                        <%}%>
+                    </label> 
+                </div>
+            </td>
+        </tr>
+    </script>
+    </tbody>
+</table>
+
+</body>
+<script type='text/javascript' src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'></script>
+<script type='text/javascript'>
+    //获取数据
+    function getData(typeVal)
+    {
+        var selectedVal = $('[name="'+typeVal+'"] option:selected').val();
+
+        //加入加载中的提示
+        switch(typeVal)
+        {
+            case "province":
+            {
+                $('[name="city"]').append('<option value="">加载中...</option>');
+            }
+            break;
+
+            case "city":
+            {
+                $('[name="area"]').append('<option value="">加载中...</option>');
+            }
+            break;
+        }
+
+        $.getJSON("{url:/block/getTakeselfList}",{"id":selectedVal,"type":typeVal},function(jsonData)
+        {
+            switch(typeVal)
+            {
+                case "province":
+                {
+                    $('[name="city"] option:gt(0)').remove();
+                    for(var index in jsonData)
+                    {
+                        var item = jsonData[index];
+                        $('[name="city"]').append('<option value="'+item['city']+'">'+item['city_str']+'</option>');
+                    }
+                }
+                break;
+
+                case "city":
+                {
+                    $('[name="area"] option:gt(0)').remove();
+                    for(var index in jsonData)
+                    {
+                        var item = jsonData[index];
+                        $('[name="area"]').append('<option value="'+item['area']+'">'+item['area_str']+'</option>');
+                    }
+                }
+                break;
+
+                case "area":
+                {
+                    $('#takeselfBox').empty();
+                    $('#takeselfBox').append('<tr><td colspan="2" class="text-center">详细信息</td></tr>');
+                    for(var index in jsonData)
+                    {
+                        var item = jsonData[index];
+                        var takeselfHtml = template.render('takeselfRowTemplate',{"item":item});
+                        $('#takeselfBox').append(takeselfHtml);
+                    }
+                    //默认选择第一个
+                    $('#takeselfBox').find('[name="takeselfItem"]:first').attr('checked', true);
+                }
+                break;
+            }
+        });
+    }
+</script>
+</html>

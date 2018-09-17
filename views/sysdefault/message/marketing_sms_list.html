@@ -1,0 +1,103 @@
+<div class="headbar">
+	<div class="position"><span>会员</span><span>></span><span>信息处理</span><span>></span><span>营销短信</span></div>
+	<div class="operating">
+		<a href="javascript:void(0)" onclick="sendMarketingSms();"><button class="operating_btn" type="button"><span class="send">发送短信</span></button></a>
+		<a href="javascript:void(0)" onclick="selectAll('check[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
+		<a href="javascript:void(0)" onclick="delModel({form:'marketing_sms_list',msg:'确定要删除选中的记录吗？'})"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
+	</div>
+</div>
+
+<form action="{url:/message/marketing_sms_del}" method="post" name="marketing_sms_list" onsubmit="return checkboxCheck('check[]','尚未选中任何记录！')">
+<div class="content">
+	<table id="list_table" class="list_table">
+		<colgroup>
+			<col width="40px" />
+			<col width="250px" />
+			<col width="150px" />
+			<col width="150px" />
+			<col width="150px" />
+		</colgroup>
+
+		<thead>
+			<tr>
+				<th>选择</th>
+				<th>营销短信</th>
+				<th>发送成功数</th>
+				<th>时间</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+			{query: name=marketing_sms page=$page}
+			<tr>
+				<td><input name="check[]" type="checkbox" value="{$item['id']}" /></td>
+				<td>{$item['content']}</td>
+				<td>{$item['send_nums']}</td>
+				<td>{$item['time']}</td>
+				<td>
+					<a href="{url:/message/marketing_sms_show/id/$item['id']}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a>
+					<a href="javascript:void(0)" onclick="delModel({link:'{url:/message/marketing_sms_del/check/$item[id]}'})"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a>
+				</td>
+			</tr>
+			{/query}
+		</tbody>
+	</table>
+</div>
+{$query->getPageBar()}
+</form>
+
+<script language="javascript">
+//发送营销短信
+function sendMarketingSms()
+{
+	art.dialog.open('{url:/message/marketing_sms_send}',{
+		'id':'sendWindow',
+		'title':'营销短信',
+		'width':'700px',
+		'ok':function(iframeWin, topWin)
+		{
+			var iframeObj = $(iframeWin.document);
+			var toUser    = art.dialog.data('toUser');
+			if(toUser)
+			{
+				iframeObj.find('[name="toUser"]').val(toUser);
+			}
+			iframeObj.find('form').submit();
+	    	return false;
+		}
+	});
+}
+
+//发送营销短信后回调
+function startMarketingSmsCallback(isSuccess)
+{
+	if(isSuccess == 1)
+	{
+		tips('发送营销短信成功');
+		setTimeout(function(){
+			window.location.reload();
+		},1200);
+	}
+	else
+	{
+		alert('请填写短信内容且字数不能超过系统限制');
+	}
+	art.dialog({'id':'sendWindow'}).close();
+}
+
+//筛选用户回调函数
+function searchUserCallback(userIds)
+{
+	var defaultText = '默认为所有用户';
+	if(userIds)
+	{
+		defaultText = '<label class="green">已选择部分用户</label>';
+	}
+	art.dialog.data('toUser',userIds);
+	art.dialog({'id':'userCondition'}).close();
+	var openerObj = art.dialog({'id':'sendWindow'}).iframe.contentWindow.document.body;
+	$(openerObj).find("#queryString").html(defaultText);
+}
+</script>

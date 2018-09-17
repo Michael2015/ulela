@@ -1,0 +1,181 @@
+<!--商品条件检索-->
+
+<div class="goods-filter bg-white">
+	<!--分类显示-->
+	{if: isset($catSide) && $catSide}
+		<dl class="ov-hidden clearfix">
+			<dt>分类：</dt>
+			<dd>
+				{foreach:items=$catSide item=$first}
+					<span {if:$first['name'] == $this->catRow['name']}class="active"{/if}>
+						<a href="{url:/site/pro_list/cat/$first['id']}">{$first['name']}</a>
+					</span>
+				{/foreach}
+			</dd>
+		</dl>
+	{/if}
+
+	{if: isset($searchSide) && $searchSide}
+		<dl class="ov-hidden clearfix">
+			<dt>分类：</dt>
+			<dd>
+				{foreach:items=$searchSide}
+				{if: $item['id']}
+					{set:$tmpWord=urlencode($this->word);}
+						<span {if:IReq::get('cat') == $item['id']}class="active"{/if}>
+							<a href="{url:/site/search_list/word/$tmpWord/cat/$item['id']}">{$item['name']}({$item['num']})</a>
+						</span>
+					{/foreach}
+				{/if}
+			</dd>
+		</dl>
+	{/if}
+	<!--分类显示-->
+	
+
+
+	<!--品牌展示-->
+    {set:$brandList = search_goods::$brandSearch}
+    {if:$brandList}
+    <dl class="ov-hidden clearfix">
+        <dt>品牌：</dt>
+        <dd id='brand_dd'>
+        	<span class="active">
+            	<a href="{echo:search_goods::searchUrl('brand','')}">全部</a>
+          	</span> 
+          	{foreach:items = $brandList}
+            	<span id='brand_{$item['id']}'>
+          			<a href="{echo:search_goods::searchUrl('brand',$item['id'])}">{$item['name']}</a>
+          		</span> 
+          	{/foreach}
+        </dd>
+    </dl>
+    {/if}
+    <!--品牌展示-->
+
+    <!--商品属性-->
+    {foreach:items = search_goods::$attrSearch}
+    <dl class="ov-hidden clearfix">
+        <dt>{$item['name']}：</dt>
+        <dd id="attr_dd_{$item['id']}">
+            <span class="active">
+             	<a href="{echo:search_goods::searchUrl('attr['.$item["id"].']','')}">全部</a>
+            </span> 
+            {foreach:items=$item['value'] item=$attr}
+            	<span id="attr_{$item['id']}_{echo:md5($attr)}">
+          			<a href="{echo:search_goods::searchUrl('attr['.$item["id"].']',$attr)}" >{$attr}</a>
+          		</span>
+          	{/foreach}
+        </dd>
+    </dl>
+    {/foreach}
+    <!--商品属性-->
+
+	<!--价格-->
+    <dl class="ov-hidden clearfix" style="border:0">
+        <dt>价格：</dt>
+        <dd id="price_dd">
+            <span class="active">
+            	<a href="{echo:search_goods::searchUrl(array('min_price','max_price'),'')}">全部</a>
+            </span>
+            {foreach:items=search_goods::$priceSearch}
+            	{set:$priceZone = explode('-',$item)}
+            	<span id="{$item}">
+              		<a href="{echo:search_goods::searchUrl(array('min_price','max_price'),array($priceZone[0],$priceZone[1]))}">{$item}</a>
+              	</span>
+            {/foreach}
+            <p class="m-0 pull-right price-filter">
+            	<input type="text" class="mini" name="min_price" value="" />
+            	<font class="f-12 text-muted"> - </font>
+            	<input type="text" class="mini" name="max_price" value="" />
+            	<font class="f-12 text-muted">元</font>
+            	&nbsp;
+            	<input class="btn btn-xs btn-default" type="button" onclick="priceLink();" value="确定">
+            </p>
+        </dd>
+    </dl>
+    <!--价格-->
+</div>
+
+<!--商品排序展示-->
+<div class="order-filter">
+	<ol class="breadcrumb">
+		<li id="order_sort">
+			<a href="{echo:search_goods::searchUrl(array('order','by'),array('sort', 'asc'))}">推荐</a>
+        </li>
+		{foreach:items=search_goods::getOrderType()}
+        <li id="order_{$key}">
+			<a href="{echo:search_goods::searchUrl(array('order','by'),array($key,search_goods::getOrderBy($key)))}"> {$item} <span id="by_{$key}"></span></a>
+        </li>
+        {/foreach}
+	</ol>
+</div>
+<!--商品排序展示-->
+
+<script type='text/javascript'>
+//价格跳转
+function priceLink()
+{
+	var minVal = $('input[name="min_price"]').val();
+	var maxVal = $('input[name="max_price"]').val();
+	if(isNaN(minVal) || isNaN(maxVal))
+	{
+		alert('价格填写不正确');
+		return '';
+	}
+	var searchUrl = "{echo:search_goods::searchUrl(array('min_price','max_price'),array('__min_price__','__max_price__'))}";
+	searchUrl     = searchUrl.replace("__min_price__",minVal).replace("__max_price__",maxVal);
+	window.location.href = searchUrl;
+}
+
+//筛选条件按钮高亮
+jQuery(function(){
+	//品牌模块高亮和预填充
+	{set:$brand = IFilter::act(IReq::get('brand'),'int');}
+	{if:$brand}
+		$('#brand_dd>*').removeClass('active');
+		$('#brand_{$brand}').addClass('active');
+	{/if}
+
+	//属性模块高亮和预填充
+	{set:$tempArray = IFilter::act(IReq::get('attr'))}
+	{if:$tempArray}
+		{set:$json = JSON::encode(array_map('md5',$tempArray))}
+		var attrArray = {$json};
+		for(val in attrArray)
+		{
+			if(attrArray[val])
+			{
+				$('#attr_dd_'+val+'>*').removeClass('active');
+				$('#attr_'+val+'_'+attrArray[val]).addClass('active');
+			}
+		}
+	{/if}
+
+	//价格模块高亮和预填充
+	{if:IReq::get('min_price') || IReq::get('max_price')}
+		{set:$priceId = IFilter::act(IReq::get('min_price'))."-".IFilter::act(IReq::get('max_price'))}
+		$('#price_dd>*').removeClass('active');
+		$('#{$priceId}').addClass('active');
+		$('input[name="min_price"]').val("{echo:IFilter::act(IReq::get('min_price'))}");
+		$('input[name="max_price"]').val("{echo:IFilter::act(IReq::get('max_price'))}");
+	{/if}
+
+	//排序字段
+	{set:$orderValue = IFilter::act(IReq::get('order'))}
+	{if:$orderValue}
+		$('#order_{$orderValue}').addClass('active');
+	{else:}
+		$('#order_sort').addClass('active');
+	{/if}
+
+	//顺序
+	{set:$byValue = IReq::get('by')}
+	{if:$byValue == "desc"}
+		$('#by_{$orderValue}').html("&darr;");
+	{else:}
+		$('#by_{$orderValue}').html("&uarr;");
+	{/if}
+
+});
+</script>

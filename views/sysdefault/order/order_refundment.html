@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>管理后台</title>
+	<link rel="stylesheet" href="{skin:css/admin.css}" />
+	{js:jquery}
+	{js:dialog}
+	{js:form}
+	{js:validate}
+	<script type='text/javascript' src="{theme:javascript/admin.js}"></script>
+</head>
+
+<body style="width:600px;min-height:400px;overflow-y:hidden;">
+<div class="pop_win">
+	<form action="{url:/order/order_refundment_doc}" method="post">
+		<input type="hidden" name="refunds_id" value="{$refunds['id']}"/>
+		<input type="hidden" name="id" value="{$order_id}"/>
+		<input type="hidden" name="order_no" value="{$order_no}"/>
+		<input type="hidden" name="user_id" value="{$user_id}"/>
+
+		<table width="95%" class="border_table" style="margin:10px auto">
+			<colgroup>
+				<col width="100px" />
+				<col />
+			</colgroup>
+
+			<tbody>
+				<tr>
+					<th>订单号:</th><td align="left">{$order_no}</td>
+				</tr>
+				<tr>
+					<th>下单时间:</th><td align="left">{$create_time}</td>
+				</tr>
+				<tr>
+					<th>订单商品应付金额:</th>
+					<td align="left">￥{$payable_amount}</td>
+				</tr>
+				<tr>
+					<th>订单商品实付金额:</th>
+					<td align="left">￥{$real_amount}</td>
+				</tr>
+				<tr>
+					<th>订单运费应付金额:</th>
+					<td align="left">￥{$payable_freight}</td>
+				</tr>
+				<tr>
+					<th>订单运费实付金额:</th>
+					<td align="left">￥{$real_freight}</td>
+				</tr>
+
+				<tr>
+					<th>订单保价金额:</th>
+					<td align="left">￥{$insured}</td>
+				</tr>
+
+				{if:$pay_fee > 0}
+				<tr>
+					<th>订单支付手续费金额:</th>
+					<td align="left">￥{$pay_fee}</td>
+				</tr>
+				{/if}
+
+				{if:$invoice == 1}
+				<tr>
+					<th>订单税金金额:</th>
+					<td align="left">￥{$taxes}</td>
+				</tr>
+				{/if}
+
+				{if:$promotions > 0}
+				<tr>
+					<th>订单促销活动优惠金额:</th>
+					<td align="left">￥{$promotions}</td>
+				</tr>
+				{/if}
+
+				{if:$discount != 0}
+				<tr>
+					<th>订单价格修改:</th>
+					<td align="left">￥{$discount}</td>
+				</tr>
+				{/if}
+
+				<tr>
+					<th>订单总额:</th>
+					<td align="left">￥{$order_amount}</td>
+				</tr>
+
+				{set:$refundRowCount = CountSum::countSellerOrderFee(array($this->data))}
+				<tr>
+					<th>订单已退金额:</th>
+					<td align="left">￥{$refundRowCount['refundFee']}</td>
+				</tr>
+
+				<tr>
+					<th>退款商品:</th>
+					<td align="left">
+					{if:isset($refunds)}
+						{query:name=order_goods where=id in ( $refunds[order_goods_id] )}
+						{set:$goods = JSON::decode($item['goods_array'])}
+						{$goods['name']} X {$item['goods_nums']}件
+						<span class="green">【{echo:Order_Class::goodsSendStatus($item['is_send'])}】</span>
+						<span class="red">【商品金额：￥{echo:$item['goods_nums']*$item['real_price']}】</span>
+						{if:$refunds['seller_id']}
+						<a href="{url:/site/home/id/$refunds['seller_id']}" target="_blank"><img src="{skin:images/admin/seller_ico.png}" /></a>
+						{/if}
+						<br />
+						{/query}
+					{else:}
+						{foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$order_id)) item=$good}
+						{set:$good_info = JSON::decode($good['goods_array'])}
+						{if:$good['is_send'] != 2}
+						<label>
+							<input type="checkbox" name="order_goods_id[]" value="{$good['id']}" />
+							<a class="blue" href="{url:/site/products/id/$good['goods_id']}" target='_blank'>{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$good['goods_nums']}【￥{echo:$good['real_price']*$good['goods_nums']}】</a>
+						</label>
+						<br />
+						{/if}
+						{/foreach}
+					{/if}
+					</td>
+				</tr>
+				<tr>
+					<th>退款金额流向:</th>
+					<td align="left">
+						<select name="way">
+							<option value="other" selected="selected">已通过其他方式退款</option>
+							<option value="balance">退款到用户余额【默认】</option>
+							
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>退款金额:</th>
+					<td align="left">
+						<label><input type="radio" name="isAuto" onclick="closeCustom();" checked="checked" />自动计算【默认】</label>
+						<label>
+							<input type="radio" name="isAuto" onclick="openCustom();" />手动填写
+							<input type="text" class="small" name="amount" pattern="float" empty disabled="disabled" />
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<th>说明:</th>
+					<td align="left">点击退款后，<退款商品的金额>将直接转入用户的网站余额中，如果订单中所有商品均在未发货的情况下全部退款，那么系统将返还运费等</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+<script type="text/javascript">
+function openCustom()
+{
+	$('[name="amount"]').prop('disabled',false);
+}
+
+function closeCustom()
+{
+	$('[name="amount"]').prop('disabled',true);
+	$('[name="amount"]').val('');
+}
+</script>
+</body>
+</html>

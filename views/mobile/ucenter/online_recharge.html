@@ -1,0 +1,52 @@
+{set:$paymentList=Api::run('getPaymentListByOnline')}
+
+<div class="bg-white p-10">
+	<div class="info-head"><span>在线充值</span></div>
+	<div class="p-10">
+		<form action="{url:/block/doPay}" method="POST" class="form-inline form" role="form">
+			<div class="input-group input-style">
+				<div class="input-group-addon"><span>金额</span></div>
+				<input type="text" name="recharge" class="form-control">
+			</div>
+			{if:$paymentList}
+			{foreach:items = $paymentList}
+				<!--dyg_jzw 20151226 只允许支付宝方式充值-->
+				{if: $item['id'] == 15}
+				<div class="form-group">
+					<div class="radio">
+						<label>
+							<input type="radio" name="payment_id" id="input" value="{$item['id']}" >{$item['name']}
+							{$item['note']}，手续费：{if:$item['poundage_type']==2}￥{$item['poundage']}{else:}{$item['poundage']}%{/if}
+						</label>
+					</div>
+				</div>
+				{/if}
+				{if: $item['id'] == 12}
+					<p class="text-danger">目前仅支持支付宝充值，当前浏览器不支持该支付方式。请点击右上角-在浏览器中打开重试</p>
+				{/if}
+			{/foreach}
+			<button type="submit" class="btn" onclick='return check_form();'>确定充值</button>
+			{else:}
+				<p class="text-danger">暂无支付渠道</p>
+			{/if}
+			
+		</form>
+	</div>
+</div>
+
+<script type='text/javascript'>
+function check_form()
+{
+	if($('[name="payment_id"]:checked').length == 0)
+	{
+		alert('请选择支付方式');
+		return false;
+	}
+
+	if($('[name="recharge"]').val() <= 0)
+	{
+		alert('要充值的金额必须大于0元');
+		return false;
+	}
+}
+</script>

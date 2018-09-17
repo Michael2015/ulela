@@ -1,0 +1,77 @@
+<section class="reg bg-white">
+	<div class="p-10">
+		<form action='{url:/simple/reg_act}' method='post' name="user_reg">
+			<ul class="user-info">
+				<li>
+					<div class="input-group input-style">
+						<div class="input-group-addon"><span>邮箱</span></div>
+						<input class='form-control' initmsg="输入正确" type="text" name='email' pattern="email" alt="填写正确的邮箱格式" placeholder="填写您的邮箱地址" />
+					</div>
+				</li>
+				<!--dyg_jzw 20150825 修改使用手机号作为用户名
+				<li>
+					<div class="input-group input-style">
+						<div class="input-group-addon"><span>用户名</span></div>
+						<input class='form-control' initmsg="输入正确" type="text" name='username' pattern="^[\w\u0391-\uFFE5]{2,20}$" alt="填写2-20个字符" />
+					</div>
+				</li>-->
+
+				<li>
+					<div class="input-group input-style">
+						<div class="input-group-addon"><span>手机号</span></div>
+						<input class='form-control' initmsg="输入正确" type="text" name='username' pattern="mobi" alt="填写正确的手机号" placeholder="填写您的手机号"/>
+					</div>
+				</li>
+
+				<li>
+					<div class="input-group input-style">
+						<div class="input-group-addon"><span>密码</span></div>
+						<input class='form-control'  type="password" name='password' pattern="^\S{6,32}$" bind='repassword' alt='填写6-32个字符' placeholder="填写6-32个字符作密码"/>
+					</div>
+				</li>
+
+				<li>
+					<div class="input-group input-style">
+						<div class="input-group-addon"><span>确认密码</span></div>
+						<input type="password" class='form-control'  name='repassword' pattern="^\S{6,32}$" bind='password' alt='重复上面的密码' placeholder="重复上面的密码"/>
+					</div>
+				</li>
+
+				<li>
+					{set: $inviter = isset($_GET['inviter'])?$_GET['inviter']:NULL}
+					<div class="input-group input-style">
+						<div class="input-group-addon"><span>邀请码</span></div>
+						<input class="form-control" pattern="mobi" type="text" name='inviter' placeholder="填写邀请人的手机号,终身绑定" {if: $inviter} value="{$inviter}" readonly="readonly" {/if} />
+					</div>
+				</li>
+
+				<li class="row">
+					<div class="col-xs-7">
+						<div class="input-group input-style">
+							<div class="input-group-addon"><span>验证码</span></div>
+							<input type='text' class='form-control' initmsg="输入正确" name='captcha' pattern='^\w{5,10}$' alt='填写右边的验证码' placeholder="点图片更换"/>
+						</div>
+					</div>
+
+					<div class="col-xs-5">
+						<a href="javascript:changeCaptcha('{url:/simple/getCaptcha}');">
+							<img src='{url:/simple/getCaptcha}' id='captchaImg' />
+						</a>
+					</div>
+				</li>
+
+                <li class="enter">
+		        	<button type="submit" class='btn btn-block'>立即注册</button>
+		        </li>
+			</ul>
+		</form>
+	</div>
+</section>
+
+<script type='text/javascript'>
+$(function(){
+	//表单回填
+	var formObj = new Form('user_reg');
+	formObj.init({"email":"{$this->email}","username":"{$this->username}"});
+});
+</script>

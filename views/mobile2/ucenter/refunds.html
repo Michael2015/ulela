@@ -1,0 +1,43 @@
+{set:$queryRefundmentDocList = Api::run('getRefundmentDocList',$this->user['user_id'])}
+{set:$refundmentDocList = $queryRefundmentDocList->find()}
+
+
+<ul class="list-unstyled font-sm">
+	{if:$refundmentDocList}
+	{foreach:items = $refundmentDocList}
+	<li class="mb-10 bg-white p-10">
+		<a href="{url:/ucenter/refunds_detail/id/$item[id]}" class="show">
+			<?php 
+                switch($item['pay_status'])
+                {
+                    case 1: //退款失败
+                        $status_color = "text-muted";
+                        break;
+                    case 2: //退款成功
+                        $status_color = "text-success";
+                        break;
+                    default:
+                        $status_color = "";
+                }
+            ?>
+			<p class="mb-6">
+				<span class="pull-right {$status_color}">{echo:Order_Class::refundmentText($item['pay_status'])}</span>
+				申请时间：{$item['time']}
+			</p>
+			<p class="text-muted">
+				<span class="pull-right"><i class="iconfont icon-fanhui2 font-sm color-ccc"></i></span>
+				退款订单：{$item['order_no']}
+			</p>
+		</a>
+	</li>
+	{/foreach}
+</ul>
+{$queryRefundmentDocList->getPageBar()}
+{else:}
+	<div class="msg bg-white">
+		<p><i class="iconfont icon-31wentifankui"></i></p>
+		<p>暂无退款申请</p>
+	</div>
+{/if}
+
+

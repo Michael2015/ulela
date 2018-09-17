@@ -1,0 +1,524 @@
+/*xiaomi common.css by dyg_jzw */
+
+/* 商品筛选 */
+.goods-filter {
+	padding: 16px 25px 8px;
+}
+
+.goods-filter dl {
+	padding:8px 0;
+	border-bottom: 1px solid #fafafa;
+	margin-bottom: 8px;
+}
+
+.goods-filter dl dt {
+	font-weight: 300;
+	padding-right: 15px;
+	color: #aaa;
+	float: left;
+	width: 90px;
+	padding-right: 8px;
+}
+
+.goods-filter dl dd {
+	width: 1082px;
+	float: left;
+}
+
+.goods-filter dl dd span {
+	padding: 0 16px;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.goods-filter dl dd span.active a , .order-filter .breadcrumb .active a {
+	color: #FF940F;
+}
+
+.order-filter {
+	margin-top: 20px;
+}
+
+.order-filter .breadcrumb>li+li:before {
+	content: "\007C";
+	padding: 0 18px;
+}
+
+.cat-goods-list .product-list {
+	margin-left: -14px;
+	padding-bottom: 20px;
+}
+
+.cat-goods-list .product-list .product-item {
+	width: 297px;
+	margin-left: 14px;
+}
+
+.cat-goods-list .product-item .item-image, .cat-goods-list .product-item .item-image img {
+	width: 200px;
+	height: 200px;
+}
+
+.cat-goods-list .product-item .item-image {
+	margin-top: 40px;
+}
+
+.cat-goods-list .product-item h4.item-price {
+	margin-bottom: 38px;
+}
+
+.cat-goods-list .product-item .item-tag {
+	width: 100%;
+    color: #fff;
+    bottom: 0;
+}
+
+.cat-goods-list .product-item .item-cart {
+	display: none;
+	margin: 0 18px;
+    top: 14px;
+    width: 261px;
+}
+
+.hot-sell.list-page {
+    padding-top: 40px;
+    border-top: 1px solid #eee;
+}
+
+/* 热卖推荐 */
+.hot-sell.list-page .hot-sell-line .hot-sell-item {
+	border-color: #fff;
+}
+
+/* 产品主页 */
+.product-detail .preview {
+	width: 598px;
+}
+.product-detail .preview .pic_show {
+	z-index: 5;
+	margin-left: 18px;
+}
+.product-detail .preview .pic_show, .product-detail .preview .pic_show img {
+	width: 450px;
+	height: 450px;
+}
+
+.product-detail .pic_thumb_contain {
+	float: left;
+	padding: 14px;
+	border: 1px solid #f2f2f2;
+}
+
+.product-detail .summary {
+	width: 632px;
+}
+
+.product-detail .pic_thumb li {
+	height: 70px;
+	width: 70px;
+}
+
+.product-detail .pic_thumb li a {
+	display: block;
+	width: 70px;
+	height: 70px;
+}
+
+.product-detail .bx-wrapper .bx-viewport {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+
+.bx-wrapper .bx-controls-direction a.bx-prev {
+	background-position: 104px 0;
+	top: 2px;
+	left: 50%;
+	right: auto;
+	margin-left: -16px;
+}
+
+.product-detail .bx-wrapper a.bx-prev:hover {
+	background-position: -104px -32px;
+}
+
+.bx-wrapper .bx-controls-direction a.bx-next {
+	background-position: -138px 0;
+	bottom: -15px;
+	left: 50%;
+	right: auto;
+	top: auto;
+	margin-left: -16px;
+}
+
+.product-detail .bx-wrapper a.bx-next:hover {
+	background-position: -138px -32px;
+}
+
+.summary h1 {
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 38px;
+	_height: 38px;
+	margin: 0 0 8px;
+}
+
+.summary .product-desc {
+	margin-bottom: 18px;
+}
+
+.cbe-tag {
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    background: #395FC7;
+    font-size: 12px;
+    height: 20px;
+    line-height: 20px;
+    text-indent: 10px;
+    padding-right: 7px;
+    margin-left: 15px;
+    border-radius: 4px 0 0 4px;
+    z-index: 2;
+    font-weight: 300;
+}
+
+.cbe-tag:before {
+    position: absolute;
+    content: "";
+    left: -18px;
+    display: block;
+    width: 0;
+    height: 0;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #395FC7 transparent transparent;
+    z-index: 1;
+}
+
+.cbe-tag:after {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    top: 50%;
+    margin-top: -3px;
+    z-index: 1;
+}
+
+.price-block {
+	padding: 8px 14px 3px;
+}
+
+.summary dl {
+	overflow: hidden;
+	clear: both;
+	margin-bottom: 0;
+}
+
+.summary .price-block dl {
+	margin-bottom: 5px;
+}
+
+.summary .buy-block dl {
+	margin-bottom: 7px;
+}
+
+.summary dl dt,  .summary dl dd{
+	line-height: 28px;
+	_height: 28px;
+}
+
+.summary dl.sell-price-line dt,  .summary dl.sell-price-line dd{
+	line-height: 42px;
+	_height: 42px;
+}
+
+.summary dt.info-left {
+	width: 70px;
+	font-weight: 300;
+}
+
+.price-block .normal-price {
+	text-decoration: line-through;
+}
+
+.price-block .sell-price {
+	color: #c40000;
+	font-size: 24px;
+}
+
+.price-block .sell-price .rmb {
+	font-size: 18px;
+}
+
+.price-block .time {
+	padding-left: 20px;
+}
+
+.summary .buy-button .btn{
+	margin-right: 15px;
+	width: 120px;
+}
+
+.buy-nums-group .info-left {
+	line-height: 36px;
+}
+
+.summary .chosenBox-list {
+	width: 562px;
+}
+
+.summary .chosenBox-list .item {
+	float: left;
+	margin: 0 8px 8px 0;
+	height: 30px;
+}
+
+.summary .chosenBox-list .item a {
+    position: relative;
+    display: block;
+    border: 1px solid #ccc;
+    line-height: 28px;
+    _height:28px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #fff;
+    padding: 0 8px;
+    font-size: 12px;
+}
+
+.summary .chosenBox-list .item a:hover {
+	color: #333;
+	border-color: #FF4D18;
+	background-color: #fafafa;
+}
+
+.summary .chosenBox-list .item a.current {
+	border-color: #FF4D18;
+	background-color: #f8f8f8;
+}
+
+.summary .chosenBox-list .item a.disabled_spec {
+	background-color: #ddd;
+	border-color: #b5b5b5;
+}
+
+.summary .buy-block .input-group-addon {
+	padding: 0;
+	height: 34px;
+	width: 34px;
+	background-color: #fff;
+    font-size: 18px;
+}
+
+.summary .buy-block .input-group-addon a:link, .summary .buy-block .input-group-addon a:visited, .summary .buy-block .input-group-addon a:active, .summary .buy-block .input-group-addon a:focus {
+	display: block;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	line-height: 34px;
+	text-decoration: none;
+}
+
+.summary .buy-block .input-group-addon a:hover {
+	background-color: #eee;
+	color: #777;
+}
+
+.buy-nums-group .form-control{
+	height: 26px;
+	line-height: 26px;
+	width: 60px;
+	padding: 4px 8px;
+	border-right: 0\9;
+}
+
+.other-info-block {
+	padding: 12px 0;
+	border-bottom: 1px solid #eee;
+	border-top: 1px solid #eee;
+}
+
+.other-info-block ul li {
+	width: 157px;
+	border-right: 1px solid #eee;
+}
+
+.product-left {
+	width: 230px;
+	margin-right: 20px;
+}
+
+.product-left h3, .product-right h3 {
+	height: 45px;
+	margin: 0;
+	line-height: 45px;
+	font-size: 14px;
+	font-weight: 700;
+	background-color: #fafafa;
+	padding: 0 18px;
+}
+
+.product-right h3 .btn.btn-sm {
+	margin-top: 7px;
+}
+
+.left-hot-sell {
+	padding: 20px 0;
+}
+
+.left-hot-sell .item {
+	padding: 0 18px 18px;
+}
+
+.left-hot-sell .item-image, .left-hot-sell .item-image img {
+	width: 170px;
+	height: 170px;
+	display: block;
+}
+
+.left-hot-sell .item p {
+	margin: 6px 0;
+}
+
+.product-right {
+	width: 980px;
+}
+
+.product-right .detail {
+	width: 790px;
+	border-right: 1px solid #eee;
+}
+
+.product-right .detail .detail-content {
+	min-height: 700px;
+}
+
+.product-right .detail .detail-content img {
+	max-width: 790px;
+	_width:790px;
+}
+
+.product-right .detail .nav-tabs {
+	border-color: #eee;
+}
+
+.product-right .detail .nav-tabs li a {
+	display: block;
+	line-height: 20px;
+    padding: 12px 35px;
+    border: 0;
+}
+
+.product-right .detail .nav-tabs li a:hover {
+	border-bottom: 1px solid #ddd;
+}
+
+.product-right .detail .nav-tabs li.active a {
+	border-bottom: 2px solid #FF9900;
+}
+
+.product-right .detail .saleinfos {
+	padding: 15px 15px 9px 15px;
+	background-color: #fafafa;
+}
+
+.product-right .detail .saleinfos li {
+	width: 238px;
+	float: left;
+	padding-left: 0;
+	padding-right: 15px;
+	margin-bottom: 6px;
+	white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.product-right .see {
+	width: 189px;
+	_width: 188px;
+	padding-top: 15px;
+}
+
+.product-right .see .see-title, .product-right .see .pic_thumb {
+	width: 120px;
+
+}
+
+.product-right .see .see-title .line {
+	height: 0;
+	border-top:1px solid #eee;
+	top: 10px;
+	left: 0;
+	width: 100%;
+}
+
+.product-right .see .see-title .text {
+	background-color: #fff;
+	width: 70px;
+	line-height: 20px;
+	_height: 20px;
+}
+
+.product-right .see .pic_thumb li {
+	margin-bottom: 20px;
+}
+
+.product-right .see .pic_thumb .price {
+	line-height: 20px;
+	_height: 20px;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF) \\8;
+    background-color: rgba(255,255,255,.8);
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+#commentBox .table {
+	margin: 0;
+    border-bottom: 1px solid #eee;
+}
+#commentBox .table td {
+	padding: 22px 7px;
+	vertical-align: middle;
+	border: 0;
+}
+#commentBox .table .text {
+	width: 494px;
+	padding-right: 26px;
+    padding-left: 18px;
+}
+#commentBox .table .spec {
+	width: 135px; 
+}
+
+#commentBox .item p {
+	margin-bottom: 6px;
+}
+
+.product-right .pages_bar {
+	padding: 15px 0;
+    text-align: center;
+}
+
+
+/*购买咨询*/
+#referBox .item {
+	margin: 0 18px;
+	padding: 18px 0;
+    border-bottom: 1px solid #eee;
+}
+#referBox .item .answer {
+	margin-top: 12px;
+}
+
+#referBox .item dt{
+	width: 82px;
+}
+
+#referBox .item dd {
+	margin-left: 82px;
+}

@@ -1,0 +1,79 @@
+<div class="bg-white p-15 mb-10 font-sm">
+	<p class="mb-5">申请日期：{$this->data['time']}</p>
+	<p class="text-muted">
+		<?php
+	        switch($this->data['pay_status'])
+	        {
+	            case 1: //退款失败
+                    $status_class = "text-muted";
+                    break;
+                case 2: //退款成功
+                    $status_class = "text-success";
+                    break;
+                default:
+                    $status_class = "";
+	        }
+	    ?>
+		<span class="pull-right {$status_class}">{echo:Order_Class::refundmentText($this->data['pay_status'])}</span>
+		退款订单：{$this->data['order_no']}
+	</p>
+</div>
+
+<div class="bg-white p-15 pb-5 mb-10 font-sm">
+	<p class="mb-5"><strong>退款商品</strong></p>
+	<ul class="list-unstyled">
+	{foreach:items = $this->data['goods']}
+	{set:$good_info = JSON::decode($item['goods_array'])}
+		<li class="mb-10 pb-10 bd-btm-1s bd-color-gray">
+			<div class="media">
+				<a class="media-left pr-5" href="{url:/site/products/id/$item['goods_id']}">
+				    <img src="{url:/pic/thumb/img/$item['img']/w/60/h/60}" width="60" height="60">
+				</a>
+				<div class="media-body">
+					<p><a href="{url:/site/products/id/$item['goods_id']}">{$good_info['name']}</a></p>
+				    <p class="text-muted">
+				    	{if:$good_info['value']!=''}{$good_info['value']}{/if}
+				    	<span class="text-danger font-df font-sm">&times; {$item['goods_nums']}</span>
+				    </p>
+				</div>
+			</div>
+		</li>
+	{/foreach}
+	</ul>
+</div>
+
+<div class="bg-white p-15 mb-10 font-sm">
+	<p class="mb-5"><strong>退款原因</strong></p>
+	<div class="mb-5 thumbnail no-border p-0">
+		{$this->data['content']}
+	</div>
+</div>
+
+<div class="bg-white p-15 mb-10 font-sm text-right">
+	{if:$this->data['amount'] > 0}
+		<p class="mb-5"><span class="pull-left">已退金额：</span><span class="text-danger">￥ {$this->data['amount']}</span></p>
+	{/if}
+	<p class="mb-5">
+		<span class="pull-left text-muted">处理回复：</span>{echo:$this->data['dispose_idea']?$this->data['dispose_idea']:'未回复'}
+	</p>
+	<p class="mb-5 text-muted">
+		<span class="pull-left">处理时间：</span>{echo:$this->data['dispose_time']?$this->data['dispose_time']:'未处理';}
+	</p>
+	{if:$this->data['seller_id']}
+		<p class="mb-5 text-muted">
+			<span class="pull-left">商家主页：</span><a href="{url:/site/home/id/$this->data['seller_id']}">联系商家</a>
+		</p>
+	{/if}
+</div>
+
+<div class="p-10 text-center">
+	{if:$this->data['pay_status']==0}
+		<a class="btn btn-sm btn-warning" href='javascript:delModel({link:"{url:/ucenter/refunds_del/id/$this->data['id']}"})'>取消退款</a>
+	{/if}
+	<a href="{url:/ucenter/refunds}" class="btn btn-gray btn-sm">返回</a>
+</div>
+
+
+
+
+	

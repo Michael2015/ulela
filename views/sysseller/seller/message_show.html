@@ -1,0 +1,26 @@
+{set:$id = IFilter::act(IReq::get('id'),'int')}
+{query: name=seller_message where=id eq $id}{/query}
+{if:!isset($item)}
+{set:IError::show(403,'信息不存在')}
+{/if}
+<article class="module width_full">
+	<header>
+		<h3 class="tabs_involved">消息通知查看</h3>
+	</header>
+		<div class="module_content">
+			<fieldset>
+				<label>标题：</label>
+				<div class="box">{$item['title']}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>发送时间：</label>
+				<div class="box">{$item['time']}</div>
+			</fieldset>
+
+			<fieldset>
+				<label>内容：</label>
+				<div class="box">{$item['content']}</div>
+			</fieldset>
+		</div>
+</article>

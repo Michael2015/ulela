@@ -1,0 +1,76 @@
+<div class="bg-white p-10">
+    <ul class="nav nav-tabs table-tabs pb-10 font-sm">
+        <li><a href="{url:/ucenter/myteam}">我的团队</a></li>
+        <li class="active"><a href="javascript:;">销售记录</a></li>
+    </ul>
+    <div class="text-center pt-10">
+        <h2 class="text-warning font-xxl">
+            <strong>{$this->memberRow['balance_freeze']}</strong>
+        </h2>
+        <p class="text-muted font-xs">
+            待返还金额
+        </p>
+    </div>
+</div>
+
+    {set:$user_id = $this->user['user_id']}
+    {set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+    {set:$queryFreezeLog = Api::run('getFreezeLogList',$user_id)}
+    {set:$items = $queryFreezeLog->find()}
+            
+    {if: $items}
+    <div class="bg-white mt-15">
+        <table class="table table-striped mb-0 font-sm text-center">
+            <tr>
+                <th class="text-center">返还时间</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">奖励</th>
+                <th class="text-center" width="30">&nbsp;</th>
+            </tr>
+            {foreach: items = $items}
+                {if: $item['status'] == 0}
+                    {if: $item['type'] == 0}
+                        {set: $time = '(预计)'.date('Y-m-d', strtotime('+'.($this->order_finish_time / 1440 + $this->order_reward_time).' days', strtotime($item['time'])));}
+                    {elseif: $item['type'] == 1}
+                        {set: $time = '(预计)'.date('Y-m-d', strtotime('+'.($this->order_finish_time / 1440 + $this->order_my_reward_time).' days', strtotime($item['time'])));}
+                    {/if}
+
+                    {set: $status = '冻结中';}
+                    {set: $status_clas = 'text-primary';}
+                {elseif: $item['status'] == 2}
+                    {set: $time = '-';}
+                    {set: $status = '因退货取消';}
+                    {set: $status_clas = 'text-muted';}
+                {else: $item['status'] == 1}
+                    {set: $time = substr($item['finish_time'], 0, 10);}
+                    {set: $status = '已返还';}
+                    {set: $status_clas = 'text-success';}
+                {/if}
+                <tr>
+                    <td class="text-muted">{$time}</td>
+                    <td class="{$status_clas}">{$status}</td>
+                    <td class="text-danger">￥{$item['amount']}</td>
+                    <td>
+                        <div class="info-tips">
+                            <i class="iconfont icon-infofill text-muted" data-tips='{$item['note']}'></i>
+                        </div>
+                    </td>
+                </tr>
+            {/foreach}
+        </table>
+        {$queryFreezeLog->getPageBar()}
+    {else:}
+        <div class="msg bg-white">
+            <p><i class="iconfont icon-31wentifankui"></i></p>
+            <p>暂无队员销售记录</p>
+        </div>
+    {/if}
+    </div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.info-tips .iconfont').on('click', function(){
+            layer.tips($(this).attr('data-tips'), this, {tips: 1});
+        });
+    });
+</script>

@@ -1,0 +1,25 @@
+<div class="body-contain bg-gray ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+            <li><a href="{url:/site/notice}">商城公告</a></li>
+            <li class="active">{$this->noticeRow['title']}</li>
+        </ol>
+        <!--position-->
+
+        <div class="bg-white m-b-60">
+            <div class="p-30">
+                <h3 class="m-b-20 m-t-20 text-center">
+                    {$this->noticeRow['title']}
+                </h3>
+                <p class="f-12 text-center text-muted">发布时间：{$this->noticeRow['time']}</p>
+                <div class="hc-content f-12">
+                    {$this->noticeRow['content']}
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

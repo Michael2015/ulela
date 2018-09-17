@@ -1,0 +1,60 @@
+<div class="ov-h">
+	<!-- 商品信息 -->
+	<div class="bg-white mb-10">
+		<div class="media p-10">
+			<a class="media-left" href="{url:/site/products/id/$this->goods['goods_id']}">
+				<img src="{url:/pic/thumb/img/$this->goods['img']/w/80/h/80}" alt="{$this->goods['name']}" height="80" width="80" />
+			</a>
+			<div class="media-body font-sm">
+				<p class="mb-6"><a href="{url:/site/products/id/$this->goods['goods_id']}" target="_blank">{$this->goods['name']}</a></p>
+				<p class="mb-6 text-danger">￥{$this->goods['sell_price']}</p>
+				<div class="grade-star g-star{$this->commentCount['average_point']}"></div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 评价数 -->
+	<ul class="nav nav-tabs table-tabs font-sm bg-white pt-10 pb-10">
+        <li name="tips"><a href="{url:/site/comments_list/id/$this->goods['goods_id']}">全部评论({$this->commentCount['comment_total']}条)</a></li>
+        <li name="tipsgood"><a href="{url:/site/comments_list/id/$this->goods['goods_id']/type/good}">好评({$this->commentCount['point_grade']['good']}条)</a></li>
+        <li name="tipsmiddle"><a href="{url:/site/comments_list/id/$this->goods['goods_id']/type/middle}">中评({$this->commentCount['point_grade']['middle']}条)</a></li>
+        <li name="tipsbad"><a href="{url:/site/comments_list/id/$this->goods['goods_id']/type/bad}">差评({$this->commentCount['point_grade']['bad']}条)</a></li>
+    </ul>
+
+	{if:$this->commentCount['comment_total']}
+		<ul id='commentBox' class="list-unstyled font-sm mb-15">		
+			{foreach:items=$this->commentQuery->find()}
+				<li class="bg-white mb-10 p-10">
+					<div class="clearfix mb-10">
+						<div class="pull-left grade-star g-star{$item['point']}"></div>
+						<span class="pull-right text-muted">{echo: substr_replace($item['username'],'***',-4,3)}&nbsp;&nbsp;&nbsp;&nbsp;{$item['comment_time']}</span>
+					</div>
+					<p>
+						{if: ($item['contents'])}
+							{$item['contents']}
+						{else:}
+							<span class="text-muted">无评价内容!</span>
+						{/if}
+					</p>
+					{if: ($item['recontents'])}
+						<p class="color-orange"><strong>回复：</strong>{$item['recontents']}</p>
+					{/if}
+				</li>
+			{/foreach}
+		</ul>
+		{$this->commentQuery->getPageBar()}
+	{else:}
+		<div class="msg bg-white">
+			<p><i class="iconfont icon-31wentifankui"></i></p>
+			<p> 暂无评价 </p>
+		</div>
+	{/if}
+</div>
+
+<script>
+    ;(function(){
+        {set:$type=IFilter::act(IReq::get('type'))}
+        var tipsName = "tips{$type}";
+        $('[name="'+tipsName+'"]').addClass('active');
+    })();
+</script>

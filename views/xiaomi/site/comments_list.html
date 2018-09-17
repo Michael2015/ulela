@@ -1,0 +1,102 @@
+<link rel="stylesheet" href="{skin:xiaomi/css/product.css?v=20160929}" />
+
+<div class="body-contain bg-gray ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+            <li><a href="{url:/site/products/id/$this->goods['goods_id']}">{$this->goods['name']}</a></li>
+            <li class="active">商品评论</li>
+        </ol>
+        <!--position-->
+    </div>
+
+    <!-- 商品咨询 -->
+    <div class="w1230 margin-0-auto ov-hidden m-b-40">
+        <!-- 商品内容 -->
+        <div class="product-left pull-left ov-hidden bg-white">         
+            <!-- 热卖排行 -->
+            <h3 class="text-center">
+                商品信息
+            </h3>
+            <div class="list-unstyled left-hot-sell">
+                <div class="item">
+                    <a class="item-image margin-0-auto" href="{url:/site/products/id/$this->goods['goods_id']}" target="_blank">
+                        <img src="{url:/pic/thumb/img/$this->goods['img']/w/170/h/170}" alt="{$this->goods['name']}" height="170" width="170">
+                    </a>
+                    <p class="text-center f-12">
+                        <a href="{url:/site/products/id/$this->goods['goods_id']}" target="_blank">{$this->goods['name']}</a>
+                    </p>
+                    <div class="m-t-10">
+                        <div class="pull-left text-danger">
+                            ￥{$this->goods['sell_price']}
+                        </div>
+                        <div class="pull-right">
+                            <div class="pull-left m-0 grade-star g-star{$this->commentCount['average_point']}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 商品咨询详情 -->
+        <div class="product-right pull-left ov-hidden bg-white">
+            <!-- 商品咨询 -->
+            <div class="ov-hidden">
+                <h3>商品评论</h3>
+
+                <div class="p-30">
+                    <ul class="nav nav-tabs ucenter-tabs">
+                        <li name="tips"><a href="{url:/site/comments_list/id/$this->goods['goods_id']}">全部评论({$this->commentCount['comment_total']}条)</a></li>
+                        <li name="tipsgood"><a href="{url:/site/comments_list/id/$this->goods['goods_id']/type/good}">好评({$this->commentCount['point_grade']['good']}条)</a></li>
+                        <li name="tipsmiddle"><a href="{url:/site/comments_list/id/$this->goods['goods_id']/type/middle}">中评({$this->commentCount['point_grade']['middle']}条)</a></li>
+                        <li name="tipsbad"><a href="{url:/site/comments_list/id/$this->goods['goods_id']/type/bad}">差评({$this->commentCount['point_grade']['bad']}条)</a></li>
+                    </ul>
+                    
+                    {set:$items = $this->commentsList}
+                    {if:$items}
+                    {foreach:items = $items}
+                        <div class="media">
+                            <div class="media-left" href="javascript:void(0);">
+                                <img src="{webroot:$item['head_ico']}" width="60" height="60" onerror="this.src='{skin:xiaomi/images/avatar-bg_1.png}'" />
+                            </div>
+                            <div class="media-body f-12">
+                                <p>
+                                    <span class="text-muted">{$item['username']}：</span>
+                                    {echo: $item['contents'] ? $item['contents'] : '<span class="text-muted">无评价内容!</span>'}
+                                </p>
+                                {if: $item['recontents']}
+                                    <p class="color-orange"><strong>商家回复：</strong>{$item['recontents']}</p>
+                                {/if}
+                                <div class="clearfix">
+                                    <div class="pull-left grade-star g-star{$item['point']}"></div>
+                                    <div class="text-muted">{$item['comment_time']}</div>
+                                </div>                                
+                            </div>
+                        </div>
+                        <hr>
+                    {/foreach}
+
+                    <div class="pagebar">
+                        {$this->commentQuery->getPageBar()}
+                    </div>
+
+                    {else:}
+                        <div class="m-t-40 m-b-60">
+                            <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+                            <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+                        </div>
+                    {/if}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    ;(function(){
+        {set:$type=IFilter::act(IReq::get('type'))}
+        var tipsName = "tips{$type}";
+        $('[name="'+tipsName+'"]').addClass('active');
+    })();
+</script>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>{echo:$this->_siteConfig->name}</title>
+    <link type="image/x-icon" href="/favicon.ico" rel="icon">
+    <link rel="stylesheet" href="{skin:xiaomi/css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="{skin:xiaomi/css/common.css?v=20170220}" />
+    <link rel="stylesheet" href="{skin:xiaomi/css/user.css?v=20161228}" />
+
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="{skin:xiaomi/css/common_ie8.css?v=20161208}" />
+    <![endif]-->
+    <!--[if lte IE 7]>
+        <link rel="stylesheet" href="{skin:xiaomi/css/common_noie.css?v=20161208}" />
+    <![endif]-->
+
+	<script src="http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    {js:form}
+    {js:artTemplate}
+    <script type='text/javascript' src="{theme:javascript/layer/layer.js}"></script>
+    <script type='text/javascript' src="{theme:javascript/common.js?v=20160727}"></script>
+    <script type='text/javascript' src='{theme:javascript/site.js?v=20161212}'></script>
+    <script type='text/javascript' src='{theme:javascript/validate.js}'></script>
+    <script type='text/javascript' src='http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+</head>
+<body>
+
+
+<!--site-nav-->
+<div class="site-nav f-12">
+    <div class="w1230 margin-0-auto clearfix">
+        <!--顶部左侧导航-->
+        <div class="item pull-left">
+			<ul class="list-inline item-list">
+                <li class="nav"><a href="/">返回首页</a></li>
+                <li class="nav"><span class="split">|</span></li>
+                <li class="nav"><a href="http://www.hec.cn">东阳光集团</a></li>
+                <li class="nav"><span class="split">|</span></li>
+                <li class="nav"><a href="http://e.dyg.cn">东阳光大健康电商</a></li>
+                <li class="nav"><span class="split">|</span></li>
+                <li class="nav"><a href="{url:/site/help/id/44}">关于我们</a></li> 
+                <li class="nav"><span class="split">|</span></li>
+                <li class="nav"><a href="javascript:;" onclick="layer.tips(createQrcodeUrl('{echo: IUrl::getHost().IUrl::creatUrl()}'), this, {tips: 3, time: 10000});">访问移动版</a></li>
+                <li class="nav"><span class="split">|</span></li>
+                <li class="nav"><span class="color-orange">New</span> <a href="{url:site/scode}" class="color-orange">防伪查询</a></li>
+            </ul>
+        </div>
+        <!--顶部左侧导航-->
+
+        <!--顶部右侧导航-->
+        <div class="item pull-right">
+			<ul class="list-inline item-list">
+                {if:$this->user}
+                    <li class="nav">
+                        <div class="dropdown">
+    							<a class="dropdown-toggle" data-target="#" href="javascript:;" id="user-ucenter" data-toggle="dropdown">
+                                {echo:$this->user['username']}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="user-ucenter">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{url:/ucenter}">个人中心</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{url:/ucenter/order}">我的订单</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{url:/ucenter/experience}">我的经验值</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{url:/ucenter/info}">个人资料</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{url:/ucenter/address}">地址管理</a></li>
+                            </ul>
+                        </div>
+                    </li>
+    				<li class="nav"><span class="split">|</span></li>
+    				<li class="nav"><a href="{url:ucenter}">个人中心</a></li>
+                    <li class="nav"><span class="split">|</span></li>
+                    <li class="nav"><a href="{url:ucenter/order}">我的订单</a></li>
+                    <li class="nav"><span class="split">|</span></li>
+                    <li class="nav"><a href="{url:/simple/logout}">退出</a></li>
+                {else:}
+                    <li class="nav"><a href="{url:/simple/reg}">免费注册</a></li>
+                    <li class="nav"><span class="split">|</span></li>
+                    <li class="nav"><a href="{url:/simple/login}">登录</a></li>
+                    <li class="nav"><span class="split">|</span></li>
+                    <li class="nav"><a href="{url:ucenter}">个人中心</a></li>
+                    <li class="nav"><span class="split">|</span></li>
+                    <li class="nav"><a href="{url:ucenter/order}">我的订单</a></li>
+                {/if}
+				<li class="nav-cart" name="mycart">
+                    <a class="cart-link" href="{url:simple/cart}">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                        <span>购物车 ( <strong name="mycart_count">0</strong> )</span>
+                    </a>
+                    <div class="cart-content ov-hidden" id="div_mycart" style="display: none;"></div>
+
+                    <!--购物车模板 开始-->
+                    <script type='text/html' id='cartTemplete'>
+                        <div class="cart-panel">
+                            <%if(goodsCount){%>
+                            <ul class="goods-list list-unstyled">
+                                <%for(var item in goodsData){%>
+                                <%var data = goodsData[item]%>
+                                <li class="goods-info clearfix" id="site_cart_dd_<%=item%>">
+                                    <div class="media">
+                                        <a class="media-left" href="{url:/site/products/id/<%=data['goods_id']%>}" target="_blank">
+                                            <img alt="<%=data['name']%>" src="{webroot:<%=data['img']%>}">
+                                        </a>
+                                        <div class="media-body">
+                                            <h6 class="media-heading f-12 c-white">
+                                                <a target="_blank" href="{url:/site/products/id/<%=data['goods_id']%>}" title="<%=data['name']%>">
+                                                    <%=data['name']%>
+                                                </a>
+                                            </h6>
+                                            <div class="goods-price f-12">
+                                                <div class="pull-left text-muted">
+													<span class="color-red">
+														<em>￥</em><%=data['sell_price']%>
+													</span>
+                                                    &times;
+                                                    <span><%=data['count']%></span>
+                                                </div>
+                                                <div class="pull-right">
+                                                    <a href="javascript:void(0)" onclick="removeCart('<%=data['id']%>','<%=data['type']%>');$('#site_cart_dd_<%=item%>').slideUp('normal');">
+                                                        删除
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <%}%>
+                            </ul>
+                            <div class="cart-total ov-hidden">
+                                <div class="pull-left">
+                                    <p class="text-muted m-b-0 f-12">共 <span name="mycart_count"><%=goodsCount%></span> 件商品</p>
+                                    <p class="m-b-0 color-red"><span class="f-18" name="mycart_sum"><%=goodsSum%></span><em>元</em></p>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="{url:/simple/cart}" class="btn btn-warning cart-btn">去购物车结算</a>
+                                </div>
+                            </div>
+                            <%}else{%>
+                            <div class="goods-list">
+                                <p class="text-center">购物车还没有商品，赶紧选购吧！</p>
+                            </div>
+                            <%}%>
+                        </div>
+                    </script>
+                    <!--购物车模板 结束-->
+                </li>
+            </ul>
+        </div>
+        <!--顶部右侧导航-->
+    </div>
+    <!--w1230 clearfix-->
+</div>
+<!--site-nav-->
+
+<!--top header-->
+<div class="top-header">
+    <!--w1230 clearfix-->
+    <div class="w1230 pos-relative margin-0-auto clearfix">
+        <!--logo-->
+        <div class="logo pull-left">
+            <a href="{url:}" class="show">
+                <img src="{if:$this->_siteConfig->logo}{webroot:$this->_siteConfig->logo}{else:}{skin:xiaomi/images/logo.png}{/if}" alt="{echo:$this->_siteConfig->name}" class="png">
+            </a>
+        </div>
+        <!--logo-->
+
+        <!--main menu-->
+        <div class="header-menu f-16 pull-left">
+            <ul class="list-inline nav-cat-pos">
+                {if:IReq::get('controller') == 'site' && IReq::get('action') == 'index' || IReq::get('controller') == ''}
+                <li><a href="/">首 页</a>
+                    {else:}
+                <li class="category pos-relative">
+                    <a class="allsort" href="{url:/site/sitemap}">全部分类 <span class="caret"></span></a>
+                    <!--cat-menu-->
+                    <div class="category-content pos-absolute">
+                        <!--cat-list-->
+                        <ul class="cat-list list-unstyled" id="div_allsort">
+                            {foreach:items=Api::run('getCategoryListTop')  item=$first }
+                            <li class="list-item">
+                                <a href="{url:/site/pro_list/cat/$first['id']}" class="title">
+                                    {$first['name']}
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                </a>
+
+                                <div class="cat-pop">
+                                    <!--cat-layer-->
+                                    <div class="cat-layer clearfix">
+                                        <ul class="cat-col list-unstyled">
+                                            {foreach:items=Api::run('getCategoryByParentid',$first['id'])  item=$second}
+                                            <li class="cat-item">
+                                                <div class="level-title">
+                                                    <a href="{url:/site/pro_list/cat/$second['id']}">{$second['name']}</a>
+                                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                                </div>
+                                                <p class="level-list clearfix">
+                                                    {foreach:items=Api::run('getCategoryByParentid',$second['id'])  item=$third}
+                                                    <a href="{url:/site/pro_list/cat/$third['id']}">{$third['name']}</a>
+                                                    {/foreach}
+                                                </p>
+                                            </li>
+                                            {/foreach}
+                                        </ul>
+                                    </div>
+                                    <!--cat-layer-->
+                                </div>
+                            </li>
+                            {/foreach}
+                        </ul>
+                        <!--cat-list-->
+                    </div>
+                    <!--cat-menu-->
+                    {/if}
+                </li>
+                {foreach:items=Api::run('getGuideList')}
+                <li><a href="{url:$item[link]}">{$item['name']}</a></li>
+                {/foreach}
+            </ul>
+        </div>
+        <!--main menu-->
+
+        <!--search-->
+        <div class="search-div pull-right">
+            <form action="{url:/}" method="get" name="search">
+                <input type='hidden' name='controller' value='site' />
+                <input type='hidden' name='action' value='search_list' />
+                <div class="search-input">
+                    <input class="form-control" type="text" name="word" autocomplete="off">
+                    <div class="hot-keyword">
+                        <ul class="list-inline">
+                            {foreach:items=Api::run('getKeywordList', 2) }
+                            {set:$tmpWord = urlencode($item['word']);}
+                            <li>
+                                <a href="{url:/site/search_list/word/$tmpWord}">
+                                    <span class="label label-default">{$item['word']}</span>
+                                </a>
+                            </li>
+                            {/foreach}
+                        </ul>
+                    </div>
+                </div>
+                <div class="search-btn">
+                    <button class="form-control" type="submit" name="submit">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!--search-->
+
+    </div>
+    <!--w1230 clearfix-->
+</div>
+<!--top header-->
+
+<div class="body-contain bg-gray ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+            <li>
+                <a href="{url:/ucenter}">个人中心</a>
+            </li>
+        </ol>
+        <!--position-->
+
+
+        <div class="u-section clearfix">
+            <div class="u-section-left bg-white m-b-20 pull-left">
+                <div class="u-avatar p-t-30 p-b-20 margin-0-auto pos-relative">
+                    {set:$user_ico = $this->user['head_ico']}
+                    <div class="avatar-image m-b-10 pos-relative margin-0-auto">
+                        <a href="{url:/ucenter}" title="返回个人首页">
+                            <img class="user_ico_img" src="{url:}{echo:Thumb::get($user_ico,120,120)}" width="100" height="100" alt="" onerror="this.src='{skin:xiaomi/images/avatar-bg_1.png}'"/>
+                        </a>
+                        <div class="edit-icon pos-absolute"><a class="f-12 color-orange" href="javascript:select_ico();" title="修改头像"><i class="icon-18 icon-cam"></i> </a></div>
+                    </div>
+                    
+                    <p class="text-center f-12">{$this->user['username']}</p>
+                    <p class="text-center m-b-0"><a class="btn btn-xs f-12 btn-gray" href="{url:/simple/logout}">退出登录</a></p>
+                </div>
+                {foreach:items=menuUcenter::init()}
+                <div class="func-list margin-0-auto">
+                    <div class="f-16 text-center p-t-20 p-b-20 f-w-b">{$key}</div>
+                    <ul class="function-list-bd list-unstyled">
+                        {foreach:items=$item key=$moreKey item=$moreValue}
+                        <li class="text-center p-b-10"><a class="f-12" href="{url:$moreKey}">{$moreValue}</a></li>
+                        {/foreach}
+                    </ul>
+                </div>
+                {/foreach}
+            </div>
+
+            {viewcontent}
+        </div>
+    </div>
+</div>
+
+
+
+<!-- service-->
+<div class="w1230 margin-0-auto clearfix">
+    <div class="service ov-hidden">
+        <ul class="list-unstyled">
+            <li class="pull-left">
+                <div class="media">
+                    <div class="media-left">
+                        <span class="glyphicon glyphicon-ok text-muted"></span>
+                    </div>
+                    <div class="media-body">
+                        <div class="media-heading"><h4 class="m-0 f-14">正品优选</h4></div>
+                        <p class="m-0 f-12 text-muted">共享集团供应链</p>
+                    </div>
+                </div>
+            </li>
+            <li class="pull-left">
+                <div class="media">
+                    <div class="media-left">
+                        <span class="glyphicon glyphicon-signal text-muted"></span>
+                    </div>
+                    <div class="media-body">
+                        <div class="media-heading"><h4 class="m-0 f-14">上市公司</h4></div>
+                        <p class="m-0 f-12 text-muted">诚信服务 品质保证</p>
+                    </div>
+                </div>
+            </li>
+            <li class="pull-left">
+                <div class="media">
+                    <div class="media-left">
+                        <span class="glyphicon glyphicon-home text-muted"></span>
+                    </div>
+                    <div class="media-body">
+                        <div class="media-heading"><h4 class="m-0 f-14">连锁门店</h4></div>
+                        <p class="m-0 f-12 text-muted">门店体验 网上下单</p>
+                    </div>
+                </div>
+            </li>
+            <li class="pull-left">
+                <div class="media">
+                    <div class="media-left">
+                        <span class="glyphicon glyphicon-flash text-muted"></span>
+                    </div>
+                    <div class="media-body">
+                        <div class="media-heading"><h4 class="m-0 f-14">及时处理</h4></div>
+                        <p class="m-0 f-12 text-muted">16点前下单 当天发货</p>
+                    </div>
+                </div>
+            </li>
+            <li class="pull-left no-border">
+                <div class="media">
+                    <div class="media-left">
+                        <span class="glyphicon glyphicon-random text-muted"></span>
+                    </div>
+                    <div class="media-body">
+                        <div class="media-heading"><h4 class="m-0 f-14">最优时效</h4></div>
+                        <p class="m-0 f-12 text-muted">专业物流 及时送达</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- service-->
+
+<!-- help-->
+<div class="w1230 margin-0-auto clearfix">
+    <div class="help ov-hidden">
+        {foreach:items=Api::run('getHelpCategoryFoot') item=$helpCat}
+        <dl class="help-list pull-left">
+            <dt class="f-14">{$helpCat['name']}</dt>
+            {foreach:items=Api::run('getHelpListByCatidAll',$helpCat['id'])}
+            <dd class="f-12"><a class="text-muted" href="{url:/site/help/id/$item['id']}" target="_blank">{$item['name']}</a></dd>
+            {/foreach}
+        </dl>
+        {/foreach}
+        <div class="contact f">
+            <p>
+                <span class="glyphicon glyphicon-phone-alt text-muted f-18"></span>
+                <strong class="f-16 color-orange">4000-552-888</strong>
+            </p>
+			<p>
+				<a class="f-16" href="javascript:;" onclick="open_new_window('https://dyg.kf5.com/kchat/17312?from=PC%e5%95%86%e5%9f%8e')">
+                	<span class="glyphicon glyphicon-comment text-muted f-18"></span>
+                	在线客服
+                </a>
+            </p>
+            <p>
+                <span class="glyphicon glyphicon-envelope text-muted f-18"></span>
+                <span class="f-16 text-muted">shop@dyg-hec.com</span>
+            </p>
+            <p class="m-0">
+                <img src="{skin:xiaomi/images/qrcode.png}" width="80">
+            </p>
+        </div>
+    </div>
+</div>
+<!-- help-->
+
+<div class="w1230 margin-0-auto clearfix">
+    <div class="copyright f-12 text-center">
+        <div class="text-muted">
+            <p>
+                <a href="http://e.dyg.cn" class="text-muted">关于我们</a>
+                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                <a href="/site/help/id/4" class="text-muted">购买流程</a>
+                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                <a href="/site/help/id/53" class="text-muted">如何付款</a>
+                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                <a href="/site/help/id/48" class="text-muted">联系我们</a>
+                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                <a href="http://e.dyg.cn/open" class="text-muted">招商合作</a>
+            </p>
+            <p>
+                Powered by <a href="http://e.dyg.cn" class="text-muted">东阳光大健康电商</a>
+                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                Copyright &copy; 2013-2016 <a class="text-muted" href="http://www.miibeian.gov.cn/" target="_blank">粤ICP备15070469号-2</a>
+            </p>
+        </div>
+        <div style="display:none">
+            <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253803396'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1253803396' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(function()
+    {
+        //搜索框填充默认数据
+        $('input:text[name="word"]').val("{$this->word}");
+
+        //全部分类菜单显示
+        {if:IReq::get('controller') == 'site' && IReq::get('action') == 'index' || IReq::get('controller') == ''}
+        {else:}
+        $('.nav-cat-pos .category').hover(
+                function(){
+                    $(this).addClass("active");
+                },
+                function(){
+                    $(this).removeClass("active");
+                }
+        );
+
+        {/if}
+
+        $(".nav-cat-pos .list-item").hover(function(){
+            $(this).addClass("active");
+            $(this).children(".cat-pop").show();
+        },function(){
+            $(this).removeClass("active");
+            $(this).children(".cat-pop").hide();
+        });
+
+        //按钮高亮
+        var localUrl = "{echo:IUrl::getUri()}";
+        var nowBread = $('.u-section-left li a[href$="' + localUrl + '"]');
+        if ($(nowBread).parent().length > 0) {
+            $(nowBread).parent().addClass('current');
+            $('.breadcrumb').append("<li><a href='javascript:;'>"+$(nowBread).text()+"</a></li>");
+        }
+        $('.breadcrumb').children("li:last-child").addClass("active");
+        
+
+    });
+
+    //修改头像
+    function select_ico()
+    {
+        {set:$callback = urlencode(IUrl::creatUrl("/ucenter/user_ico_upload"));}
+        
+		layer.open({
+			type: 2, //iframe层
+			content: "{url:/block/photo_upload?callback=$callback}", 
+			id: "user_ico",
+			title: "设置头像",
+			btn: ['上传', '取消'],
+			yes: function(index, layero){
+				var formObj = layer.getChildFrame("form", index);
+				formObj.submit();
+			}
+		});
+    }
+
+    //头像上传回调函数
+    function callback_user_ico(content)
+    {
+        var content = eval(content);
+        if(content.isError == true)
+        {
+            alert(content.message);
+        }
+        else
+        {
+            $('.user_ico_img').prop('src',content.data);
+        }
+        layer.closeAll("iframe");
+    }
+
+</script>
+</body>
+</html>

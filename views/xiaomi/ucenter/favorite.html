@@ -1,0 +1,125 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li class="active">收藏夹</li>
+        </ul>
+
+        <div class="clearfix">
+            <div class="media tips-media">
+                <div class="media-left">
+                    <img src="{skin:xiaomi/images/favorite.png}" alt="">
+                </div>
+                <div class="media-body">
+                    <p>我的收藏夹</p>
+                    <p class="f-12">
+                        <a href="{url:/ucenter/favorite/}" id="catarea">全部 (<label id='favoriteSum'></label>)</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {set:$favoriteSum = 0}
+                        {foreach:items=Api::run('getUcenterFavoriteByCatid',array('#user_id#',$this->user['user_id']))}
+                        {set:$favoriteSum+=$item['num']}
+                        <a href="{url:/ucenter/favorite/cat_id/$item[id]}" id="catarea{$item['id']}">{$item['name']} ({$item['num']})</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        {/foreach}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white">
+            <h5 class="m-b-20">收藏列表</h5>
+
+            {set:$favoriteObj = Api::run('getFavorite',$this->user['user_id'],IReq::get('cat_id'))}
+            {set:$items = $favoriteObj->find()}
+            
+            {if:$items}
+                <table class="table table-bordered text-center goods-cart-list f-12 m-b-20">
+                    <tbody>
+                    <tr class="active text-muted">
+                        <td colspan="2">商品名称</td>
+                        <td width="130">价格</td>
+                        <td width="130">收藏时间</td>
+                        <td width="130">操作</td>
+                    </tr>
+                    {foreach:items=$items}
+                        <tr>
+                            <td class="no-border-lr" width="95">
+                                <a href="{url:/site/products/id/$item['goods_id']}">
+                                    <img class="m-l-15" src="{url:/pic/thumb/img/$item['img']/w/80/h/80}" width="80" height="80" alt="{$item['name']}" />
+                                </a>
+                            </td>
+                            <td class="text-left no-border-lr">
+                                <p>
+                                    <a href="{url:/site/products/id/$item['goods_id']}">
+                                        {$item['name']}
+                                    </a>
+                                </p>
+                                
+
+                                <div class="summary-input f-12">
+                                    <input type='hidden' name='goods_id[]' value="{$item['goods_id']}" />
+                                    <input class="text-ov-h info-text" id="summary_show_{$item['id']}" placeholder="备注" value="{$item['summary']}" >
+                                    <a class="m-l-15 btn btn-xs btn-warning" href='javascript:;' onclick="edit_summary({$item['id']});">更新备注</a>
+                                </div>
+
+                                
+                            </td>
+                            <td>
+                                <span class='color-red'>￥{$item['sell_price']}</span>
+                            </td>
+                            <td class="text-muted">
+                                {$item['time']}
+                            </td>
+                            <td>
+                                <a href="{url:/site/products/id/$item['goods_id']}" class="btn btn-xs btn-warning" target="_blank">查看</a>
+                                &nbsp;&nbsp;
+                                <button class="btn btn-xs btn-gray" onclick="delModel({link:'{url:/ucenter/favorite_del/id/$item[id]}',msg:'确定取消收藏？'});">取消收藏</button>
+                            </td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            {else:}
+                <div class="m-t-40 m-b-20">
+                    <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+                    <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+                </div>
+            {/if}
+        </div>
+    </div>
+
+</div>
+
+<script type='text/javascript'>
+    //修改备注信息
+    function edit_summary(idVal)
+    {
+        var summary = $("#summary_show_"+idVal).val();
+        if(!$.trim(summary)){
+            alert('请填写备注信息');
+            return;
+        }
+
+        $.getJSON('{url:/ucenter/edit_summary}',{id:idVal,summary:summary},function(content){
+            if(content.isError == true)
+            {
+                alert(content.message);
+            }
+            else{
+                tips("保存备注成功");
+            }
+        });
+
+    }
+
+    //统计总数
+    $('#favoriteSum').html('{$favoriteSum}');
+    //选择当前分类
+    $("#catarea{echo:IFilter::act(IReq::get('cat_id'))}").addClass('color-orange');
+</script>

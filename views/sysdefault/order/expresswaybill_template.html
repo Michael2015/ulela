@@ -1,0 +1,49 @@
+{set:$seller_id = IFilter::act(IReq::get('seller_id'),'int')}
+{query:name=expresswaybill where = is_close eq 0 fields = id,name items = $printType /}
+<div class="container">
+	<form action='{url:/order/expresswaybill_print}' method='post' id='express_print'>
+		<input type='hidden' name='order_id' id='order_id' value='' />
+		<input type='hidden' name='express_id' id='express_id' value='' />
+		<input type='hidden' name='seller_id' value='{$seller_id}' />
+
+		{foreach:items = $this->orderInfo item = $orderRow}
+		<table class="table" width="100%" cellspacing="0" cellpadding="0" border="1" style='margin-top:15px'>
+			<caption class="f30 bold">快递单打印</caption>
+			<colgroup>
+				<col width="300px" />
+				<col />
+			</colgroup>
+
+			<tr>
+				<td>收货人姓名</td><td align='left'>{$orderRow['accept_name']}</td>
+			</tr>
+			<tr>
+				<td>收货地址</td><td align='left'>{$orderRow['province_str']} &nbsp; {$orderRow['city_str']} &nbsp; {$orderRow['area_str']} &nbsp; {$orderRow['address']}</td>
+			</tr>
+			<tr>
+				<td>联系手机</td><td align='left'>{$orderRow['mobile']}</td>
+			</tr>
+			<tr>
+				<td>联系电话</td><td align='left'>{$orderRow['telphone']}</td>
+			</tr>
+			<tr>
+				<td>邮编</td><td align='left'>{$orderRow['postcode']}</td>
+			</tr>
+			<tr>
+				<td>订单附言</td><td align='left'>{$orderRow['postscript']}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td align='left'>
+					{if:$printType}
+					{foreach:items = $printType item = $printRow}
+					<input type='submit' value='{$printRow['name']}' onclick='$("#express_id").val("{$printRow['id']}");$("#order_id").val("{$orderRow['id']}");' /> &nbsp;&nbsp;
+					{/foreach}
+					{else:}
+					当前还没有快递单模板<a href='{url:/order/expresswaybill_edit}'>点击新建</a>
+					{/if}
+				</td>
+		</table>
+		{/foreach}
+	</form>
+</div>

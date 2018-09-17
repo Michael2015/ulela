@@ -1,0 +1,67 @@
+{set:$items=$this->comment;}
+<div class="headbar">
+	<div class="position"><span>会员</span><span>></span><span>咨询管理</span><span>></span><span>查看评论</span></div>
+	<div class="operating">
+		<a href="{url:/comment/comment_list}"><button class="operating_btn" type="button"><span class="return">返回</span></button></a>
+	</div>
+</div>
+<div class="content_box">
+	<div class="content form_content">
+		<form action="{url:/comment/comment_update}" method="post" name="comment_edit">
+			<input type="hidden" value="{$items['id']}" name="id" />
+			<table class="form_table">
+				<colgroup>
+					<col width="150px" />
+					<col />
+				</colgroup>
+
+				<tr>
+					<th>评论人：</th>
+					<td><a href="{url:/member/member_edit/uid/$items[user_id]}">{$items['username']}</a></td>
+				</tr>
+				<tr>
+					<th>评价时间：</th><td>{$items['time']}</td>
+				</tr>
+				<tr>
+					<th>评价商品：</th><td><a href="{url:/goods/products/id/$items['goods_id']}" target="_blank">{$items['name']}</a></td>
+				</tr>
+				<tr>
+					<th>评价内容：</th><td>{$items['contents']}</td>
+				</tr>
+				<tr>
+					<th>评价分数：</th><td>{$items['point']}分</td>
+				</tr>
+				{if:$items['seller_id']}
+				<tr><th>商家：</th><td><a href="{url:/site/home/id/$items['seller_id']}" target="_blank">商家主页</a></td></tr>
+				{/if}
+				<tr>
+					<th>回复评价：</th>
+					<td><textarea class='normal' name='recontents'>{$items['recontents']}</textarea><label>卖家对买家评论的回复</label></td>
+				</tr>
+				<tr>
+					<th></th>
+					<td>
+						<button type='submit' class='submit'><span>确定</span></button>
+						<button type='reset' class='submit'><span>重置</span></button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<SCRIPT LANGUAGE="JavaScript">
+function reclaim()
+{
+	art.dialog({
+		id: 'reclaim',
+		lock: true,
+		title: '删除评价',
+		content: "确定要删除此条评价信息吗？",
+		ok: function(){
+			$("form[name='comment_edit']").submit();
+			return false;
+		},
+		cancel: true
+	});
+}
+</SCRIPT>

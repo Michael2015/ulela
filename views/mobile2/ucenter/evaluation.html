@@ -1,0 +1,57 @@
+<div class="bg-white p-10 pb-0">
+	<ul class="nav nav-tabs table-tabs pb-10 font-sm">
+	    <li class="active"><a href="javascript:;">未评价</a></li>
+	    <li><a href="{url:/ucenter/isevaluation}">已评价</a></li>
+	</ul>
+</div>
+
+{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+{set:$user_id = $this->user['user_id']}
+{set:$queryEvaluationList = Api::run('getUcenterEvaluation',$user_id)}
+{set:$items = $queryEvaluationList->find()}
+
+{if: $items}
+	<ul class="list-unstyled font-sm">
+		{foreach:items = $items key = $_key}
+			{if: !($_key > 1 && $items[$_key-1]['order_no'] == $item['order_no']) }
+				<li class="bg-white mt-15 pb-5 bd-btm-1s bd-top-1s">
+					<div>
+						<div class="p-10 bg-light-gray">
+							<p class="mb-5">购买日期：{$item['time']}</p>
+							<p class="text-muted">订单编号：{$item['order_no']}</p>
+						</div>
+			{/if}
+						<!--订单商品预览-->
+						<div class="clearfix mb-5 ov-h">
+							<table class="table bd-color-gray vm mb-0">
+								<tr>
+									<td width="66">
+										<a class="show" href="{url:/site/products/id/$item['goods_id']}">
+			    							<img src="{webroot:}{echo:Thumb::get($item['img'],50,50)}" width="50" height="50" alt="{$item['name']}" title="{$item['name']}" />
+			    						</a>
+									</td>
+									<td class="p-0">
+										<a href="{url:/site/products/id/$item[goods_id]}">{$item['name']}</a>
+									</td>
+									<td class="text-center" width="36">
+										<a class="text-warning" href="{url:/site/comments/id/$item['id']}"><i class="iconfont icon-xiugaimima1 text-warning"></i></a>
+			                        </td>
+								</tr>
+							</table>
+						</div>
+			{if: (isset($items[$_key+1]) && $items[$_key+1]['order_no'] != $item['order_no']) || !isset($items[$_key+1]) }
+					</div>
+				</li>
+			{/if}
+		{/foreach}
+		<li>
+			{$queryEvaluationList->getPageBar()}
+		</li>
+	</ul>
+    
+{else:}
+	<div class="msg bg-white">
+		<p><i class="iconfont icon-31wentifankui"></i></p>
+		<p>已完成的订单才可以评价</p>
+	</div>
+{/if}

@@ -1,0 +1,15 @@
+<div class="ov-h bg-white">
+	<h1 class="font-xl p-10 text-center"><strong>{if:$catRow}{$catRow['name']}{else:}最新资讯{/if}</strong></h1>
+	<div class="font-sm p-15">
+		<ul class="list-unstyled">
+		    {foreach:items = $queryArticle->find()}
+				<li class="pb-10 mb-10 bd-btm-1s bd-color-gray">
+					<p><a href="{url:/site/article_detail/id/$item[id]}">{$item['title']}</a></p>
+           			<p class="text-muted">{echo:date('Y-m-d',strtotime($item['create_time']))}</p>
+				</li>
+			
+			{/foreach}
+		</ul>
+		{$queryArticle->getPageBar()}
+	</div>
+</div>

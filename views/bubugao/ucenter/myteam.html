@@ -1,0 +1,54 @@
+<div class="main_fr f_r">
+    <div class="uc_title m_10">
+        <label class="current"><span>我的团队</span></label>
+        <label><span><a href="{url:/ucenter/freeze_log}">销售记录</a></span></label>
+    </div>
+
+    <div class="form_content m_10">
+        <div class="cont">
+            <table class="list_table" width="100%" cellpadding="0" cellspacing="0">
+                <col />
+                <col />
+                <col />
+                <col />
+                <col />
+                <col />
+                <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>真实姓名</th>
+                        <th>注册时间</th>
+                        <th>当前级别</th>
+                        <th>消费提成</th>
+                        <th>累计消费</th>
+                    </tr> 
+                </thead>
+                <tbody>
+                    {if: $this->team_users_arr}
+                        {foreach: items = $this->team_users_arr}
+                            <tr>
+                                <td>{$item['username']}</td>
+                                <td>{$item['info']['true_name']}</td>
+                                <td>{$item['info']['time']}</td>
+                                {set:$group_name = $item['info']['group_id']?$this->user_group_arr[$item['info']['group_id']]:'无'}
+                                <td>{$group_name}</td>
+                                <td>{echo: isset($this->fanli[$item['info']['group_id']])? $this->fanli[$item['info']['group_id']] . '%' : '暂无'; }</td>
+                                <td>{$item['info']['total_consume']}</td>
+                            </tr>
+                        {/foreach}
+                    {else:}
+                        <tr>
+                            <td colspan="6">暂无队员，<a href="jointeam">马上邀请</a></td>
+                        </tr>
+                    {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="prompt m_10">
+        <p><strong>消费提成说明：</strong></p>
+        <p class="indent">1、提成比例：第1单按最低比例执行，第2~4单按最低比例+2%，第5单及之后按最高比例（比如消费提成为6~10%：某队员消费第1单，您可获提成6%，第2~4单可获得8%，第5单及之后一直可获得10%）</p>
+        <p class="indent">2、当提成订单为完成状态，奖励预存款才正式解冻可用，奖励明细请查看<a href="freeze_log">销售记录</a>。（手动或自动确认收货后，在30天售后维权期无退款即为完成订单）</p>
+        <p class="indent">3、床垫、冬虫夏草相关、阳光全球购、活动期间等产品无提成或比例不同，具体以系统计算为准。</p>
+    </div>
+</div>

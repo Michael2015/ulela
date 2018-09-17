@@ -1,0 +1,374 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+    <div class="p-30">
+        <div class="f-w-b f-18 m-b-20">订单详情</div>
+        <!--订单信息-->
+        {set: $order_id = $this->order_info['id'];}
+        <table class="table table-bordered f-12 m-b-20">
+            <tbody>
+                <tr class="active">
+                    <td>
+                        <span class="text-muted f-w-b">下单时间： </span>
+                        <span>{$this->order_info['create_time']}</span>
+                    </td>
+
+                    <td>
+                        <span class="text-muted f-w-b">订单号： </span>
+                        <span>{$this->order_info['order_no']}</span>
+                    </td>
+                    
+                    <td>
+                        <span class="text-muted f-w-b">订单状态： </span>
+                        <?php
+                            switch($orderStatus)
+                            {
+                                case 2: //等待付款
+                                    $status_class = "text-danger";
+                                    break;
+                                case 3: //已发货
+                                case 11:
+                                    $status_class = "text-success";
+                                    break;
+                                case 4: //等待发货
+                                    $status_class = "text-primary";
+                                    break;
+                                default: 
+                                    $status_class = "text-muted";
+                            }
+
+                        ?>
+                        <span class="{echo: $status_class}">{echo:Order_Class::orderStatusText($orderStatus)}</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                    
+                        {if:$orderStatus == 2}
+                            <a class="btn btn-xs btn-danger" type="button" href="{url:/block/payment/id/$order_id}">立即付款</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        {/if}
+
+                        {if:in_array($orderStatus,array(1,2))}
+                            <a href="javascript:;" onclick="if(confirm('确定取消订单吗？')){window.location.href='{url:/ucenter/order_status/order_id/$order_id/op/cancel}';}">取消订单</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        {/if}
+
+                        
+
+                        {if:in_array($orderStatus,array(11,3))}
+                            <a class="btn btn-sm btn-primary" type="button" href="{url:/ucenter/order_status/order_id/$order_id/op/confirm}">确认收货</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        {/if}
+
+                        {if:Order_Class::isRefundmentApply($this->order_info)}
+                            <a class="btn btn-xs btn-danger" href="{url:/ucenter/refunds_edit/order_id/$order_id}">申请退款</a>
+                        {/if}
+                    </td>
+                </tr>
+
+                <tr class="text-muted">
+                    <td colspan="3">
+                        <ul class="order-process-list text-left">
+                            {set:$orderStep = Order_Class::orderStep($this->order_info)}
+                            {foreach:items=$orderStep item=$stepData key=$eventTime}
+                            <li>{$eventTime}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="color-orange">{$stepData}</span></li>
+                            {/foreach}
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!--订单信息-->
+
+        <!--收件人信息-->
+        <table class="table table-bordered text-center f-12 m-b-20">
+            <thead>
+                <tr class="active text-muted">
+                    <td colspan="2" class="f-w-b">收件人信息</td>
+                    <td colspan="2" class="f-w-b">支付和配送方式</td>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td width="13%">
+                    <span class="text-muted">收货人</span>
+                </td>
+                <td width="37%">
+                    <span>{$this->order_info['accept_name']}</span>
+                </td>
+                <td width="13%">
+                    <span class="text-muted">配送方式</span>
+                </td>
+                <td>
+                    <span>{$this->order_info['delivery']}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="text-muted">地址</span>
+                </td>
+                <td>
+                    <span>{$this->order_info['province_str']} {$this->order_info['city_str']} {$this->order_info['area_str']} {$this->order_info['address']}</span>
+                </td>
+                <td>
+                    <span class="text-muted">支付方式</span>
+                </td>
+                <td>
+                    <span>{$this->order_info['payment']}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="text-muted">邮编</span>
+                </td>
+                <td>
+                    <span>{$this->order_info['postcode']}</span>
+                </td>
+                <td>
+                    <span class="text-muted">运费</span>
+                </td>
+                <td>
+                    <span>{$this->order_info['real_freight']}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="text-muted">固定电话</span>
+                </td>
+                <td>
+                    <span>{$this->order_info['telphone']}</span>
+                </td>
+                {if:$this->order_info['takeself']}
+                    <td>
+                        <span class="text-muted">自提地址</span>
+                    </td>
+                    <td>
+                        <span>
+                            {$this->order_info['takeself']['province_str']}
+                            {$this->order_info['takeself']['city_str']}
+                            {$this->order_info['takeself']['area_str']}
+                            {$this->order_info['takeself']['address']}
+                        </span>
+                    </td>
+                {else:}
+                    <td>
+                        <span class="text-muted">物流公司</span>
+                    </td>
+                    <td>
+                        <span>{$this->order_info['freight']['freight_name']}</span>
+                    </td>
+                {/if}
+            </tr>
+            <tr>
+                <td>
+                    <span class="text-muted">手机号码</span>
+                </td>
+                <td>
+                    <span>{$this->order_info['mobile']}</span>
+                </td>
+
+                {if:$this->order_info['takeself']}
+                    <td>
+                        <span class="text-muted">联系方式</span>
+                    </td>
+                    <td>
+                        <span>
+                            {if: $this->order_info['takeself']['phone'] != $this->order_info['takeself']['mobile'] }
+                                {$this->order_info['takeself']['phone']}, {$this->order_info['takeself']['mobile']}
+                            {else:}
+                                {$this->order_info['takeself']['mobile']}
+                            {/if}
+                        </span>
+                    </td>
+                {else:}
+                    <td>
+                        <span class="text-muted">快递单号</span>
+                    </td>
+                    <td>
+                        <span>{$this->order_info['freight']['delivery_code']}</span>
+                    </td>
+                {/if}
+            </tr>
+
+            </tbody>
+        </table>
+        <!--收件人信息-->
+
+        <!--发票信息-->
+        {if:$this->order_info['invoice']==1}
+        <table class="table table-bordered f-12 m-b-20">
+            <thead>
+                <tr class="active text-muted">
+                    <td colspan="2" class="text-center">发票信息</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="text-muted">所需税金：</span>
+                    </td>
+                    <td>
+                        <span>{$this->order_info['taxes']}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="text-muted">发票抬头：</span>
+                    </td>
+                    <td>
+                        <span>{$this->order_info['invoice_title']}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        {/if}
+
+        <!--商品清单-->
+        <table class="table table-bordered goods-cart-list text-center f-12 m-0">
+            <thead>
+                <tr class="active text-muted">
+                    <td colspan="8" class="f-w-b">商品清单</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="active text-muted">
+                    <td colspan="2">商品信息</td>
+                    <td>赠送积分</td>
+                    <td>商品价格</td>
+                    <td>优惠金额</td>
+                    <td>商品数量</td>
+                    <td>小计</td>
+                    <td>配送</td>
+                </tr>
+
+                {foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$this->order_info['order_id'])) item=$good}
+                {set:$good_info = JSON::decode($good['goods_array'])}
+                <tr>
+                    <td class="no-border-lr" width="65">
+                        <a class="show m-l-15" href="{url:/site/products/id/$good['goods_id']}">
+                            <img src="{webroot:$good['img']}" width="50px" height="50px" alt="{$good_info['name']}" title="{$good_info['name']}" onerror='this.src="{skin:xiaomi/images/nopic.jpg}"' />
+                        </a>
+                    </td>
+                    <td class="no-border-lr text-left">
+                        <p>
+                            <a href="{url:/site/products/id/$good['goods_id']}" target='_blank'>{$good_info['name']}</a>
+
+                            {if: $this->order_info['status'] == 5 }
+                                {set: $_comment_row = Api::run('getOrderComment', $this->order_info['order_no'], $good['goods_id']); }
+                                {if: isset($_comment_row['status'])}
+                                    {if: $_comment_row['status']}
+                                        &nbsp;&nbsp;<span class="text-muted">(已评价)</span>
+                                    {else:}
+                                    <a href="{url:/site/comments/id/$_comment_row['id']}" class="color-orange"><span class="label label-thin label-primary">待评价</span></a>
+                                    {/if}
+                                {/if}
+                            {/if}
+                        </p>
+                        {if:$good_info['value']!=''}
+                            <p class="text-muted m-0">{$good_info['value']}</p>
+                        {/if}
+                    </td>
+                    <td>
+                        {echo:$good['point']*$good['goods_nums']}
+                    </td>
+                    <td>
+                        ￥{$good['goods_price']}
+                    </td>
+                    <td>
+                        ￥{echo:$good['goods_price']-$good['real_price']}
+                    </td>
+                    <td>
+                        {$good['goods_nums']}
+                    </td>
+                    <td class="color-red">
+                        ￥{echo:$good['goods_nums']*$good['real_price']}
+                    </td>
+                    <td>
+                        <p class="m-0">{echo:Order_Class::goodsSendStatus($good['is_send'])}</p>
+                        {if:$good['delivery_id']}
+                            <!-- <p class="m-t-10 m-b-0"><a href="javascript:;" class='btn btn-warning btn-xs' onclick="freightLine({$good['delivery_id']});">物流跟踪</a></p> -->
+                            <p class="m-t-10 m-b-0"><a href="javascript:;" class='btn btn-warning btn-xs' onclick="freightLineKd100('{echo: urlencode($this->order_info['freight']['freight_name'])}','{$this->order_info['freight']['delivery_code']}');">物流跟踪</a></p>
+                       
+                        {/if}
+                    </td>
+                </tr>
+                {/foreach}
+
+            </tbody>
+
+        </table>
+        <!--商品清单-->
+
+        <!--金额结算-->
+        <div class="p-20 bg-gray text-right">
+            <ul class="list-unstyled cart-count f-12">
+                <li>
+                    <span class="text-muted">商品总金额：</span>
+                    <span class="dis-i-b w120">￥{$this->order_info['payable_amount']}</span>
+                </li>
+                <li>
+                    <span class="text-muted">运费：</span>
+                    <span class="dis-i-b w120">+ ￥{$this->order_info['real_freight']}</span>
+                </li>
+				{if:$this->order_info['insured'] > 0}
+                <li>
+                    <span class="text-muted">保价：</span>
+                    <span class="dis-i-b w120">+ ￥{$this->order_info['insured']}</span>
+                </li>
+                {/if}
+                {if:$this->order_info['taxes'] > 0}
+                <li>
+                    <span class="text-muted">税金：</span>
+                    <span class="dis-i-b w120">+ ￥{$this->order_info['taxes']}</span>
+                </li>
+                {/if}
+                {if:$this->order_info['pay_fee'] > 0}
+                <li>
+                    <span class="text-muted">支付手续费：</span>
+                    <span class="dis-i-b w120">+ ￥{$this->order_info['pay_fee']}</span>
+                </li>
+                {/if}
+                <li>
+                    <span class="text-muted">订单折扣或涨价：</span>
+                    <span class="dis-i-b w120">￥{$this->order_info['discount']}</span>
+                </li>
+                {if:$this->order_info['promotions'] > 0}
+                <li>
+                    <span class="text-muted">促销优惠：</span>
+                    <span class="dis-i-b w120">- ￥{$this->order_info['promotions']}</span>
+                </li>
+                {/if}
+                <li class="color-red">
+                    订单金额：<span class="dis-i-b w120 f-16 f-w-b">￥{$this->order_info['order_amount']}</span>
+                </li>
+
+            </ul>
+        </div>
+        <!--金额结算-->
+    </div>
+</div>
+
+<script type="text/javascript">
+//快递跟踪
+// function freightLine(doc_id)
+// {
+//     var urlVal = "{url:/block/freight/id/@id@}";
+//     urlVal = urlVal.replace("@id@",doc_id);
+	
+// 	layer.open({
+// 		type: 2, //iframe层
+// 		content: urlVal, 
+// 		id: "expressLog",
+// 		title: "物流跟踪查询",
+// 		area: ['600px', '400px']
+// 	});
+// }
+
+function freightLineKd100(com, nu)
+{
+    var urlVal = 'https://m.kuaidi100.com/index_all.html?type='+com+'&postid='+nu;
+    layer.open({
+         type: 2, //iframe层
+         content: urlVal, 
+         id: "expressLog",
+         title: "物流跟踪查询",
+         area: ['600px', '600px']
+     });
+}
+</script>

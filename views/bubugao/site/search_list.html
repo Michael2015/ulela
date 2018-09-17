@@ -1,0 +1,128 @@
+{set:$defaultWhere = array('search' => $this->word , 'category_extend' => $this->cat_id )}
+{set:$goodsObj = search_goods::find($defaultWhere,20);$resultData = $goodsObj->find();}
+
+<div class="maxPath">
+	<dl class="basic-ex-breadcrumbs clearfix">
+	<dd><a style="color:#666" href='{url:}'><span>首页</span></a>
+		<span>&raquo;</span>
+			<span>
+				<a class="trigger">
+				搜索"{$this->word}"
+				</a>
+			</span>
+		</dd>
+
+	</dl>
+</div>
+<!--maxwIn-->
+<div class="maxwIn">
+
+<div class="sidebar f_l" style="width:200px;float:left">
+		<!--侧边栏分类-->
+		{set:$catSide = goods_class::catTree($this->catId)}
+		{if:$catSide}
+		<div class="box_2 m_10">
+			<div class="title">所有分类</div>
+			<div class="content">
+				{foreach:items=$catSide item=$first}
+				<dl class="clearfix">
+					<dt><a href="{url:/site/pro_list/cat/$first['id']}">{$first['name']}</a></dt>
+					{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first['id'])) item=$second}
+					<dd><a href="{url:/site/pro_list/cat/$second['id']}">{$second['name']}</a></dd>
+					{/foreach}
+				</dl>
+				{/foreach}
+			</div>
+		</div>
+		{/if}
+		<!--侧边栏分类-->
+	<!--热卖商品-->
+		<div class="box m_10">
+			<div class="title">热卖商品</div>
+			<div class="content">
+				<ul class="ranklist">
+				{foreach:items=Api::run('getCommendHot')}
+					<li class="current">
+						<a href="{url:/site/products/id/$item['id']}"><img width="58px" height="58px" alt="{$item['name']}" src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" /></a>
+						<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item['id']}">{$item['name']}</a>
+						<b>￥{$item['sell_price']}</b>
+					</li>
+				{/foreach}
+				</ul>
+			</div>
+		</div>
+		<!--热卖商品-->
+	</div>
+
+	<!--clearfix-->
+	<div id="main" class="clearfix">
+		<!--page-maincontent-->
+		<div class="page-maincontent" style="margin-left:10px;width:980px;float:left">
+			{set:$catExt = Api::run('getGoodsCategoryExtend',array('#word#',$this->word))}
+			{if:$catExt}
+			<div class="related-search m-b- clearfix">
+				<label class="related-search-label">搜索结果分类：</label>
+				<span class="related-search-content">
+					{foreach:items=$catExt}
+					{set:$tmpWord=urlencode($this->word);}
+					<a class='{if:IReq::get('cat') == $item['id']}active{/if}' href="{url:/site/search_list/word/$tmpWord/cat/$item['id']}">{$item['name']}({$item['num']})</a>
+					{/foreach}
+				</span>
+			</div>
+		    {/if}
+
+			<!--商品条件筛选-->
+			{include:_goods_list_filter}
+
+			<!--gallery-show-->
+			<div id="gallery_show" class="gallery-show">
+				<!--gallery-grid-->
+				<div class="gallery-grid">
+					{if:$resultData}
+					<ul class="clearfix">
+						{foreach:items=$resultData}
+						<li class="goods-item" name="goodsItems" style="width: 206px;">
+				            <div class="goods-pic" style="width:180px;height:180px;line-height:178px;*font-size:162px;">
+								<a target="_blank" href="{url:/site/products/id/$item['id']}">
+									<img class="action-goods-img" alt="{$item['name']}" style="max-width:180px;max-height:180px;" src="{url:/pic/thumb/img/$item['img']/w/180/h/180}">
+								</a>
+				              </div>
+						      <div class="goods-info">
+						        <h3 class="goods-name">
+						      		     <a target="_blank" href="{url:/site/products/id/$item['id']}">
+						        		{$item['name']}
+						        		</a>
+						        </h3>
+						        <div class="goods-price">
+						          <ins class="price">
+									  {$item['sell_price']}
+							      </ins>
+				                    <span class="goods-comment">
+				                    <a href="{url:/site/products/id/$item['id']}"><b>{$item['comments']}</b>条评论</a>
+				                    </span>
+				                    <del class="price">￥{$item['market_price']}</del>
+				                  </div>
+						      </div>
+
+						    </li>
+						    {/foreach}
+					</ul>
+
+					<div class="hl_page">
+					{$goodsObj->getPageBar()}
+					</div>
+					{else:}
+					<p class="display_list mt_10" style='margin-top:50px;margin-bottom:50px'>
+						<strong class="gray f14">对不起，没有找到相关商品</strong>
+					</p>
+					{/if}
+				</div>
+				<!--gallery-grid-->
+			</div>
+			<!--gallery-show-->
+		</div>
+		<!--page-maincontent-->
+	</div>
+	<!--clearfix-->
+</div>
+<!--maxwIn-->

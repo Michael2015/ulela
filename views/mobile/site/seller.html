@@ -1,0 +1,22 @@
+
+<div class="container1">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="list-group">
+				<a href="#" class="list-group-item active"><h5>商家列表</h5></a>
+				{set:$queryObj=Api::run('getSellerList');$resultData=$queryObj->find()}
+				{if:$resultData}
+
+			{foreach:items=$resultData}
+				<div class="list-group-item">
+				
+					<h5><a href="{url:/site/home/id/$item[id]}">{$item['true_name']}</a><i class="icon-angle-right" style="float:right"></i> </h5>
+				
+				</div>
+				{/foreach}
+				
+				{/if}
+			</div>
+		</div>
+	</div>
+</div>

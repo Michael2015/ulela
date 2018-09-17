@@ -1,0 +1,109 @@
+{js:my97date}
+{js:kindeditor}
+{js:artTemplate}
+<div class="headbar">
+	<div class="position"><span>会员</span><span>></span><span>信息处理</span><span>></span><span>邮件订阅</span></div>
+	<div class="operating">
+		<a href="javascript:void(0)" onclick="writeMail();"><button class="operating_btn" type="button"><span class="send">发送邮件</span></button></a>
+		<a href="javascript:void(0)" onclick="selectAll('id[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
+		<a href="javascript:void(0)" onclick="delModel({form:'notify_list',msg:'确定要删除选中的记录吗？'})"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
+	</div>
+</div>
+
+<form action="{url:/message/registry_del}" method="post" name="notify_list" onsubmit="return checkboxCheck('id[]','尚未选中任何记录！')">
+<div class="content" style="position:relative;">
+	<table class="list_table">
+		<colgroup>
+			<col width="40px" />
+			<col />
+		</colgroup>
+		<thead>
+			<tr>
+				<th>选择</th>
+				<th>email</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+			{query: name=email_registry order = id desc page=$page }
+			<tr>
+				<td><input class="check_ids" name="id[]" type="checkbox" value="{$item['id']}" /></td>
+				<td>{$item['email']}</td>
+			</tr>
+			{/query}
+		</tbody>
+	</table>
+</div>
+{$query->getPageBar()}
+</form>
+
+<script id="emailTemplate" type="text/html">
+<div class="pop_win" style="width:100%;height:100%">
+	<div class="content">
+		<form name="form_filter" action="{url:/message/registry_message_send}" method="post">
+			<table class="form_table">
+			<colgroup>
+				<col width="50px" />
+				<col />
+			</colgroup>
+
+			<tbody>
+				<tr>
+					<td class="t_r">标题：</td>
+					<td><input class="middle" type="text" name="title" id="form_title" value="" /></td>
+				</tr>
+
+				<tr>
+					<td valign="top" class="t_r">内容：</td>
+					<td><textarea id="content" name="content" style="height:400px;width:97%"></textarea></td>
+				</tr>
+			</tbody>
+			</table>
+		</form>
+	</div>
+</div>
+</script>
+
+<script type="text/javascript">
+function writeMail()
+{
+	art.dialog(
+	{
+		id: 'registryWin',
+		width:900,
+		height:550,
+		title: '发送订阅邮件',
+		content: template.render('emailTemplate'),
+		init:function()
+		{
+			KindEditor.create('#content');
+		},
+		ok:function()
+		{
+			KindEditor.sync("#content");
+			art.dialog({'id':'tmpTan',content:"正在发送，请稍候......" ,lock:true});
+			var title = $("#form_title").val();
+			var content = $("#content").val();
+			var ids = getArray('id[]','checkbox');
+			ids = ids.join(',');
+			$.post("{url:/message/registry_message_send}" , {'title':title,'content':content,'ids':ids} , function(c)
+			{
+				if(c == 'success')
+				{
+					alert("发送完毕！");
+				}
+				else
+				{
+					alert(c);
+				}
+				art.dialog({'id':"tmpTan"}).close();
+			});
+		},
+		cancel:function()
+		{
+			KindEditor.remove('#content');
+		}
+	});
+}
+</script>

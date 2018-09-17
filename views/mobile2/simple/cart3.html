@@ -1,0 +1,45 @@
+<div class="p-15">
+	<div class="panel panel-default">
+		<div class="panel-heading text-center">
+			<i class="iconfont icon-roundcheckfill text-success font-xl"></i>
+			订单已成功提交
+		</div>
+
+		<div class="panel-body">
+			<table class="table font-sm">
+				<tr>
+					<td class="no-border text-muted">订单编号</td>
+					<td class="no-border"><a href="{url:/ucenter/order_detail/id/$this->order_id}">{$this->order_num}</a></td>
+				</tr>
+			  	<tr>
+					<td class="text-muted">订单金额</td>
+					<td><span class="text-danger">{$this->final_sum}</span> 元</td>
+				</tr>
+			  	<tr>
+					<td class="text-muted">支付方式</td>
+					<td>{$this->payment}</td>
+				</tr>
+			  	
+			  	<tr>
+					<td class="text-muted">收货信息</td>
+					<td>{$accept_name}&nbsp;&nbsp;{$mobile}</td>
+				</tr>
+				<tr>
+					<td class="text-muted">配送方式</td>
+					<td>{$this->delivery}</td>
+				</tr>
+			</table>
+
+			<!--不是货到付款并且支付方式为线上支付-->
+			{if:$this->deliveryType != 1 && $this->paymentType == 1}
+			{set:$tmpId=$this->order_id;}
+			<div class="mb-10">
+				<a class="btn btn-block btn-danger" href="{url:/block/doPay/order_id/$tmpId}">立即支付</a>
+			</div>
+			{/if}
+
+			<span class="pull-left"><a class="text-muted font-sm" href="{url:/ucenter/order_detail/id/$this->order_id}">查看订单</a></span>
+			<span class="pull-right"><a class="text-muted font-sm" href="{url:/ucenter/}">返回个人中心</a></span>
+		</div>
+	</div>
+</div>

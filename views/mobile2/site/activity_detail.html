@@ -1,0 +1,6 @@
+{if: $this->activityRow['content_mobile']}
+	{echo: rawurldecode($this->activityRow['content_mobile'])}
+{else:}
+	{echo: rawurldecode($this->activityRow['content'])}
+{/if}
+

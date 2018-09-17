@@ -1,0 +1,60 @@
+<div class="bg-white p-10">
+	<div class="info-head"><span>我的经验值</span></div>
+
+	<div class="well well-sm">
+		经验值：<strong class="color-light-red">{$this->memberRow['exp']}</strong>
+		&nbsp;&nbsp;
+		<?php 
+			$_next_group = false;
+			foreach($this->level_up as $_gid => $_lexp)
+			{
+				if($_next_group)
+				{
+					$_next_group = $_gid;
+					break;
+				}
+
+				if($_gid == $this->memberRow['group_id'])
+				{
+					$_next_group = true;
+				}
+			}  
+		?>
+		<?php if(is_numeric($_next_group)): ?>
+			<p class="text-muted font-xs">距离下一等级【<?php echo $this->user_group_arr[$_next_group]; ?>】还差<?php echo $this->level_up[$_next_group] - $this->memberRow['exp']; ?>点经验值</p>
+		<?php endif; ?>
+	</div>
+
+	<!--经验值列表 开始-->
+	{set:$user_id = $this->user['user_id']}
+	{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+    {set:$queryExpLog = Api::run('getExpList',$user_id)}
+    {if:$queryExpList = $queryExpLog->find()}
+		{foreach:items = $queryExpList}
+		<ul class="list-unstyled">
+			<li class="common-list">
+				<table class="table table-striped table-condensed mb-0 font-sm">
+					<tr>
+						<td width="16%" class="text-muted">时间</td>
+						<td>{$item['datetime']}</td>
+						<td width="16%" class="text-muted">经验</td>
+						<td class="color-light-red">{$item['value']}</td>
+					</tr>
+					<tr>
+						<td class="text-muted">说明</td>
+						<td colspan="3">{$item['intro']}</td>
+					</tr>
+				</table>
+			</li>
+		</ul>
+		{/foreach}
+		{$queryExpLog->getPageBar()}
+		<!--经验值列表 结束-->
+	{else:}
+		<div class="msg bg-white">
+			<p><i class="iconfont icon-31wentifankui"></i></p>
+			<p><span>“</span>当前暂无数据<span>”</span></p>
+		</div>
+	{/if}
+
+</div>

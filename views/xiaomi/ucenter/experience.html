@@ -1,0 +1,101 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+    <div class="p-30">
+            <ul class="nav nav-tabs ucenter-tabs">
+                <li class="active">我的经验值</li>
+            </ul>
+
+            <div class="clearfix">
+                <div class="media tips-media">
+                    <div class="media-left">
+                        <img src="{skin:xiaomi/images/exp.png}" alt="">
+                    </div>
+                    <div class="media-body">
+                        <p>
+                            当前会员等级： <span class="color-orange f-w-b">{$this->user_group_arr[$this->memberRow['group_id']]}</span>
+                        </p>
+
+                        <p>
+                            经验值： <span class="color-orange f-w-b">{$this->memberRow['exp']}</span>
+                        </p>
+                        <?php
+                            $_next_group = false;
+                            foreach($this->level_up as $_gid => $_lexp)
+                            {
+                                if($_next_group)
+                                {
+                                    $_next_group = $_gid;
+                                    break;
+                                }
+
+                                if($_gid == $this->memberRow['group_id'])
+                                {
+                                    $_next_group = true;
+                                }
+                            }
+                        ?>
+                        <p class="text-muted f-12">
+                            {set: $need_exp = $this->level_up[$_next_group] - $this->memberRow['exp']; }
+                            {if: $need_exp > 0 }
+                                <?php if(is_numeric($_next_group)): ?>
+                                    距离下一等级【<span class="color-orange"><?php echo $this->user_group_arr[$_next_group]; ?></span>】还差 <span class="text-danger"><?php echo $need_exp; ?></span> 点经验值
+                                <?php endif; ?>
+                            {else: }
+                                <span class="text-danger">恭喜您已满足升级条件，请重新登录更新等级！</span>
+                            {/if}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white m-b-20">
+            <h5 class="m-b-20">经验值明细</h5>
+            {set:$user_id = $this->user['user_id']}
+            {set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+            {set:$queryExpLog = Api::run('getExpList',$user_id)}
+            {set:$items = $queryExpLog->find()}
+            {if:$items}
+            <table class="table table-bordered table-striped f-12 m-b-20 text-center">
+                <tbody>
+                <tr class="active text-muted">
+                    <td>记录时间</td>
+                    <td>经验值</td>
+                    <td>说明</td>
+                </tr>
+                {foreach:items = $items}
+                <tr>
+                    <td class="text-muted">
+                        {$item['datetime']}
+                    </td>
+                    <td>
+                        {$item['value']}
+                    </td>
+                    <td>
+                        {$item['intro']}
+                    </td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+
+            <div class="pagebar">
+                {$queryExpLog->getPageBar()}
+            </div>
+
+            {else:}
+            <div class="m-t-40 m-b-20">
+                <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+                <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+            </div>
+            {/if}
+
+        </div>
+    </div>
+</div>

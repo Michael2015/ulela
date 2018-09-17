@@ -1,0 +1,203 @@
+<style type="text/css">
+    .info-text.focus {
+        border-color: #ffac13;
+    }
+</style>
+<div class="body-contain bg-gray ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+            <li class="active">防伪查询</li>
+        </ol>
+        <!--position-->
+        <div class="u-section-right bg-white pull-left m-b-60" style="width:950px;">
+            <div class="p-30">
+                <h3 class="p-b-20 m-t-10">使用防伪码查询产品真伪</h3>
+                <form id="scodeForm" action="" method="post" onsubmit="return checkForm();">
+                    <ul class="info-form form-content m-b-40 p-t-20">
+                        <li class="clearfix">
+                            <div class="info-label pull-left text-right">输入防伪码(明码)</div>
+                            <div class="info-text pull-left tiny-input" style="width:auto">
+                                <input class="info-text pull-left m-r-10 text-center" type="text" name="code">
+                            </div>
+                        </li>
+                        <li class="clearfix js_scode">
+                            <div class="info-label pull-left text-right">输入防伪码(暗码)</div>
+                            <div class="info-text pull-left tiny-input" style="width:auto">
+                                <input class="info-text pull-left m-r-10 text-center" type="text" name="scode">
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="info-label pull-left text-right">验证码</div>
+                            <div class="info-input pull-left small-input">
+                                <div class="form-item clearfix">
+                                    <div class="form-item-right">
+                                        <input class="info-text pull-left" type="text" name='captcha' placeholder="填写右侧图片的字符" alt="请填写验证码">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pull-left">
+                                <img src='{url:/site/getCaptcha}' id='captchaImg' /><span class="text-muted">看不清？</span> <a href="javascript:;" onclick="changeCaptcha();">换一张</a>
+                            </div>
+                        </li>
+
+                        <li class="clearfix m-t-20">
+                            <div class="info-label pull-left text-right"></div>
+                            <div class="info-input pull-left">
+                                <button type="submit" class="btn btn-warning">查 询 真 伪</button>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+                <div id="check_result_content">
+                </div>
+                <script type='text/html' id='check_result_temple'>
+                    <div class="bg-white mb-10 p-10">
+                        <div class="text-center">
+                            <p class="text-muted font-sm mb-10">您查询的明码为 <%=ScanCode%></p>
+                            <p class="font-df mb-10">
+                                <span class="text-success">恭喜，您查询的是东阳光大健康商城出品的<%=product_name%>，查询系正品。请放心使用！</span>
+                            </p>
+                        </div>
+                        <div class="mt-15">
+                            <table class="table font-sm">
+                                <tr>
+                                    <td width="25%">产品名称</td>
+                                    <td><%=PName%></td>
+                                </tr>
+                                <tr>
+                                    <td>产品批次</td>
+                                    <td><%=BatchNo%></td>
+                                </tr>
+                                <tr>
+                                    <td>生产时间</td>
+                                    <td><%=ProTime%></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //检查输入
+    function checkForm() {
+        var scode = $("input[name='scode']").val();
+        var code = $("input[name='code']").val();
+        var captcha = $("input[name='captcha']").val();
+        if (!scode || !code || !captcha)
+        {
+            alert("必填项，都不能留空");
+            return false;
+        }
+        if(scode.length != 4) {
+            alert("暗码必须为数字");
+            return false;
+        }
+        //loading显示
+        window.loadding('努力查询中，请勿刷新');
+
+        //ajax提交
+        $.ajax({
+            type: 'POST',
+            url: '{url:/site/scode_act2}',
+            data: {'code':code,'scode':scode,'captcha':captcha},
+            dataType: 'json',
+            success: function(data) {
+                window.unloadding();
+
+                if(data.success) {
+                    //隐藏输入框
+                    //  $("#scodeForm").hide();
+                    //填充内容
+                    var resultHtml = template.render('check_result_temple',
+                        {
+                            "ScanCode": data.data.ScanCode,
+                            "ScanTime": data.data.ScanTime,
+                            "PCode":  data.data.PCode,
+                            "PName": data.data.PName,
+                            "BatchNo":data.data.BatchNo,
+                            "ProTime":data.data.ProTime
+                        });
+                    $('#check_result_content').append(resultHtml);
+                    $('#scodeForm').find('button').attr('disabled','disabled')
+
+                } else {
+                    changeCaptcha();
+                    alert(data.message);
+                }
+            },
+            error: function(err) {
+                window.unloadding();
+                changeCaptcha();
+                alert("网络获取失败，请稍后重试");
+            }
+        });
+
+        return false;
+    }
+
+
+    var ScodeInput = (function(){
+        //私有方法
+        //绑定事件
+        var _bind = function(that){
+            that.input_texts.focus(function(){
+                $(this).toggleClass('focus');
+            });
+
+            that.input_texts.blur(function(){
+                $(this).removeClass('focus');
+            });
+
+            that.scode_inputs.on('keydown', function(event){
+                //只允许输入数字
+                var keyCode = event.which;
+                if (!((keyCode >= 96 && keyCode <= 105 ) || (keyCode >= 48 && keyCode <= 57) || keyCode == 8)) {
+                    alert("只允许输入数字");
+                    return false;
+                }
+
+                if($(this).val().length > 3 ){
+                    if (event.which != 8) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+
+            that.scode_inputs.on('keyup', function(){
+                if($(this).val().length > 3 ){
+                    if($(this).next().length > 0){ //存在下一个输入框
+                        $(this).next().focus();
+                    }
+                }
+            });
+
+        }
+
+        //构造函数
+        var ScodeInputFun = function(config){
+            this.handlers = [];
+        }
+
+        ScodeInputFun.prototype.init = function(config){
+            this.input_texts = $(config.input_texts);
+            this.scode_inputs = $(config.scode_inputs);
+            _bind(this);
+            return this;
+        }
+
+        //返回构造函数
+        return ScodeInputFun;
+    })();
+
+    $(function(){
+        var scode_input = new ScodeInput().init({input_texts: '.js_scode .info-text', scode_inputs: '.js_scode .info-text'});
+    })
+</script>

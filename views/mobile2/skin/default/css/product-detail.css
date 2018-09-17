@@ -1,0 +1,97 @@
+/*覆盖bootstrap轮播*/
+.carousel-indicators {
+    bottom: 3rem;
+}
+
+/*价格*/
+.detail-price {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    line-height: 2rem;
+    padding:0 .7143rem;
+    background-color:rgba(255, 255, 255, 0.3);
+    z-index:20;
+}
+
+
+/* 评价内容 */
+#commentBox li {
+    margin: 0 .7143rem;
+    padding: 1.072rem 0;
+    border-bottom: 1px solid #f6f6f6;
+}
+
+#commentBox .pages_bar {
+    display: none;
+}
+
+/*商品选择模块 开始*/
+#mask{
+    display:none;
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    background-color:rgba(0,0,0,.8);
+    z-index:999;
+}
+#chosenBox{
+    width:100%;
+    position:fixed;
+    bottom:0;
+    left:0;
+    transform: translateY(100%);
+    transition: all .3s ease-out;
+    background:#fff;
+    padding: 1.143rem .7143rem .7143rem;
+    visibility: hidden;
+    z-index: 1001;
+}
+#chosenBox.on{
+    visibility: visible;
+    transform: translateY(0);
+}
+.chosenBox-header{
+    position: relative;
+}
+
+.chosenBox-header .good-pic{
+    width:18%;
+    height:18%;
+    margin-right:2%;
+    border:1px solid #eee;
+    padding: 1px;
+}
+
+.chosenBox-header .good-card {
+    width: 80%;
+}
+
+.chosenBox-closeBtn{
+    position:absolute;
+    right:5px;
+    top:0;
+}
+
+.chosenBox-list li button{
+    display:inline-block;
+    padding:.3572rem .7143rem;
+    margin-bottom: .3572rem;
+    border:1px solid #ccc;
+    -webkit-border-radius: .215rem;
+    -moz-border-radius: .215rem;
+    border-radius: .215rem;
+    outline: none;
+    color: #666;
+}
+.chosenBox-list li button.current{
+    border-color:#FF6700;
+    color: #333;
+}
+.disabled_spec{
+    background:#ccc;
+}
+/*商品选择模块 结束*/

@@ -1,0 +1,364 @@
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:38:41
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:38:42
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:39:15
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:39:30
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:39:30
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:39:58
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:40:13
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:40:31
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:40:47
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:41:02
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:41:20
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:41:24
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:41:29
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC 
+ -- Unknown column 'Array' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-12-08 08:41:39
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select * from iwebshop_commend_goods as co  where co.goods_id = Array   order by commend_id ASC )
+#1 IWEB_PATH/classes/api/myapi.php(21): IQuery->find()
+#2 : Myapi->getCommendIdByGoods()
+#3 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#4 IWEB_PATH/runtime/views/xiaomi/site/search_list.php(306): Api::run(getCommendIdByGoods)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#6 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/search_list.php)
+#7 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/search_list)
+#8 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/search_list)
+#9 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#10 IWEB_PATH/controllers/site.php(81): IController->redirect(search_list)
+#11 : Site->search_list()
+#12 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#13 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#14 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(search_list)
+#15 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#16 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+

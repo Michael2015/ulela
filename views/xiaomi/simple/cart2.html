@@ -1,0 +1,481 @@
+{js:artTemplate}
+<link rel="stylesheet" href="{skin:xiaomi/css/cart.css?v=20161019}" />
+<script type='text/javascript' src='{theme:javascript/orderFormClass.js?v=20170412}'></script>
+<script type='text/javascript'>
+    //创建订单表单实例
+    orderFormInstance = new orderFormClass();
+    //DOM加载完毕
+    jQuery(function(){
+        //商家信息
+        orderFormInstance.seller = {echo:JSON::encode($this->seller)};
+
+        //商品价格
+        orderFormInstance.goodsSum = "{$this->final_sum}";
+
+        //配送方式初始化
+        orderFormInstance.deliveryInit("{$this->custom['delivery']}");
+
+        //收货地址数据
+        orderFormInstance.addressInit();
+
+        //dyg_jzw 20150815 自提点地址初始化
+        {if: $this->takeselfRow}
+        $('#takeself{$this->custom['delivery']}').html(template.render('takeselfTemplate',{"item":{echo: json_encode($this->takeselfRow);}}));
+        {/if}
+
+        //支付方式
+        //orderFormInstance.paymentInit("{$this->custom['payment']}");
+
+        //免运费
+        orderFormInstance.freeFreight = {echo:JSON::encode($this->freeFreight)};
+
+        //获取优惠券
+        orderFormInstance.ticketShow1();
+        //优惠券使用
+        $('#ticket_select').on("change", function(){
+            var obj = $(this).find("option:selected");
+            orderFormInstance.ticketShow2(obj);
+        });
+        //输入卡号兑奖
+        $('.ticket_code_span').on('click',function(){
+            var  reg = /^[\d]{16}$/;
+            var  ticket_obj = $('.ticket_code');
+            var  ticket_code =ticket_obj.val();
+            ticket_code = ticket_code.replace(/\s/g,"");
+            if(!reg.test(ticket_code))
+            {
+                alert("请输入16位有效兑劵码");
+                return false;
+            }
+            orderFormInstance.ticketShow1(ticket_code);
+            //orderFormInstance.ticketShow2($("#ticket_select").find('option[data-code="'+ticket_code+'"]'));
+            //ticket_obj.val("");
+        });
+    });
+</script>
+{if:$this->isLayer}
+<script>
+    jQuery(function(){
+        //大客户提示 10.17
+        layer.open({
+            type: 1
+            , title: "【温馨提示】" //不显示标题栏
+            , closeBtn: false
+            , area: 'auto'
+            , maxWidth: '600'
+            , shade: 0
+            , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            , resize: false
+            , btn: ['好的,我知道了']
+            , btnAlign: 'c'
+            , moveType: 1 //拖拽模式，0或者1
+            , content: $('#layer-content')
+            , success: function () {
+            }
+        });
+    });
+</script>
+<!--大客户提示 10.17-->
+<div id="layer-content" style="display: none;padding: 10px 20px;color: #888;">
+    <p>1、关于鲜草物流: 鲜草订单如需发快递，请您选择顺丰到付，运费将由总部与大客户月结，如需机场空运请选择自提并备注留言发空运（鲜草订单满300根包邮）；</p>
+    <p>2、关于化妆品物流: 化妆品订单运费不可月结，如需快递发出，请您在商城选择所需的物流方式，顺丰到付则会实际到付，由快递员收取运费（化妆品不包邮）；</p>
+    <p>3、关于物料物流: 物料订单可选择顺丰快递、中通、普通物流方式配送，运费可到付或者月结，请选择自提并订单留言所需的配送方式。</p>
+    <p>4、如有其他要求，请在订单备注处留言。</p>
+</div>
+{/if}
+<div class="body-contain bg-white ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+            <li class="active">填写核对订单信息</li>
+        </ol>
+        <!--position-->
+
+        <!--step-->
+        <ul class="cart-step">
+            <li class="done">
+                <span class="s-num"><a href="{url:simple/cart}" title="返回购物车">1</a></span>
+                <p class="s-text"><a href="{url:simple/cart}" title="返回购物车">1.我的购物车</a></p>
+            </li>
+            <li class="doing">
+                <span class="s-num">2</span>
+                <p class="s-text">2.填写核对订单信息</p>
+            </li>
+            <li class="next">
+                <span class="s-num">3</span>
+                <p class="s-text">3.成功提交订单</p>
+            </li>
+        </ul>
+        <!--step-->
+
+        <form action='{url:/simple/cart3}' method='post' name='order_form' onsubmit='return orderFormInstance.isSubmit();'>
+
+            <input type='hidden' name='direct_gid' value='{$this->gid}' />
+            <input type='hidden' name='direct_type' value='{$this->type}' />
+            <input type='hidden' name='direct_num' value='{$this->num}' />
+            <input type='hidden' name='direct_promo' value='{$this->promo}' />
+            <input type='hidden' name='direct_active_id' value='{$this->active_id}' />
+            <!--自提点数据-->
+            {if: $this->takeselfRow}
+            <input type="hidden" name="takeself" value="{echo: $this->takeselfRow['id']}">
+            {/if}
+
+
+            <!--收货人信息-->
+            <table class="table table-bordered f-12 m-b-20">
+                <tbody>
+                <tr class="active text-muted">
+                    <td class="text-left f-w-b">收货人信息</td>
+                </tr>
+                <tr>
+                    <td class="text-left">
+                        {set: $_tmp_i = 0;}
+                        <ul class="checkbox-list p-15 addr-list">
+                            {foreach:items=$this->addressList}
+                            {set: $_tmp_i++;}
+                            {if: $_tmp_i < 9}
+                            <li class="dis-i-b checkbox-item" id="addressItem{$item['id']}">
+                                <input class="checkbox-item-radio" type="radio" name="radio_address" id="address{$item['id']}" value="{$item['id']}" onclick="orderFormInstance.getDelivery({$item['province']});"/>
+                                <label class="label-md addr-label" for="address{$item['id']}">
+                                    <span class="checkbox-control">
+                                        <a class="color-orange" href="javascript:;" onclick="orderFormInstance.addressEdit({$item['id']}, {echo: $this->is_cbe?1:0});">修改</a>&nbsp;&nbsp;<a class="color-orange" href="javascript:;" onclick="orderFormInstance.addressDel({$item['id']});">删除</a>
+                                    </span>
+                                    <p class="label-header text-ov-h">
+                                        {$item['accept_name']}，{$item['mobile']}
+                                        {if: $this->is_cbe}
+                                        <br>
+                                        {if: $item['accept_id']}
+                                        <span class="text-muted">{$item['accept_id']}</span>
+                                        {else:}
+                                        <span class="text-danger">缺少身份证信息</span>
+                                        {/if}
+                                        {/if}
+                                    </p>
+                                    <p class="text-ov-h text-muted" title="{$item['province_val']}{$item['city_val']}{$item['area_val']}{$item['address']}">{$item['province_val']}{$item['city_val']}{$item['area_val']}{$item['address']}</p>
+                                    <i class="icon-18 icon-checked"></i>
+                                </label>
+                            </li>
+                            {else:}
+                            <li style="display: none" class="dis-i-b checkbox-item" id="addressItem{$item['id']}">
+                                <input class="checkbox-item-radio" type="radio" name="radio_address" id="address{$item['id']}" value="{$item['id']}" onclick="orderFormInstance.getDelivery({$item['province']});"/>
+                                <label class="label-md addr-label" for="address{$item['id']}">
+                                    <span class="checkbox-control">
+                                        <a class="color-orange" href="javascript:;" onclick="orderFormInstance.addressEdit({$item['id']}, {echo: $this->is_cbe?1:0});">修改</a>&nbsp;&nbsp;<a class="color-orange" href="javascript:;" onclick="orderFormInstance.addressDel({$item['id']});">删除</a>
+                                    </span>
+                                    <p class="label-header text-ov-h">
+                                        {$item['accept_name']}，{$item['mobile']}
+                                        {if: $this->is_cbe}
+                                        <br>
+                                        {if: $item['accept_id']}
+                                        <span class="text-muted">{$item['accept_id']}</span>
+                                        {else:}
+                                        <span class="text-danger">缺少身份证信息</span>
+                                        {/if}
+                                        {/if}
+                                    </p>
+                                    <p class="text-ov-h text-muted" title="{$item['province_val']}{$item['city_val']}{$item['area_val']}{$item['address']}">{$item['province_val']}{$item['city_val']}{$item['area_val']}{$item['address']}</p>
+                                    <i class="icon-18 icon-checked"></i>
+                                </label>
+                            </li>
+                            {/if}
+                            {/foreach}
+                        </ul>
+                        <div class="f-12 p-15">
+                            <a class="addr-toggle pull-right" href="javascript:void(0);">展开显示</a>
+                            <a href="javascript:;" onclick="orderFormInstance.addressAdd({echo: $this->is_cbe?1:0});"><i class="icon-18 icon-add-addr"></i>添加新地址</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--收货地址项模板-->
+            <script type='text/html' id='addressLiTemplate'>
+
+                <li class="dis-i-b checkbox-item" id="addressItem<%=item['id']%>">
+                    <input class="checkbox-item-radio" type="radio" name="radio_address" id="address<%=item['id']%>"  value="<%=item['id']%>" onclick="orderFormInstance.getDelivery(<%=item['province']%>);" />
+                    <label class="label-md addr-label" for="address<%=item['id']%>">
+                        <span class="checkbox-control">
+                            <a class="color-orange" href="javascript:;" onclick="orderFormInstance.addressEdit(<%=item['id']%>, {echo: $this->is_cbe?1:0});">修改</a>&nbsp;&nbsp;<a class="color-orange" href="javascript:;" onclick="orderFormInstance.addressDel(<%=item['id']%>);">删除</a>
+                        </span>
+                        <p class="label-header text-ov-h">
+                            <%=item['accept_name']%>，<%=item['mobile']%>
+                            {if: $this->is_cbe}
+                            <br>
+                            <span class="text-muted"><%=item['accept_id']%></span>
+                            {/if}
+                        </p>
+                        <p class="text-ov-h" title="<%=item['province_val']%><%=item['city_val']%><%=item['area_val']%><%=item['address']%>"><%=item['province_val']%><%=item['city_val']%><%=item['area_val']%><%=item['address']%></p>
+                        <i class="icon-18 icon-checked"></i>
+                    </label>
+                </li>
+            </script>
+
+            <!--收货人信息-->
+
+            <!--配送方式-->
+            <table class="table table-bordered f-12 m-b-20">
+                <tbody>
+                <tr class="active text-muted">
+                    <td  class="text-left f-w-b">配送方式</td>
+                </tr>
+                <tr>
+                    <td class="text-left">
+                        <ul class="checkbox-list p-15">
+                            <!--dyg_jzw 20160309 增加跨境电商专用物流方式-->
+                            {set:$deliveryData = Api::run('getDeliveryList', array("#is_cbe#", intval($this->is_cbe)))}
+                            {foreach:items = $deliveryData}
+                            <li class="dis-i-b checkbox-item">
+                                <input class="checkbox-item-radio" type="radio" name="delivery_id" value="{$item['id']}" paytype="{$item['type']}" onclick='orderFormInstance.deliverySelected({$item['id']});' autocomplete="off"  id="delivery{$item['id']}"/>
+                                <label class="label-md delivery-label" for="delivery{$item['id']}">
+                                    <p class="label-header text-ov-h">
+                                        {$item['name']}&nbsp;&nbsp;<span id="deliveryShow{$item['id']}"></span>
+                                        {if:$item['type'] == 2}
+                                        <a class="color-orange" href="javascript:;" onclick="orderFormInstance.selectTakeself({$item['id']});">【选择自提点】</a>
+                                        {/if}
+                                    </p>
+                                    <p class="text-muted text-ov-h">
+                                        {if:$item['type'] == 2}
+                                        <span id="takeself{$item['id']}">
+                                        {/if}
+                                        {echo: $item['description']?$item['description']:'&nbsp;'}
+                                        {if:$item['type'] == 2}
+                                            </span>
+                                        {/if}
+                                    </p>
+                                    <i class="icon-18 icon-checked"></i>
+                                </label>
+                            </li>
+                            {/foreach}
+                        </ul>
+                    </td>
+                </tr>
+
+                <!--配送信息-->
+                <script type='text/html' id='deliveryTemplate'>
+                    <font style="color:#e4393c" title="运费：￥<%=item['price']%>">运费：￥<%=item['price']%></font>
+                    <%if(item['protect_price'] > 0){%>
+                    &nbsp;&nbsp;<font style="color:#e4393c" title="保价：￥<%=item['protect_price']%>">保价：￥<%=item['protect_price']%></font>
+                    <%}%>
+                </script>
+
+                <script type='text/html' id='takeselfTemplate'>
+                    [<%=item['address']%> <%=item['name']%> <%=item['phone']%> <%=item['mobile']%>]
+                </script>
+                <!-- 暂时不支持指定送货时间 -->
+                <input type="hidden" name="accept_time" value='任意' />
+                </tbody>
+            </table>
+            <!--配送方式-->
+
+            <!--支付方式-->
+            <!--<table class="table table-bordered f-12 m-b-20">
+                <tbody>
+                <tr class="active text-muted">
+                    <td class="text-left f-w-b">支付方式</td>
+                </tr>
+                <tr>
+                    <td class="text-left">
+                        <ul class="checkbox-list p-15">
+                            <//dyg_jzw 20160303 增加是否跨境电商支付//>
+                            {foreach:items = Api::run('getPaymentList', $this->is_cbe)}
+                            {set:$paymentPrice = CountSum::getGoodsPaymentPrice($item['id'],$this->sum);}
+                            <li class="dis-i-b checkbox-item">
+                                <input class="checkbox-item-radio" type="radio" alt="{$paymentPrice}" name="payment" onclick="orderFormInstance.paymentSelected({$item['id']})" value="{$item['id']}" id="payment{$item['id']}"/>
+                                <label class="label-md" for="payment{$item['id']}">
+                                    <p class="label-header">{$item['name']}</p>
+                                    <p class="text-ov-h text-muted">{echo: $item['note']?$item['note']:'&nbsp;'}</p>
+                                    <//暂不收取手续费//>
+                                    <//<p>手续费：<span class="color-red">￥{echo: $paymentPrice?$paymentPrice:'0.00'}</span></p>//>
+                                    <i class="icon-18 icon-checked"></i>
+                                </label>
+                            </li>
+                            {/foreach}
+                        </ul>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>-->
+            <!--支付方式-->
+
+            <!--订单附言-->
+            <table class="table table-bordered f-12 m-b-20">
+                <tbody>
+                <tr class="active text-muted">
+                    <td class="text-left f-w-b">订单留言</td>
+                </tr>
+                <tr class="text-left">
+                    <td>
+                        <div class="p-15">
+                            <input class="message-input" type="text" name='message' autocomplete="off" placeholder="订单留言"/>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!--订单附言-->
+
+            <!--购买清单-->
+            <table class="table table-bordered m-b-0 f-12 goods-cart-list text-center">
+
+                <div class="cart_prompt f14 t_l m_10" {if:empty($this->promotion)}style="display:none"{/if}>
+                    <p class="m_10 gray"><b class="orange">恭喜，</b>您的订单已经满足了以下优惠活动！</p>
+                    {foreach:items = $this->promotion}
+                    <p class="indent blue">{$item['plan']}，{$item['info']}</p>
+                    {/foreach}
+                </div>
+
+
+                <tbody>
+                <tr class="active text-muted">
+                    <td colspan="7" class="text-left f-w-b">购买的商品</td>
+                </tr>
+                <tr class="active text-muted">
+                    <td colspan="2">商品信息</td>
+                    <td>赠送积分</td>
+                    <td>单价</td>
+                    <td>优惠</td>
+                    <td>数量</td>
+                    <td>小计</td>
+                </tr>
+
+                {foreach:items = $this->goodsList}
+                <tr>
+                    <td class="no-border-lr" width="65">
+                        <a class="show m-l-15" href="{url:/site/products/id/$item['goods_id']}">
+                            <img src="{webroot:}{echo:Thumb::get($item['img'],66,66)}" width="66px" height="66px" alt="{$item['name']}" title="{$item['name']}" />
+                        </a>
+                    </td>
+                    <td class="text-left no-border-lr">
+                        <a href="{url:/site/products/id/$item[goods_id]}">{$item['name']}</a>
+                        {if:isset($item['spec_array'])}
+                        <br/>
+                        <span class="text-muted">
+                                {set:$spec_array=Block::show_spec($item['spec_array']);}
+                                {foreach:items=$spec_array item=$specValue key=$specName}
+                                    {$specName}：{$specValue} &nbsp;&nbsp;
+                                {/foreach}
+                            </span>
+                        {/if}
+                    </td>
+                    <td>
+                        <span>{$item['point']}</span>
+                    </td>
+                    <td>
+                        ￥{$item['sell_price']}
+                    </td>
+                    <td >
+                        减￥{$item['reduce']}
+                    </td>
+                    <td>
+                        {$item['count']}
+                    </td>
+                    <td id="deliveryFeeBox_{$item['goods_id']}_{$item['product_id']}_{$item['count']}" class="color-red">
+                        ￥{$item['sum']}
+                    </td>
+                </tr>
+                {/foreach}
+
+                </tbody>
+
+            </table>
+
+            <!--购买清单-->
+
+            <!--金额结算-->
+            <style>
+                .ticket_code{
+                    height: 19px;
+                    width: 200px;
+                    border:1px solid  #ccc;
+                    padding: 0;
+                }
+                .ticket_code_span{
+                    display: inline-block;
+                    padding: 0px 10px;
+                    background: #E6A218;
+                    color: white;
+                    cursor: pointer;
+                }
+            </style>
+            <div class="p-30 ov-hidden bg-gray">
+                <div class="pull-left">
+                    <!--<a href="javascript:;" onclick="orderFormInstance.ticketShow1();"><i class="icon-18 icon-add-addr"></i>使用优惠券</a>-->
+                    选择优惠券：
+                    <select id="ticket_select" class="m-l-15"><option value="0">不使用</option></select>
+                    <br><br>
+                    请输入劵码：
+                    <input type="text" class="m-l-15 ticket_code"><span class="ticket_code_span">点击兑劵</span>
+                </div>
+                <div class="text-right">
+                    <ul class="list-unstyled cart-count f-12">
+                        <li>
+                            <span class="text-muted">{if:$this->final_sum != $this->sum}优惠后总金额{else:}商品总金额{/if}：</span>
+                            <span class="dis-i-b w120">{$this->final_sum}</span> 元
+                        </li>
+                        <li>
+                            <span class="text-muted">- 优惠券：</span>
+                            <span class="dis-i-b w120" name="ticket_value">0</span> 元
+                        </li>
+                        <li class="hide">
+                            <span class="text-muted">+ 税金：</span>
+                            <span class="dis-i-b w120" id="tax_fee">0</span> 元
+                        </li>
+                        <li>
+                            <span class="text-muted">+ 运费总计：</span>
+                            <span class="dis-i-b w120" id="delivery_fee_show">0</span> 元
+                        </li>
+                        <li>
+                            <span class="text-muted">+ 保价：</span>
+                            <span class="dis-i-b w120" id="protect_price_value">0</span> 元
+                        </li>
+                        <li class="hide">
+                            <span class="text-muted">+ 支付手续费：</span>
+                            <span class="dis-i-b w120" id="payment_value">0</span> 元
+                        </li>
+                        <li class="color-red">
+                            <span>应付总额：</span>
+                            <span class="dis-i-b f-18 w120 f-w-b" id="final_sum">{$this->final_sum}</span> 元
+                        </li>
+                        <li class="m-t-20">
+                            <input class="btn btn-warning" name="submit" type="submit" value="确认无误，提交订单" />
+                            {if: $this->my_commission}
+                            <!-- dyg_jzw 20161216 增加高返自身返利 -->
+                            <p class="m-t-10 text-muted">（预计返现：{$this->my_commission}元）</p>
+                            {/if}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--金额结算-->
+        </form>
+    </div>
+</div>
+
+<script>
+    (function(){
+        var $addr = $('.addr-list li');
+        var $addr_hide = $('.addr-list li:hidden');
+        var $addr_toggle = $('.addr-toggle');
+        if($addr.length<9){
+            $addr_toggle.hide();
+            return;
+        }
+        var flag = true;
+        $addr_toggle.click(function(){
+            if(flag){
+                $addr_hide.show();
+                $addr_toggle.text("折叠显示");
+                flag = false;
+            }
+            else{
+                $addr_hide.hide();
+                $addr_toggle.text("展开显示");
+                flag = true;
+            }
+        });
+    })();
+
+</script>

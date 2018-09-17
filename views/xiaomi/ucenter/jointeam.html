@@ -1,0 +1,137 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li class="active">邀请组队</li>
+        </ul>
+
+        <div class="media tips-media">
+            <div class="media-left">
+                <img src="{skin:xiaomi/images/team.png}" alt="">
+            </div>
+            <div class="media-body f-12">
+            <p>推荐新注册的用户，<strong>“邀请人”</strong>填入您的用户名： <span class="color-orange f-w-b f-16">{$this->user['username']}</span></p>
+                <p class="m-b-20">即可成为您的团队成员，Ta的消费将按一定比例返还预存款到您的账户上</p>
+                <p>也可以分享下列链接给好友注册：</p>
+                {set:$username = urlencode($this->user['username'])}
+                {set:$hostname = $_SERVER['HTTP_HOST']}
+                <p><a class="color-orange f-16" href="http://{$hostname}{url:/simple/reg?inviter=$username}" target="_blank">http://{$hostname}{url:/simple/reg?inviter=$username}</a></p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white">
+            <p class="f-w-b">邀请奖励①：赠送现金奖励</p>
+            <table class="table table-bordered table-striped text-center f-12 m-b-20">
+                <tbody>
+                <tr class="active text-muted">
+                    <td>邀请直接加入的会员等级</td>
+                    <td>奖励邀请人现金</td>
+                </tr>
+                <tr>
+                    <td>阳光合伙人(城市级)</td>
+                    <td>2000元</td>
+                </tr>
+                <tr>
+                    <td>阳光合伙人(驿站级)</td>
+                    <td>1000元</td>
+                </tr>
+                <tr>
+                    <td>阳光创客M1</td>
+                    <td>800元</td>
+                </tr>
+                <tr>
+                    <td>至尊阳光会员</td>
+                    <td>500元</td>
+                </tr>
+                <tr>
+                    <td>阳光会员V3</td>
+                    <td>200元</td>
+                </tr>
+                <tr>
+                    <td>阳光会员V2</td>
+                    <td>100元</td>
+                </tr>
+                <tr>
+                    <td>阳光会员V1</td>
+                    <td>50元</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="f-w-b">注意：各个等级的 加入门槛 和 如何加入 请咨询在线客服</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white">
+            <p class="f-w-b">邀请奖励②：持续消费提成奖励</p>
+            <p class="indent">被邀请人的每笔有效订单（确认收货后30天无退款）的产品成交额按一定奖励比例以预存款形式实时返还奖励给邀请人。具体奖励比例在邀请成功后，可在“我的团队”中查看。
+                奖励时效：长期有效，除被邀请人六个月后申请加入其他团队外。</p>
+        </div>
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+    
+    <div class="p-30">
+        <div class="bg-white">
+            <p class="f-w-b">邀请奖励③：赠送经验值奖励</p>
+            <table class="table table-bordered table-striped text-center f-12 m-b-20">
+                <tbody>
+                <tr class="active text-muted">
+                    <td>邀请<strong>直接加入</strong>的会员等级</td>
+                    <td>奖励邀请人经验值</td>
+                </tr>
+                <tr>
+                    <td>阳光合伙人(城市级)</td>
+                    <td>20000点</td>
+                </tr>
+                <tr>
+                    <td>阳光合伙人(驿站级)</td>
+                    <td>10000点</td>
+                </tr>
+                <tr>
+                    <td>阳光创客M1</td>
+                    <td>8000点</td>
+                </tr>
+                <tr>
+                    <td>至尊阳光会员</td>
+                    <td>5000点</td>
+                </tr>
+                <tr>
+                    <td>阳光会员V3</td>
+                    <td>3000点</td>
+                </tr>
+                <tr>
+                    <td>阳光会员V2</td>
+                    <td>2000点</td>
+                </tr>
+                <tr>
+                    <td>阳光会员V1</td>
+                    <td>1000点</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+
+</div>

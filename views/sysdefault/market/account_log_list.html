@@ -1,0 +1,49 @@
+{js:my97date}
+<div class="headbar">
+	<div class="position"><span>统计</span><span>></span><span>日志操作记录</span><span>></span><span>用户余额列表</span></div>
+	<div class="operating">
+		<div class="search f_l">
+			<form name="total_selled" id="total_selled" target="_blank" action="{url:/market/account_log_list}" method="get">
+				<input type='hidden' name='controller' value='market' />
+				<input type='hidden' name='action' value='account_log_list' />
+				截止日期 <input type="text" name='end_time' value='' class="Wdate" pattern='date' alt='' onFocus="WdatePicker()" empty />
+				<input type="hidden" name="export" value="1" id="is_export">
+				<input type="submit" class="btn" value="导出明细">
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="content">
+		<table class="list_table">
+			<colgroup>
+				<col width="10%" />
+				<col width="20%" />
+				<col width="" />
+				<col width="" />
+				<col width="10%" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th>用户ID</th>
+					<th>用户账号</th>
+					<th>余额</th>
+					<th>最后更新时间</th>
+					<th>详情</th>
+				</tr>
+			</thead>
+		<tbody>
+
+			{foreach:items = $this->memberList}
+			<tr>
+				<td>{$item['user_id']}</td>
+				<td>{$item['username']}</td>
+				<td>{$item['amount_log']}元</td>
+				<td>{$item['time']}元</td>
+				<td><a href="/market/account_list?uid={$item['user_id']}" target="_blank">查看详情</a></td>
+			</tr>
+			{/foreach}
+		</tbody>
+	</table>
+</div>
+{$this->memberObj->getPageBar()}

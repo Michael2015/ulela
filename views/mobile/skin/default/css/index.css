@@ -1,0 +1,105 @@
+
+.search-box input[type="text"]{
+    border:none;
+    height:2.429rem;
+    background-color:#e9573f;
+    color:#fff;
+    margin-top:.571rem;
+}
+.search-box input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #fff;
+}
+.search-box input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #fff;
+    opacity:  1;
+}
+.search-box input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #fff;
+    opacity:  1;
+}
+.search-box input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    #fff;
+}
+.search-btn{
+    position: absolute;
+    top:1rem;
+    right:.714rem;
+    width:1.286rem;
+    height:1.286rem;
+    line-height:1.286rem;
+    border:none;
+    background-color:#e9573f;
+}
+
+.category li{
+    border-right:1px solid #eee;
+    border-top:1px solid #eee;
+}
+.category li:last-child{ border-right:none;}
+.category li a{
+    padding:15px 0;
+}
+.category li i{
+    font-size:2rem;
+    text-shadow: 2px 2px 4px #b4b4b4;
+}
+.category .text-muted{
+    font-size:.857rem;
+}
+
+/*公用标题样式*/
+.common-title{
+    padding:5px;
+}
+.common-title span{
+    color:#333;
+    font-size:.857em;
+    padding-left: 5px;
+    border-left:3px solid #fc6e51;
+}
+
+.topic li{
+    border-radius:5px;
+}
+.topic .row{
+    margin-left:0;
+    margin-right:-5px;
+}
+.topic .col-xs-6{
+    padding:0 5px 5px 0;
+}
+.topic .topic-img img{
+    width: 100%;
+    height: auto;
+}
+
+.good-list .thumbnail{
+    margin-bottom:10px;
+}
+.good-list .caption{
+    padding: 5px 0;
+}
+.good-pic{
+    position:relative;
+}
+.good-pic a{
+    display:block;
+}
+.good-price{
+    position:absolute;
+    width:100%;
+    bottom:0;
+    left:0;
+    padding-right:10px;
+    color:orangered;
+    line-height: 2;
+    background:rgba(255,255,255,.7);
+}
+
+
+
+
+
+
+
+

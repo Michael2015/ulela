@@ -1,0 +1,62 @@
+{set:$breadGuide = goods_class::catRecursion($this->catId)}
+{set:$resultData=null}
+{if:$this->childId}
+{set:$goodsObj = search_goods::find(array('category_extend' => $this->childId),10);}
+{set:$resultData = $goodsObj->find()}
+{/if}
+{if:$this->ticket}
+{set:$goods_ids = $this->ticket['goods_ids']}
+{if:$goods_ids}
+{set:$goodsObj = search_goods::find("go.id in ($goods_ids)", 20)}
+{set:$resultData = $goodsObj->find()}
+{/if}
+{/if}
+<div class="container-fluid  bg-white">
+	{if:$this->ticket}
+	<div class="btn-default" style="padding: 10px 0;text-align: center">
+		优惠券:{$this->ticket['name']}  面额:{$this->ticket['value']}
+	</div>
+	{/if}
+	{if:$resultData}
+	<ul class="pro-list media-list p-10">
+		{foreach:items=$resultData}
+		{set: $keyword_arr = explode("#|#",$item['keywords']); }
+		{set: $keyword_title = array_shift($keyword_arr); }
+		{set: $keyword_sectitle = array_shift($keyword_arr); }
+		<li class="media">
+			<a class="show ov-hidden" href="{url:/site/products/id/$item['id']}">
+				<div class="media-left">
+					<img src="{webroot:}{echo:Thumb::get($item['img'],60,60)}" alt="{$item['name']}" width="60" height="60">
+				</div>
+				<div class="media-body font-sm">
+					<p class="mb-6">
+						{$keyword_title}
+						&nbsp;&nbsp;<span class="text-warning">{$keyword_sectitle}</span>
+					</p>
+					<p class="mb-6 text-muted">{$item['description']}</p>
+					<div class="clearfix">
+						<span class="color-light-red font-df">￥{$item['sell_price']}</span>
+					</div>
+				</div>
+			</a>
+		</li>
+		{/foreach}
+	</ul>
+
+	{$goodsObj->getPageBar()}
+
+	{else:}
+	<div class="list-empty bg-white">
+		<p><i class="iconfont icon-31wentifankui"></i></p>
+		<p>没有找到相关商品</p>
+	</div>
+	{/if}
+</div>
+
+
+
+
+
+
+
+

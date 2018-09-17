@@ -1,0 +1,60 @@
+<div class="headbar">
+	<div class="position"><span>营销</span><span>></span><span>营销活动管理</span><span>></span><span>特价活动</span></div>
+	<div class="operating">
+		<a href="javascript:void(0)" onclick="event_link('{url:/market/sale_edit}');"><button class="operating_btn" type="button"><span class="addition">添加特价</span></button></a>
+		<a href="javascript:void(0)" onclick="selectAll('id[]');"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
+		<a href="javascript:void(0)" onclick="delModel();"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
+		<a href="{url:/site/sale}" target="_blank"><button class="operating_btn" type="button"><span class="common">查看特价</span></button></a>
+	</div>
+</div>
+
+<div class="content">
+
+	<form method='post' action='{url:/market/sale_del}'>
+		<table class="list_table">
+			<colgroup>
+				<col width="40px" />
+				<col width="130px" />
+				<col width="80px" />
+				<col width="80px" />
+				<col width="150px" />
+				<col width="80px" />
+			</colgroup>
+
+			<thead>
+				<tr>
+					<th>选择</th>
+					<th>标题</th>
+					<th>排序</th>
+					<th>状态</th>
+					<th>创建时间</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+				{query:name=promotion where=award_type eq 7 and seller_id eq 0 order=sort asc,id desc page=$page id=$promotionDB}
+				{set:$seller_id = $item['seller_id']}
+				{query:name=seller where=id eq $seller_id item=$sellerRow}{/query}
+				<tr>
+					<td><input type='checkbox' name='id[]' value='{$item['id']}' /></td>
+					<td><a href='{url:/site/sale}' target='_blank' class="orange" title="{$item['name']}">{$item['name']} 【{if:isset($sellerRow)}{$sellerRow['true_name']}{else:}平台自营{/if}】</a></td>
+					<td>{$item['sort']}</td>
+					<td>{echo:($item['is_close']==1) ? '关闭':'开启'}</td>
+					<td>{$item['start_time']}</td>
+					<td>
+						<a href='{url:/market/sale_edit/id/$item[id]}'>
+							<img class="operator" src="{skin:images/admin/icon_edit.gif}" alt="修改" title="修改" />
+						</a>
+						<a href='javascript:void(0)' onclick="delModel({link:'{url:/market/sale_del/id/$item[id]}'});">
+							<img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" title="删除" />
+						</a>
+					</td>
+				</tr>
+				{/query}
+			</tbody>
+		</table>
+	</form>
+</div>
+{$promotionDB->getPageBar()}

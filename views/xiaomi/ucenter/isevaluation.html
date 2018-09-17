@@ -1,0 +1,53 @@
+
+<div class="u-section-right bg-white m-b-20 pull-left">
+    <div class="bg-white p-30">
+        <div>
+            <ul class="nav nav-tabs ucenter-tabs">
+                <li ><a href="{url:/ucenter/evaluation}">未评价</a></li>
+                <li class="active">已评价</li>
+            </ul>
+
+            {set:$queryIevaluationList = Api::run('getUcenterEvaluation',$this->user['user_id'],1)}
+            {set:$items = $queryIevaluationList->find()}
+            {if:$items}
+            <table class="table table-bordered text-center f-12 m-b-20">
+
+                <tbody>
+                <tr class="active text-muted">
+                    <td width="150">订单编号</td>
+                    <td>商品名称</td>
+                    <td width="80">评分</td>
+                    <td width="300">评价内容</td>
+                    <td width="80">评论时间</td>
+                </tr>
+
+                {foreach:items = $items}
+                <tr>
+                    <td>{$item['order_no']}</td>
+                    <td>
+                        <a href="{url:/site/comments_list/id/$item[goods_id]}" target="_block" title="查看商品评价列表">{$item['name']}</a>
+                    </td>
+                    <td>
+                        <div class="grade-star g-star{$item['point']} m-0"></div>
+                    </td>
+                    <td>{$item['contents']}</td>
+                    <td>{$item['comment_time']}</td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+
+            <div class="pagebar">
+                {$queryIevaluationList->getPageBar()}
+            </div>
+            {else:}
+            <div class="m-t-40 m-b-20">
+                <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+                <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+            </div>
+            {/if}
+
+        </div>
+
+    </div>
+</div>

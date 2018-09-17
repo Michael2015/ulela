@@ -1,0 +1,28 @@
+<div class="bg-white p-10">
+	<div class="info-head"><span>商品评价</span></div>
+
+	{foreach:items=$this->commentQuery->find()}
+	<ul class="common-list container-fluid mb-10">
+		<li class="row">
+			<div class="col-xs-4">用户名：</div>
+			<div class="col-xs-8">{echo: substr_replace($item['username'],'***',-4,3)}</div>
+		</li>
+		<li class="row">
+			<div class="col-xs-4">评分数：</div>
+			<div class="col-xs-8">{$item['point']}</div>
+		</li>
+		<li class="row">
+			<div class="col-xs-4">内容：</div>
+			<div class="col-xs-8">{$item['contents']}</div>
+		</li>
+	</ul>
+	{/foreach}
+	{if:$this->commentCount}
+		{$this->commentQuery->getPageBar()}
+	{else:}
+	<div class="msg bg-white">
+		<p><i class="iconfont icon-31wentifankui"></i></p>
+		<p><span>“</span>当前暂无数据<span>”</span></p>
+	</div>
+	{/if}
+</div>

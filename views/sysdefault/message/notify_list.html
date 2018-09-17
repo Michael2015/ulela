@@ -1,0 +1,134 @@
+{js:my97date}
+<div class="headbar">
+	<div class="position"><span>会员</span><span>></span><span>信息处理</span><span>></span><span>到货通知</span></div>
+	<div class="operating">
+		<a href="javascript:void(0)" onclick="sendMail()"><button class="operating_btn" type="button"><span class="send">邮件通知</span></button></a>
+        <a href="javascript:void(0)" onclick="sendSms()"><button class="operating_btn" type="button"><span class="import">短信通知</span></button></a>
+		<a href="javascript:void(0)" onclick="selectAll('check[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
+		<a href="javascript:void(0)" onclick="delModel({form:'notify_list',msg:'确定要删除选中的记录吗？'})"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
+	</div>
+</div>
+
+<form action="{url:/message/notify_del}" method="post" name="notify_list" onsubmit="return checkboxCheck('check[]','尚未选中任何记录！')">
+<div class="content" style="position:relative;">
+	<table id="list_table" class="list_table">
+		<colgroup>
+			<col width="40px" />
+			<col width="120px" />
+			<col width="80px" />
+			<col width="100px" />
+			<col width="150px" />
+			<col width="130px" />
+			<col width="130px" />
+			<col width="130px" />
+			<col width="70px" />
+		</colgroup>
+
+		<thead>
+			<tr>
+				<th>选择</th>
+				<th>缺货商品名称</th>
+				<th>库存</th>
+				<th>用户名</th>
+				<th>email</th>
+				<th>手机号码</th>
+				<th>登记时间</th>
+				<th>通知时间</th>
+				<th>通知状态</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+			{query: name=notify_registry as notify join=left join goods as goods on notify.goods_id eq goods.id left join user as u on notify.user_id eq u.id fields=notify.*,u.username,goods.name as goods_name,goods.store_nums page=$page}
+			<tr>
+				<td><input class="check_ids" name="check[]" type="checkbox" value="{$item['id']}" /></td>
+				<td><a href="{url:/goods/goods_edit/id/$item[goods_id]}">{$item['goods_name']}</a></td>
+				<td>{$item['store_nums']}</td>
+				<td><a href="{url:/member/member_edit/uid/$item[user_id]}">{$item['username']}</a></td>
+				<td>{$item['email']}</td>
+                <td>{$item['mobile']}</td>
+				<td>{$item['register_time']}</td>
+				<td>{$item['notify_time']}</td>
+				<td>{if:$item['notify_status']==0}未通知{/if}
+                {if:$item['notify_status']==1}仅邮件通知{/if}
+                {if:$item['notify_status']==2}仅短信通知{/if}
+                {if:$item['notify_status']==3}已邮件、短信通知{/if}
+                </td>
+			</tr>
+			{/query}
+		</tbody>
+	</table>
+</div>
+
+{$query->getPageBar()}
+</form>
+
+<script type='text/javascript'>
+function sendMail()
+{
+	var ids = getArray('check[]','checkbox')
+	if(ids.length>0)
+	{
+		loadding('正在发送邮件，请稍候......');
+		$.getJSON('{url:/message/notify_email_send}',{notifyid:ids},function(c)
+		{
+			unloadding();
+			if(c.isError == false)
+			{
+				art.dialog({
+					content: '总共发送邮件：'+c.count+'条<br />成功发送：'+c.succeed+'条<br />发送失败：'+c.failed+'条',
+					icon: 'alert',
+					lock: true,
+					ok: function()
+					{
+						location.reload();
+						return true;
+					}
+				});
+			}
+			else
+			{
+				alert(c.message);
+			}
+		});
+	}
+	else
+	{
+		alert("您尚未选中任何记录！");
+	}
+}
+function sendSms()
+{
+	var ids = getArray('check[]','checkbox')
+	if(ids.length>0)
+	{
+		loadding('正在发送短信，请稍候......');
+		$.getJSON('{url:/message/notify_sms_send}',{notifyid:ids},function(c)
+		{
+			unloadding();
+			if(c.isError == false)
+			{
+				art.dialog({
+					content: '总共发送短信：'+c.count+'条<br />成功发送：'+c.succeed+'条<br />发送失败：'+c.failed+'条',
+					icon: 'alert',
+					lock: true,
+					ok: function()
+					{
+						location.reload();
+						return true;
+					}
+				});
+			}
+			else
+			{
+				alert(c.message);
+			}
+		});
+	}
+	else
+	{
+		alert("您尚未选中任何记录！");
+	}
+}
+</script>

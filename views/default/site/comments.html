@@ -1,0 +1,47 @@
+<div class="position"> <span>您当前的位置：</span> <a href="{url:}"> 首页</a> » <a href="{url:/site/products/id/$this->goods['goods_id']}">{$this->goods['name']}</a> </div>
+<div class="clearfix">
+	<div class="sidebar f_l">
+		<div class="box_2 m_10">
+			<div class="title">商品信息</div>
+			<div class="content">
+				<ul class="prolist clearfix">
+					<li>
+						<a href="{url:/site/products/id/$this->goods['goods_id']}"><img src="{url:/pic/thumb/img/$this->goods['img']/w/167/h/212}" alt="{$this->goods['name']}" height="212px" width="167px"></a>
+						<p class="pro_title">商品名称：<a class="blue" href="{url:/site/products/id/$this->goods['goods_id']}">{$this->goods['name']}</a></p>
+						<p>优惠价：<b>￥{$this->goods['sell_price']}</b></p>
+						<p>评价得分：<span class="grade-star g-star{$this->commentCount['average_point']}"></span>({$this->commentCount['average_point']}分)</p>
+						<p>评论数：{$this->commentCount['comment_total']}条</p>
+					</li>
+					<input type="submit" onclick="joinCart_list({$this->goods['goods_id']});" value="加入购物车" class="submit_join m_10">
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="wrapper main f_r">
+		<div class="wrap_box">
+			<form method="post" action="{url:/site/comment_add}">
+			<input type="hidden" name="id" value="{$this->comment['id']}" />
+			<table class="form_table f_l">
+				<caption><img src="{skin:images/front/comments.gif}" width="88" height="23" alt="我要评论" /></caption>
+				<col width="120px" />
+				<col />
+				<tr>
+					<th>评论等级：</th>
+					<td>
+						<label><input name="point" class="radio" type="radio" value="5" checked="checked" /><span class="grade-star g-star5"></span></label>
+						<label><input name="point" class="radio" type="radio" value="4" /><span class="grade-star g-star4"></span></label>
+						<label><input name="point" class="radio" type="radio" value="3" /><span class="grade-star g-star3"></span></label>
+						<label><input name="point" class="radio" type="radio" value="2" /><span class="grade-star g-star2"></span></label>
+						<label><input name="point" class="radio" type="radio" value="1" /><span class="grade-star g-star1"></span></label>
+					</td>
+				</tr>
+				<tr>
+					<th>评论内容：</th><td valign="top"><textarea name="contents" id="contents"></textarea></td>
+				</tr>
+				<tr><td></td><td><label class="btn"><input type="submit" value="我要评价" /></label></td></tr>
+			</table>
+			</form>
+		</div>
+	</div>
+</div>

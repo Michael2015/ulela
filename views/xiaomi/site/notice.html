@@ -1,0 +1,31 @@
+<div class="body-contain bg-gray ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+
+            <li class="active">商城公告</li>
+        </ol>
+        <!--position-->
+        <div class="bg-white m-b-60">
+            <div class="p-30">
+                <h3 class="m-b-40 m-t-20">商城公告</h3>
+                <div class="hc-content">
+                    <ul class="list-unstyled h-list">
+                        {set:$queryNotice = Api::run('getNoticeList')}
+                        {foreach:items = $queryNotice->find()}
+                        <li>
+                            <a href="{url:/site/notice_detail/id/$item[id]}">{$item['title']}<span class="text-muted">{$item['time']}</span></a>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    <div class="pagebar">
+                        {$queryNotice->getPageBar()}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li class="active">我的退款</li>
+        </ul>
+
+        <div>
+            {set:$queryRefundmentDocList = Api::run('getRefundmentDocList',$this->user['user_id'])}
+            {set:$items = $queryRefundmentDocList->find()}
+            {if:$items}
+            <table class="table table-bordered table-striped text-center f-12 m-b-20">
+                <tbody>
+                <tr class="active text-muted">
+                    <td>退款订单</td>
+                    <td>申请时间</td>
+                    <td>处理状态</td>
+                    <td>操作</td>
+                </tr>
+                {foreach:items = $items}
+                <tr>
+                    <td>
+                    <a href="{url:/ucenter/order_detail/id/$item['order_id']}" target="_blank" title="查看订单详情">{$item['order_no']}</a>
+                    </td>
+                    <td class="text-muted">
+                        {$item['time']}
+                    </td>
+                    <?php 
+                        switch($item['pay_status'])
+                        {
+                            case 1: //退款失败
+                                $status_color = "text-muted";
+                                break;
+                            case 2: //退款成功
+                                $status_color = "text-success";
+                                break;
+                            default:
+                                $status_color = "";
+                        }
+                    ?>
+                    <td class="{$status_color}">
+                        {echo:Order_Class::refundmentText($item['pay_status'])}
+                    </td>
+                    <td>
+                        <a class="color-orange" href="{url:/ucenter/refunds_detail/id/$item[id]}" title="查看退款详情">查看详情</a>
+                        {if:$item['pay_status']==0}<span class="text-muted">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span> <a href="javascript:;"" onclick='delModel({link:"{url:/ucenter/refunds_del/id/$item[id]}"})'>取消退款</a>{/if}
+                    </td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+
+            <div class="pagebar">
+                {$queryRefundmentDocList->getPageBar()}
+            </div>
+
+            {else:}
+            <div class="m-t-40 m-b-20">
+                <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+                <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+            </div>
+            {/if}
+
+        </div>
+    </div>
+</div>

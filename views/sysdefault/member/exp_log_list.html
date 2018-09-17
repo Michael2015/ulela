@@ -1,0 +1,56 @@
+<div class="headbar">
+	<div class="headbar">
+		<div class="position"><span>会员</span><span>></span><span>会员管理</span><span>></span><span>经验日志</span></div>
+	</div>
+	<div class="operating">
+		<div class="search f_l">
+			<form name="serachexp" action="{url:/}" method="get">
+				<input type='hidden' name='controller' value='member' />
+				<input type='hidden' name='action' value='exp_log_list' />
+				搜索用户ID：<input type='text' name='user_id' class="small" value="<?php echo $this->user_id; ?>" />
+				<button class="btn" type="submit"><span class="sch">搜索</span></button>
+			</form>
+		</div>
+		<div class="search f_r">
+			<form name="save_exp" action="{url:/member/exp_save}" method="post">
+				操作用户名：<input type='text' name='username' class="small" />
+				增减经验值：<input type='text' name='exp_num' class="small" />（填正负数）
+				经验值日志：<input type='text' name='exp_log' class="small" />
+				<button class="btn" type="submit"><span>提交</span></button>
+			</form>
+		</div>
+	</div>
+	
+</div>
+
+<div class="content">
+	<table class="list_table">
+		<colgroup>
+			<col width="120px" />
+			<col width="200px" />
+			<col />
+			<col />
+		</colgroup>
+
+		<thead>
+			<tr>
+				<th>用户ID</th>
+				<th>经验值</th>
+				<th>日志记录</th>
+				<th>时间</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{foreach:items = $this->expLogList}
+			<tr>
+				<td>{$item['user_id']}</td>
+				<td>{$item['value']}</td>
+				<td>{$item['intro']}</td>
+				<td>{$item['datetime']}</td>	
+			</tr>
+			{/foreach}
+		</tbody>
+	</table>
+</div>
+{$this->expLogObj->getPageBar()}

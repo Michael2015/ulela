@@ -1,0 +1,115 @@
+<link rel="stylesheet" href="{skin:xiaomi/css/product.css?v=20160929}" />
+
+<div class="body-contain bg-gray ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+            <li><a href="{url:/site/products/id/$this->goods['goods_id']}">{$this->goods['name']}</a></li>
+            <li class="active">发表商品评论</li>
+        </ol>
+        <!--position-->
+    </div>
+
+    <!-- 商品咨询 -->
+    <div class="w1230 margin-0-auto ov-hidden m-b-40">
+        <!-- 商品内容 -->
+        <div class="product-left pull-left ov-hidden bg-white">         
+            <!-- 热卖排行 -->
+            <h3 class="text-center">
+                商品信息
+            </h3>
+            <div class="list-unstyled left-hot-sell">
+                <div class="item">
+                    <a class="item-image margin-0-auto" href="{url:/site/products/id/$this->goods['goods_id']}" target="_blank">
+                        <img src="{url:/pic/thumb/img/$this->goods['img']/w/170/h/170}" alt="{$this->goods['name']}" height="170" width="170">
+                    </a>
+                    <p class="text-center f-12">
+                        <a href="{url:/site/products/id/$this->goods['goods_id']}" target="_blank">{$this->goods['name']}</a>
+                    </p>
+                    <div class="m-t-10">
+                        <div class="pull-left text-danger">
+                            ￥{$this->goods['sell_price']}
+                        </div>
+                        <div class="pull-right">
+                            <div class="pull-left m-0 grade-star g-star{$this->commentCount['average_point']}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 商品咨询详情 -->
+        <div class="product-right pull-left ov-hidden bg-white">
+            <!-- 商品咨询 -->
+            <div class="ov-hidden">
+                <h3>发表商品评论</h3>
+
+                <div class="p-30">
+                    <form action='{url:/site/comment_add}' method='post' name='comment'>
+                        <input type='hidden' name='id' value="{$this->comment['id']}" />
+                        <ul class="info-form form-content">
+                            <li class="clearfix">
+                                <div class="info-label pull-left text-right">评分等级</div>
+                                <div class="info-input pull-left large-input">
+                                    <div class="form-item clearfix">
+                                        <div class="form-item-right">
+                                            <ul class="list-inline">
+                                                <li class="m-t-10">
+                                                    <input checked="checked" type="radio" name='point' value='5' id="star5"/>
+                                                    <label for="star5" class="label-sm">
+                                                        <div class="m-0 grade-star g-star5"></div>
+                                                    </label>
+                                                </li>
+                                                <li class="m-t-10">
+                                                    <input type="radio" name='point' value='4' id="star4"/>
+                                                    <label for="star4" class="label-sm">
+                                                        <div class="m-0 grade-star g-star4"></div>
+                                                    </label>
+                                                </li>
+                                                <li class="m-t-10">
+                                                    <input type="radio" name='point' value='3' id="star3"/>
+                                                    <label for="star3" class="label-sm">
+                                                        <div class="m-0 grade-star g-star3"></div>
+                                                    </label>
+                                                </li>
+                                                <li class="m-t-10">
+                                                    <input type="radio" name='point' value='2' id="star2"/>
+                                                    <label for="star2" class="label-sm">
+                                                        <div class="m-0 grade-star g-star2"></div>
+                                                    </label>
+                                                </li>
+                                                <li class="m-t-10">
+                                                    <input type="radio" name='point' value='1' id="star1"/>
+                                                    <label for="star1" class="label-sm">
+                                                        <div class="m-0 grade-star g-star1"></div>
+                                                    </label>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="clearfix">
+                                <div class="info-label pull-left text-right">评论内容</div>
+                                <div class="info-input pull-left large-input">
+                                    <div class="form-item clearfix">
+                                        <div class="form-item-right">
+                                            <textarea name="contents" pattern='required' alt="请填写评论内容"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="clearfix">
+                                <div class="info-label pull-left text-right"></div>
+                                <div class="info-input pull-left">
+                                    <button type="submit" class='btn btn-warning'>发表评论</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

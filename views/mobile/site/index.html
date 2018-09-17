@@ -1,0 +1,165 @@
+<!--<script type="text/javascript" src="{theme:javascript/jquery.flexslider-min.js}"></script>-->
+<!--<link rel="stylesheet" href="{skin:css/index.css}" type="text/css">-->
+
+<!--首页header 开始-->
+
+<div class="container-fluid">
+	<div class="header row">
+		<div class="col-xs-1 header-item"><a href="{url:/}"><i class="iconfont icon-home"></i></a></div>
+		<div class="col-xs-10">
+			<div class="search-box">
+				<form method='get' action='{url:/}'>
+					<input type='hidden' name='controller' value='site' />
+					<input type='hidden' name='action' value='search_list' />
+					<input class="form-control" type="text" name='word'placeholder="输入关键字..." value="" />
+					<button type="submit" class="search-btn" href="javascript:void(0)"  title="搜索商品"><i class="iconfont icon-31sousuo"></i></button>
+				</form>
+			</div>
+		</div>
+		<div class="col-xs-1 header-item"><a href="{url:site/sitemap}"><i class="iconfont icon-liebiao2"></i></a></div>
+	</div>
+</div>
+<!--首页header 结束-->
+
+<!--幻灯片 开始-->
+ <!--<div class="flexslider bg-white" >
+    {if:$this->index_slide}
+    <ul class="slides">
+        {foreach:items=$this->index_slide}
+        <li> <a href="{url:$item[url]}" target="_blank"> <img src="{webroot:$item[img]}" alt=""></a>&lt;!&ndash;<p class="slider-description">{$item['name']}</p>&ndash;&gt;</li>
+        {/foreach}
+    </ul>
+    {/if}
+</div>-->
+<!--幻灯片 结束-->
+
+<!--bootstarp自带幻灯片 开始-->
+
+<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+	{if:$this->index_slide}
+	<!-- Indicators -->
+	<ol class="carousel-indicators">
+		{foreach:items=$this->index_slide}
+		<li data-target="#carousel-example-generic" data-slide-to="" ></li>
+		{/foreach}
+	</ol>
+
+	<!-- Wrapper for slides -->
+	<div class="carousel-inner" role="listbox">
+		{foreach:items=$this->index_slide}
+		<div class="item">
+			<img src="{webroot:$item[img]}"  alt="...">
+		</div>
+		{/foreach}
+	</div>
+	{/if}
+
+	<!-- Controls -->
+
+</div>
+
+<!--bootstarp自带幻灯片 结束-->
+
+<!--菜单 开始-->
+<div class="container-fluid">
+	<ul class="row category common-nav bg-white mb-10">
+		<li class="col-xs-3"><a href="{url:site/sitemap}"><i class="color-sky-blue iconfont icon-tabulation"></i><span class="text-muted">全部分类</span></a></li>
+		<li class="col-xs-3"><a href="{url:simple/cart}"><i class="color-light-red iconfont icon-gouwuche1"></i><span class="text-muted">购物车</span></a></li>
+		<li class="col-xs-3"><a href="{url:ucenter/favorite}"><i class="color-yellow iconfont icon-shoucangshangpin"></i><span class="text-muted">收藏</span></a></li>
+		<li class="col-xs-3"><a href="{url:/ucenter}"><i class="color-purple iconfont icon-wo1"></i><span class="text-muted">个人中心</span></a></li>
+	</ul>
+</div>
+<!--菜单 结束-->
+
+<!-- 主题 开始 -->
+
+<div class="topic bg-white mb-10 p-5">
+	<div class="common-title"><span>推荐主题</span></div>
+	<div class="container-fluid">
+		<ul class="row">
+			<li class="col-xs-6">
+				<div class="topic-img">
+					{echo:Ad::show("手机版_首页主题推荐1")}
+				</div>
+			</li>
+			<li class="col-xs-6">
+				<div class="topic-img">
+					{echo:Ad::show("手机版_首页主题推荐2")}
+				</div>
+			</li>
+			<li class="col-xs-6">
+				<div class="topic-img">
+					{echo:Ad::show("手机版_首页主题推荐3")}
+				</div>
+			</li>
+			<li class="col-xs-6">
+				<div class="topic-img">
+					{echo:Ad::show("手机版_首页主题推荐4")}
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<!-- 主题 结束 -->
+
+<!-- 广告 开始 -->
+<div class="ad bg-white mb-10 p-5">
+	<div class="common-title"><span>东阳光大健康开放合作</span></div>
+	<div class="ad-area">
+		<a href=""><img src="" alt=""/></a>
+	</div>
+</div>
+<!-- 广告 结束 -->
+
+
+<!--首页推荐商品列表 开始-->
+
+<div class="good-list bg-white p-5 mb-10">
+	<div class="common-title"><span>商品推荐</span></div>
+	<div class="container-fluid">
+		<div class="row">
+			{foreach:items = Api::run('getCommendRecom')}
+			<div class="col-xs-6">
+				<div class="thumbnail">
+					<div class="good-pic">
+						<a href="{url:/site/products/id/$item[id]}"><img class="lazy" title="{$item['name']}" data-original="{url:/pic/thumb/img/$item[img]/w/300/h/300}" width="100%" height="100%"/></a>
+						<p class="good-price text-right font-sm">￥{$item['sell_price']}</p>
+					</div>
+
+					<div class="caption">
+						<p class="good-name ov-h font-sm"><a href="{url:/site/products/id/$item[id]}">{$item['name']}</a></p>
+					</div>
+				</div>
+			</div>
+			{/foreach}
+		</div>
+	</div>
+</div>
+
+
+<script>
+	$('.carousel-inner .item').eq(0).addClass("active");
+	$('.carousel-indicators li').eq(0).addClass("active");
+
+	$('.carousel-indicators li').each(function(i, ele){
+		$(this).attr("data-slide-to", i);
+	});
+
+</script>
+<!--<script type="text/javascript">
+jQuery(function()
+{
+	$('.flexslider').flexslider(
+	{
+		animation: "slide",
+		directionNav: false,
+		animationLoop: false,
+		controlNav: false,
+		slideToStart: 0,
+		slideshow: true,
+		animationDuration: 300
+	});
+});
+</script>-->
+

@@ -1,0 +1,80 @@
+<div class="main f_r">
+
+    <div class="uc_title m_10">
+        <label class="current"><span>退款详情</span></label>
+    </div>
+
+	<div class="box m_10">
+		<table class="border_table" width="100%" cellpadding="0" cellspacing="0">
+			<colgroup>
+				<col width="150px" />
+				<col />
+			</colgroup>
+
+			<tr>
+				<th>订单号：</th>
+				<td>{$this->data['order_no']}</td>
+			</tr>
+
+			<tr>
+				<th>处理结果：</th>
+				<td>{echo:Order_Class::refundmentText($this->data['pay_status'])}</td>
+			</tr>
+
+			<tr>
+				<th>退款商品：</th>
+				<td>
+					{foreach:items = $this->data['goods']}
+					{set:$goodsInfo = JSON::decode($item['goods_array'])}
+					<p>
+						<a class="blue" href="{url:/site/products/id/$item['goods_id']}" href="_blank">
+							{$goodsInfo['name']} {if:$goodsInfo['value']}{$goodsInfo['value']}{/if} X {$item['goods_nums']}
+						</a>
+					</p>
+					{/foreach}
+				</td>
+			</tr>
+
+			{if:$this->data['seller_id']}
+			<tr>
+				<th>商家主页：</th>
+				<td><a href="{url:/site/home/id/$this->data['seller_id']}" target="_blank">进入主页</a></td>
+			</tr>
+			{/if}
+
+			<tr>
+				<th>申请时间：</th>
+				<td>{$this->data['time']}</td>
+			</tr>
+
+			{if:$this->data['amount'] > 0}
+			<tr>
+				<th>退款金额：</th>
+				<td class="red2 bold">{$this->data['amount']}</td>
+			</tr>
+			{/if}
+
+			<tr>
+				<th>处理时间：</th>
+				<td>{echo:$this->data['dispose_time']?$this->data['dispose_time']:'未处理';}</td>
+			</tr>
+
+			<tr>
+				<th>处理建议：</th>
+				<td>{echo:$this->data['dispose_idea']?$this->data['dispose_idea']:'未回复'}</td>
+			</tr>
+
+			<tr>
+				<th>退款原因：</th>
+				<td>{$this->data['content']}</td>
+			</tr>
+
+			<tr>
+				<th></th>
+				<td>
+					<label class="btn"><input type="button" value="返 回" onclick='event_link("{url:/ucenter/refunds}")'></label>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

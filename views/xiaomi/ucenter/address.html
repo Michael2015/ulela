@@ -1,0 +1,86 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+    <div class="p-30">
+        <div>
+            <ul class="nav nav-tabs ucenter-tabs">
+                <li class="active">地址管理</li>
+            </ul>
+
+			<table class="table table-bordered text-center table-striped f-12 m-b-20">
+
+				<tbody>
+				<tr class="active text-muted">
+					<td>收货人</td>
+					<td>所在地区</td>
+					<td>街道地址</td>
+					<td>电话/手机</td>
+					<td>身份证(阳光全球购)</td>
+					<td>邮编</td>
+					<td>操作</td>
+				</tr>
+				{foreach:items=$this->address}
+				<tr{if:$item['is_default']==1} class="warning"{/if}>
+					<td>{$item['accept_name']}</td>
+					<td>{$this->areas[$item['province']]}{$this->areas[$item['city']]}{$this->areas[$item['area']]}</td>
+					<td>{$item['address']}</td>
+					<td>{$item['mobile']}</td>
+					<td>{$item['accept_id']}</td>
+					<td>{$item['zip']}</td>
+					<td>
+                        <a href='javascript:;' onclick='editAddress({$item['id']})'>修改</a> 
+                        <span class="text-muted">&nbsp;|&nbsp;</span> 
+                        <a href="javascript:;" class="text-muted" onclick="delModel({link:'{url:/ucenter/address_del/id/$item[id]}'});">删除</a>
+                        <span class="text-muted">&nbsp;|&nbsp;</span> 
+						{if:$item['is_default']==1}
+						  <a href="{url:/ucenter/address_default/id/$item['id']/is_default/0}">取消默认</a>
+						{else:}
+						  <a class="color-orange" href="{url:/ucenter/address_default/id/$item['id']/is_default/1}">设为默认</a>
+						{/if}
+                    </td>
+				</tr>
+				{/foreach}
+				</tbody>
+			</table>
+
+			<div>
+				<a class="color-orange" href="javascript:void(0);" onclick="editAddress();"><i class="icon-18 icon-add-addr"></i>添加新地址</a>
+			</div>
+
+        </div>
+
+    </div>
+</div>
+
+<script type='text/javascript'>
+    //地址修改
+    function editAddress(addressId)
+    {
+		layer.open({
+			type: 2, //iframe层
+			content: creatUrl("block/address/id/"+addressId+"?is_cbe=1"), //dyg_jzw 20160613 添加跨境电商地址
+			id: "addressWindow",
+			title: "收货地址管理",
+			area: ['430px', '500px'],
+			btn: ['提交', '取消'],
+			yes: function(index, layero){
+				var formObject = layer.getChildFrame('form', index)[0];
+
+				if(formObject.onsubmit() === false)
+				{
+					layer.msg("请正确填写各项信息");
+					return false;
+				}
+				$.getJSON(formObject.action,$(formObject).serialize(),function(content){
+					if(content.result == false)
+					{
+						layer.msg(content.msg);
+						return;
+					}
+					window.location.reload();
+				});
+				
+				return true;
+			}
+		
+		});
+    }
+</script>

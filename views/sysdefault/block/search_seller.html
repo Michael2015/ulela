@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel="stylesheet" href="{skin:css/admin.css}" />
+{js:jquery}
+{js:dialog}
+{js:validate}
+</head>
+<body style="width:520px;min-height:270px;overflow-y:hidden;">
+<div class="pop_win">
+	<form action='{url:/block/filter_seller}' method='post'>
+		<table class='form_table'>
+			<col width="150px" />
+			<col />
+			<tbody>
+				<tr>
+					<td class="t_r">商户：</td>
+					<td>
+						<select class="normal" name="search[id=]">
+							<option value="">请选择 </option>
+							{query:name=seller where=is_del eq 0}
+							<option value="{$item['id']}">{$item['true_name']}-{$item['seller_name']}</option>
+							{/query}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="t_r">商户用户名：</td>
+					<td><input type='text' class='normal' name='search[seller_name=]' /></td>
+				</tr>
+				<tr>
+					<td class="t_r">商户固定电话：</td>
+					<td><input type='text' class='normal' name='search[phone=]' pattern="phone" empty /></td>
+				</tr>
+				<tr>
+					<td class="t_r">商户手机号码：</td>
+					<td><input type='text' class='normal' name='search[mobile=]' pattern="mobi" empty /></td>
+				</tr>
+				<tr>
+					<td class="t_r">商户邮箱：</td>
+					<td><input type='text' class='normal' name='search[email=]' pattern='email' empty /></td>
+				</tr>
+				<tr>
+					<td class="t_r">商户真实名称：</td>
+					<td><input type='text' class='normal' name='search[true_name=]' /></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+</body>
+</html>

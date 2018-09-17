@@ -1,0 +1,116 @@
+{js:kindeditor}
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li class="active">退款申请</li>
+        </ul>
+
+        <div class="clearfix">
+            <div class="media tips-media">
+                <div class="media-left">
+                    <img src="{skin:xiaomi/images/pay_1.png}" alt=""> 
+                </div>
+                <div class="media-body f-12">
+                    <p>
+                        <span class="text-muted">订&nbsp;&nbsp;单&nbsp;&nbsp;号： </span> 
+                        <a href="{url: /ucenter/order_detail/id/$this->orderRow['id']}" target="_blank" title="查看订单详情">{$this->orderRow['order_no']}</a>
+                    </p>
+                    <p>
+                        <span class="text-muted">支付时间：</span> 
+                        {$this->orderRow['pay_time']}
+                    </p>
+                    <p>
+                        <span class="text-muted">订单金额：</span> 
+                        <span class="color-red">{$this->orderRow['order_amount']}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white">
+            <h5 class="m-b-20">提交退款申请</h5>
+
+            <form action='{url:/ucenter/refunds_update}' method='post' name='refunds_update' onsubmit="return checkForm();">
+                <input type="hidden" name="order_id" value="{$this->orderRow['id']}" />
+                <ul class="info-form form-content">
+                    <li class="clearfix">
+                        <div class="info-label pull-left text-right">选择退款商品</div>
+                        <div class="info-input pull-left large-input">
+                            <div class="form-item clearfix">
+                                <div class="form-item-right">
+                                    {foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$this->orderRow['id'])) item=$good}
+                                    {set:$good_info = JSON::decode($good['goods_array'])}
+                                    {if:$good['is_send'] != 2}
+                                        <div class="checkbox">
+                                            <label class="f-14">
+                                                <input type="checkbox" name="order_goods_id[]" value="{$good['id']}" />
+                                                {$good_info['name']}{if:$good_info['value']} {$good_info['value']}{/if} &times; {$good['goods_nums']}
+                                            </label>
+                                        </div>
+                                    {/if}
+                                    {/foreach}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="info-label pull-left text-right">退款理由</div>
+                        <div class="info-input large-input pull-left">
+                            <div class="form-item clearfix">
+                                <textarea name="content" id="content" style="width:95%;height:300px" pattern="required"></textarea>
+                                <label class="color-red">* 请写明退款理由，上传问题商品图片</label>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="clearfix">
+                        <div class="info-label pull-left text-right"></div>
+                        <div class="info-input pull-left">
+                            <button type="submit" class='btn btn-warning'>提交退款</button>
+                            <a href="{url:/ucenter/order/}" class='btn btn-gray m-l-15'>返回订单列表</a>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+//编辑器载入
+KindEditorObj = KindEditor.create('#content',
+{
+    items : [
+        'fontsize', '|', 'forecolor','bold', 'italic', 'underline',
+        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+        'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+});
+
+//提交表单检查
+function checkForm()
+{
+    if($('#content').val() == '')
+    {
+        alert('请填写退款原因');
+        return false;
+    }
+
+    if($('[name="order_goods_id[]"]:checked').length == 0)
+    {
+        alert('请选择要退款的商品');
+        return false;
+    }
+    return true;
+}
+</script>

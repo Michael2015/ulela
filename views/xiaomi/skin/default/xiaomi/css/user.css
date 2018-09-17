@@ -1,0 +1,215 @@
+
+
+/*个人中心首页模块*/
+.func-list{
+    width:140px;
+    padding:5px 0 20px 0;
+    border-bottom:1px solid #eee;
+}
+
+.func-list:nth-last-child(1){
+    border-bottom:none;
+}
+
+.function-list-bd li.current a{
+    color:#EAB24A;
+    font-weight: 700;
+}
+
+/*订单数、总消费等简介信息*/
+.acount-info-list{
+    border-left: 1px solid #eee;
+    padding: 10px 0 0 60px;
+    margin-left: 60px;
+    margin-top: 6px;
+}
+
+.acount-info-list li{
+    margin-bottom:10px;
+}
+
+/*代付款、待确认、待评价 列表图标*/
+.order-wait-list li{
+    width:100px;
+}
+
+.status-icon{
+    display: block;
+    position: relative;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.status-icon img {
+    width: 75px;
+    height: 75px;
+}
+.status-num{
+    position: absolute;
+    right:5px;
+    top:0;
+    padding:0 10px;
+    height:20px;
+    line-height:20px;
+    border-radius:10px;
+    color:#fff;
+    background:#EAB24A;
+    font-weight: bold;
+}
+.status-info{
+    font-size:12px;
+    text-align:center;
+}
+.status-info span{
+    color:#EAB24A;
+    font-weight:bold;
+}
+
+/*用户头像*/
+.u-avatar{
+    width: 140px;
+    border-bottom:1px solid #eee;
+}
+
+.u-avatar .avatar-image, .u-avatar .avatar-image img{
+    width: 100px;
+    height: 100px;
+}
+.u-avatar .avatar-image img{
+    border-radius: 100px;
+    -webkit-border-radius: 100px;
+}
+.u-avatar .edit-icon{
+    right: 0;
+    bottom: 0;
+}
+
+
+
+
+/*底部波浪*/
+.wave-bottom{
+    background:#fff url(../images/info-glance-bg.png) repeat-x left bottom;
+}
+
+
+
+/*订单列表*/
+table.order-item{
+    border-color: #e8e8e8;
+}
+
+
+table.order-item tbody tr td{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-color: #ededed;
+}
+
+.order-item .active td{
+    padding:10px 15px;
+}
+
+.order-item .item-bd {
+    padding: 10px 0;
+}
+
+.order-item .item-bd td {
+    text-align: center;
+}
+
+.order-item .item-bd td.text-left {
+    text-align: left;
+}
+
+.order-process-list li{
+    padding-left:32px;
+    line-height: 24px;
+    position:relative;
+}
+
+.order-process-list li:before{
+    position:absolute;
+    content:'';
+    display:inline-block;
+    width:12px;
+    height:12px;
+    background:#EAB24A;
+    border-radius:12px;
+    left:0;
+    top:50%;
+    margin-top:-6px;
+}
+.order-process-list li:after{
+    position:absolute;
+    content:'';
+    display:inline-block;
+    width:1px;
+    height:40px;
+    background:#EAB24A;
+    left:6px;
+    top:-8px;
+}
+
+
+
+
+/*商城收藏的备注输入*/
+.summary-input input{
+    width:240px;
+    height:32px;
+    line-height:32px;
+    padding-left:10px;
+    margin-bottom:5px;
+    outline: none;
+    border:1px solid #ddd;
+}
+.summary-input input:hover,
+.summary-input input:focus
+{
+    border-color: #EAB24A;
+}
+
+/*优惠券样式*/
+.ticket-content {
+    margin-left: -17px;
+}
+.ticket-item {
+    margin-left: 17px;
+    margin-bottom: 17px;
+    width: 292px;
+    float: left;
+}
+
+.ticket-content .checkbox-item label {
+    padding: 5px 0 5px 0;
+}
+.ticket-main {
+    z-index: 1;
+    position: relative;
+}
+.ticket-status {
+    width: 79px;
+    height: 58px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 0;
+    background: url('../images/ticket_status.png') no-repeat 0 0;
+}
+
+.ticket-status.useful {
+    background-position: 0 0;
+}
+.ticket-status.used {
+    background-position: 0 -58px;
+}
+.ticket-status.ban {
+    background-position: 0 -116px;
+}
+.ticket-status.lock {
+    background-position: 0 -174px;
+}
+.ticket-status.expire {
+    background-position: 0 -232px;
+}

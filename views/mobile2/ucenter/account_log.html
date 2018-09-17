@@ -1,0 +1,48 @@
+<div class="bg-white p-10 mb-15 text-center">
+	<h2 class="text-warning font-xxl">
+		<strong>{$this->memberRow['balance']}</strong>
+	</h2>
+	<p class="text-muted">账户余额</p>
+
+	<p class="text-muted font-xs mt-5">
+		<a href="{url:/ucenter/freeze_log}"><span class="text-muted">待返还：</span><span class="text-danger"> ￥{$this->memberRow['balance_freeze']}</span></a>
+	</p>
+</div>
+
+<div class="bg-white">
+	{set: $queryAccountLogList = Api::run('getUcenterAccoutLog',$this->user['user_id'])}
+	{if: $accountLogList = $queryAccountLogList->find()}
+		<table class="table table-striped text-center font-sm mb-0">
+    		<tr>
+    			<th class="text-center">日期</th>
+    			<th class="text-center">收入/支出</th>
+    			<th>&nbsp;</th>
+    		</tr>
+			{foreach:items = $accountLogList key=$_index}
+				<tr>
+					<td class="text-muted">{$item['time']}</td>
+					<td class="text-danger">{$item['amount']}</td>
+					<td>
+						<div class="info-tips">
+							<i class="iconfont icon-infofill text-muted" data-tips='{$item['note']}'></i>
+						</div>
+					</td>
+				</tr>
+			{/foreach}
+		</table>
+		{$queryAccountLogList->getPageBar()}
+	{else:}
+		<div class="msg bg-white">
+			<p><i class="iconfont icon-31wentifankui"></i></p>
+			<p>当前暂无数据</p>
+		</div>
+	{/if}
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.info-tips .iconfont').on('click', function(){
+			layer.tips($(this).attr('data-tips'), this, {tips: 1});
+		});
+	});
+</script>

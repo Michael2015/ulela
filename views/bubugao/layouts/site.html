@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{echo:$this->_siteConfig->name}</title>
+	<link type="image/x-icon" href="/favicon.ico" rel="icon">	
+	<link rel="stylesheet" href="{skin:bubugao/css/public.css?v=20160727}" />
+	<link rel="stylesheet" href="{skin:bubugao/css/index.css?v=20160727}" />
+	<link rel="stylesheet" href="{skin:bubugao/css/hl.css?v=20160727}" />
+	<link rel="stylesheet" href="{skin:bubugao/css/cssgrids-responsive.css}" />
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	{js:jquery}
+	{js:form}
+	{js:validate}
+	{js:dialog}
+	{js:artTemplate}
+	<script type='text/javascript' src="{theme:javascript/common.js?v=20160727}"></script>
+	<script type='text/javascript' src='{theme:javascript/site.js?v=20160727}'></script>
+	<!--逸创云客服-->
+	<!-- Start of KF5 supportbox script -->
+	<script src="//assets.kf5.com/supportbox/main.js" id="kf5-provide-supportBox" kf5-domain="dyg.kf5.com"></script>
+	<!-- End of KF5 supportbox script -->
+</head>
+<body>
+
+
+<!--site-nav-->
+<div class="site-nav">
+	<!--w1190 clearfix-->
+	<div class="w1190 clearfix">
+		<!--sn-login f-l-->
+		<div class="sn-login f-l">
+			<!--small-signin-->
+			<div class="small-signin">
+			欢迎您来到{echo:$this->_siteConfig->name}！
+			{if:$this->user}
+				<a href="{url:/ucenter/index}">{echo:$this->user['username']}</a>
+				<span class="split"></span>
+				<a href="{url:/simple/logout}">退出</a>
+			{else:}
+				<a href="{url:/simple/login}">登录</a>
+				<span class="split"></span>
+			  <a href="{url:/simple/reg}">免费注册</a>
+			{/if}
+
+			</div>
+			<!--small-signin-->
+		</div>
+		<!--sn-login f-l-->
+		<!--sn-quick f-r-->
+
+		<ul class="sn-quick f-r" id="jSiteNavQuick">
+			<li>
+				<a class="menu-hd quick-item" href="{url:ucenter/index}" rel="nofollow">个人中心<b></b></a>
+				<div class="menu-bd ">
+					<a href="{url:ucenter/order}" rel="nofollow">我的订单</a>
+					<span class="line"></span>
+					<a href="{url:ucenter/integral}" rel="nofollow">我的积分</a>
+					<span class="line"></span>
+					<a href="{url:ucenter/account_log}" rel="nofollow">我的资金</a>
+					<span class="line"></span>
+					<a href="{url:ucenter/address}" rel="nofollow">地址管理</a>
+				</div>
+			</li>
+			<!--<li class="split"></li>
+			<li>
+				<a class="quick-item" href="{url:/simple/seller}" rel="nofollow">申请开店</a>
+			</li>
+			<li class="split"></li>
+			<li>
+				<a class="quick-item"  href="{url:/seller/index}">商家管理</a>
+			</li>-->
+			<li class="split"></li>
+			<li>
+				<a class="quick-item" href="{url:/site/help_list}">使用帮助</a>
+			</li>
+			<li class="split"></li>
+			<li class="phone">
+				<span class="quick-item">客服电话：<span>4000-552-888</span></span>
+			</li>
+			</ul>
+
+		<!--sn-quick f-r-->
+	</div>
+	<!--w1190 clearfix-->
+</div>
+<!--site-nav-->
+
+<!--search-->
+<div class="search">
+	<!--w1190 clearfix-->
+	<div class="w1190 clearfix">
+		<!--logo-->
+		<div class="logo">
+			<a href="{url:}" class="go-home">
+				<img src="{if:$this->_siteConfig->logo}{webroot:$this->_siteConfig->logo}{else:}{skin:bubugao/images/logo.png}{/if}" alt="" class="png">
+			</a>
+		</div>
+		<!--logo-->
+
+		<!--cart f-r-->
+		<div class="cart f-r mycart" id="jCart" name="mycart">
+			<span class="cart-count"><span name="mycart_count">0</span></span>
+			<a href="{url:simple/cart}" class="cart-buying"><span class="cart-account">去购物车结算</span></a>
+			<div class="cart-cnt" id="div_mycart" style="display: none;"></div>
+		</div>
+
+		<!--购物车模板 开始-->
+			<script type='text/html' id='cartTemplete'>
+			 	<span class='line'></span>
+			 	<div class='cart-panel'>
+				 	<ul class='cart-list'>
+					<%for(var item in goodsData){%>
+						<%var data = goodsData[item]%>
+						<li class="goods-info clearfix" id="site_cart_dd_<%=item%>">
+							<span class="goods-num">共<%=data['count']%>件</span>
+							<a target="_blank" class="goods-img f-l" href="{url:/site/products/id/<%=data['goods_id']%>}">
+								<img alt="<%=data['name']%>" src="{webroot:<%=data['img']%>}">
+							</a>
+							<div class="goods-detail f-r">
+								<a target="_blank" class="goods-name" href="{url:/site/products/id/<%=data['goods_id']%>}" title="<%=data['name']%>">
+									<%=data['name']%>
+								</a>
+								<div class="goods-price">
+									<span class="p-normal f-l">
+										<em>￥</em><%=data['sell_price']%>
+									</span>
+									<a href="javascript:void(0)" onclick="removeCart('<%=data['id']%>','<%=data['type']%>');$('#site_cart_dd_<%=item%>').hide('slow');"  class="f-r goods-del">
+										删除
+									</a>
+								</div>
+							</div>
+						</li>
+					<%}%>
+					<%if(goodsCount){%>
+						<div class="cart-total">
+							<p>共<span class="txt-red" name="mycart_count"><%=goodsCount%></span>件商品</p>
+							<p class="p-money">商品总额：<span class="p-normal" name="mycart_sum"><em>￥</em><%=goodsSum%></span></p>
+							<p><a href="{url:simple/cart}" class="btn-bbg"><span>去购物车结算</span></a></p>
+						</div>
+					<%}else{%>
+							<div class='cart-no-goods'>您的购物车是空的哦~</div>
+					<%}%>
+					</ul>
+				</div>
+			</script>
+		<!--cart f-r-->
+
+		<!--s-box f-r-->
+		<div class="s-box f-r">
+			<!--s-main-->
+			<form method='get' action='{url:/}'>
+				<input type='hidden' name='controller' value='site' />
+				<input type='hidden' name='action' value='search_list' />
+				<div class="s-main">
+					<input class="ipt-key" type="text" name='word' autocomplete="off" value="" placeholder="请输入关键词..."  />
+					<input class="btn-search" type="submit" value="搜 索" />
+				</div>
+			</form>
+			<!--自动完成div 开始-->
+			<ul class="auto_list" style='display:none'></ul>
+			<!--自动完成div 开始-->
+			<!--s-main-->
+			<!--kw-suggest-->
+			<div class="kw-suggest">
+				{foreach:items=Api::run('getKeywordList') }
+				{set:$tmpWord = urlencode($item['word']);}
+				<a href="{url:/site/search_list/word/$tmpWord}">{$item['word']}</a>
+				{/foreach}
+			</div>
+			<!--kw-suggest-->
+		</div>
+		<!--s-box f-r-->
+
+	</div>
+	<!--w1190 clearfix-->
+</div>
+<!--search-->
+
+<!--nav-->
+<div class="nav">
+	<!--w1190 nav-main-->
+	<div class="w1190 nav-main">
+		<!--nav-cat-pos-->
+		<div class="nav-cat-pos">
+			<!--category-->
+			<div class="allsort category {if:IWeb::$app->getController()->getId() == 'site' && IWeb::$app->getController()->getAction()->getId() == 'index'}{else:}category-hide{/if}" id="jCat">
+				<h2 class="cat-title"><a class="t14" href="{url:/site/sitemap}">全部商品分类<b class="png"></b></a></h2>
+				<!--cat-list-->
+				<ul class="cat-list" id="div_allsort">
+					{foreach:items=Api::run('getCategoryListTop')  item=$first }
+					<li class="list-item ">
+					<h3>
+						<a href="{url:/site/pro_list/cat/$first['id']}">{$first['name']}</a>
+						<span>&raquo;</span>
+					</h3>
+					<p class="cat-rcmd">
+					{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first['id']))  item=$second}
+						<a href="{url:/site/pro_list/cat/$second['id']}">{$second['name']}</a>
+					{/foreach}
+					</p>
+
+                    <div class="cat-pop">
+                    <!--cat-layer-->
+					<div class="cat-layer clearfix ">
+                        <ul class="cat-col">
+                        {foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first['id']))  item=$second}
+                        <li class="cat-item">
+                        <h3 class="level-title"><a href="{url:/site/pro_list/cat/$second['id']}">{$second['name']}&nbsp;&nbsp;&raquo;</a></h3>
+                        <p class="level-list clearfix">
+						{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$second['id']))  item=$third}
+						<a href="{url:/site/pro_list/cat/$third['id']}">{$third['name']}</a>
+						{/foreach}
+                        </p>
+                        </li>
+                       {/foreach}
+                        </ul>
+					</div>
+					<!--cat-layer-->
+                    </div>
+			      </li>
+			      {/foreach}
+				</ul>
+				<!--cat-list-->
+
+
+
+
+		  </div>
+			<!--category-->
+		</div>
+		<!--nav-cat-pos-->
+
+		<!--nav-cnt-->
+		<div class="nav-cnt">
+			<li class="nav-item"><a href="{url:/site/index}">首页</a></li>
+			{foreach:items=Api::run('getGuideList')}
+			<li class="nav-item"><a href="{url:$item[link]}">{$item['name']}</a></li>
+			{/foreach}
+		</div>
+		<!--nav-cnt-->
+
+	</div>
+	<!--w1190 nav-main-->
+</div>
+<!--nav-->
+
+{viewcontent}
+
+<!-- help-->
+<div class="help">
+	<div class="w1190 clearfix">
+		{set:$catIco = array('help-new','help-delivery','help-pay','help-user','help-service')}
+		{foreach:items=Api::run('getHelpCategoryFoot') item=$helpCat}
+		<dl class="{$catIco[$key]}">
+			<dt class="t14">{$helpCat['name']}</dt>
+			{foreach:items=Api::run('getHelpListByCatidAll',array('#cat_id#',$helpCat['id']))}
+				<dd><a href="{url:/site/help/id/$item['id']}">{$item['name']}</a></dd>
+			{/foreach}
+		</dl>
+		{/foreach}
+		<div class="contact f-l">
+			<div class="contact-border clearfix">
+				<span class="ic tel t20">4000-552-888</span>
+				<span class="ic mail">shop@dyg-hec.com</span>
+				<div>
+    				<img src="{skin:bubugao/images/qrcode.jpg}" width="100">
+    			</div>
+			</div>
+		</div>
+    </div>
+</div>
+<!-- help-->
+
+
+<!-- service-->
+<div class="service">
+		<ul class="w1190 clearfix">
+			<li class="item1">
+				<p class="t18">正品优选</p>
+				<span>共享集团供应链</span>
+			</li>
+			<li class="item2">
+				<p class="t18">上市公司</p>
+				<span>诚信服务 品质保证</span>
+			</li>
+			<li class="item3">
+				<p class="t18">连锁门店</p>
+				<span>门店体验 网上下单</span>
+			</li>
+			<li class="item4">
+				<p class="t18">及时处理</p>
+				<span>16点前下单 当天发货</span>
+			</li>
+			<li class="item5">
+				<p class="t18">最优时效</p>
+				<span>专业物流 及时送达</span>
+			</li>
+		</ul>
+	</div>
+<!-- service-->
+
+<div class="copyright">
+{echo:IFilter::stripSlash($this->_siteConfig->site_footer_code)}
+<div style="display:none">
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253803396'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1253803396' type='text/javascript'%3E%3C/script%3E"));</script>
+</div>
+</div>
+
+
+<script type='text/javascript'>
+$(function()
+{
+	//搜索框填充默认数据
+	$('input:text[name="word"]').val("{$this->word}");
+
+	//全部分类菜单显示
+	{if:IReq::get('controller') == 'site' && IReq::get('action') == 'index' || IReq::get('controller') == ''}
+	{else:}
+		$('.nav-cat-pos .category').hover(
+			function(){
+				$(this).removeClass("category-hide")
+			},
+			function(){
+				$(this).addClass("category-hide")
+			}
+		);
+
+	{/if}
+
+	$("#jCat .list-item").hover(function(){
+	    $(this).addClass("cat-hover");
+	  	$(this).children(".cat-pop").show();
+	},function(){
+		$(this).removeClass("cat-hover");
+		$(this).children(".cat-pop").hide();
+	});
+
+	//个人中心显示
+	$("#jSiteNavQuick li:first").hover(function(){
+	    $(this).children("a").addClass("menu-hd-hover");
+		$(this).children(".menu-bd").addClass("menu-bd-hover");
+	},function(){
+		$(this).children("a").removeClass("menu-hd-hover");
+		$(this).children(".menu-bd").removeClass("menu-bd-hover");
+	});
+
+	//切换热卖商品/新品上市等
+	$(".tab-title li").hover(function(){
+	   	$(this).addClass('tab-title-hover').siblings().removeClass('tab-title-hover');
+		var p= $(this).index();
+		$(this).parent().parent().children(".tab-cnt").children(".tab-item").eq(p).show().siblings().hide();
+	 });
+
+	//排行,浏览记录的图片
+	$('#ranklist li').hover(
+		function(){
+			$(this).addClass('current');
+		},
+		function(){
+			$(this).removeClass('current');
+		}
+	);
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!-- blueimp Gallery styles -->
+<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<link rel="stylesheet" href="{echo: IUrl::creatUrl('')}plugins/jqupload/css/jquery.fileupload.css">
+
+<style type="text/css">
+.normal-progress.progress {
+	height: 20px;
+}
+.normal-progress.progress .progress-bar {
+	height: 20px;
+	line-height: 20px;
+}
+</style>
+
+<div class="bg-white p-15">
+	<form action="{url:/ucenter/refunds_update}" method="post" id="form-refunds">
+		<input type="hidden" name="order_id" value="{$this->orderRow['id']}"/>
+
+		<p class="mb-10 pb-10 bd-btm-1s bd-color-gray">
+			<span class="text-muted">申请订单：</span>
+			<a href="{url:/ucenter/order/order_detail/id/$this->orderRow['id']}">{$this->orderRow['order_no']}</a>
+		</p>
+
+		<p class="mb-5 font-sm">
+			<strong>① 选择退款商品</strong>
+		</p>
+		
+		<div class="mb-10 pb-10 bd-btm-1s bd-color-gray">
+		{foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$this->orderRow['id'])) item=$good key=$_index}
+			{set:$good_info = JSON::decode($good['goods_array'])}
+			{if:$good['is_send'] != 2}
+				<div class="m-0 checkbox font-sm">
+					<label for="row_{$_index}" class="mb-5">
+						<input type="checkbox" name="order_goods_id[]" value="{$good['id']}" id="row_{$_index}"/>
+						{$good_info['name']}
+						{if:$good_info['value']}<br><span class="text-muted">{$good_info['value']}</span>{/if} 
+						<span class="text-danger font-df">&times; <strong>{$good['goods_nums']}</strong></span>
+					</label>
+				</div>
+			{/if}
+		{/foreach}
+		</div>
+
+		<p class="mb-5 font-sm">
+			<strong>② 填写退款原因</strong>
+		</p>
+		
+		<div class="mb-10">
+			<input name="content" id="content" type="hidden">
+			<textarea class="form-control input-sm" name="content2" id="content2" rows="3"></textarea>
+		</div>
+	
+		<div class="ov-h mb-10">	
+			<div class="row mb-6">
+				<div class="col-xs-5">
+					<!-- The fileinput-button span is used to style the file input field as button -->
+					<button class="btn btn-primary btn-sm fileinput-button">
+						<i class="glyphicon glyphicon-plus"></i>
+						<span>上传凭证</span>
+						<!-- The file input field used as target for the file upload widget -->
+						<input id="fileupload" type="file" name="imgFile">
+					</button>
+				</div>
+				<div class="col-xs-7">
+					<div class="pl-10 pt-10">
+						<!-- The global progress bar -->
+						<div id="progress" class="progress normal-progress mb-0" style="display:none">
+							<div class="progress-bar progress-bar-success"></div>
+						</div>	
+					</div>						
+				</div>
+			</div>
+			<p class="font-sm text-muted mb-6">
+				每张图片大小不超过5M，最多3张，支持GIF、JPG、PNG、BMP格式
+			</p>
+			<!-- The container for the uploaded files -->
+			<div class="row" id="files"></div>
+		</div>
+		<button type="submit" class="btn btn-block btn-warning" onclick="return submit_form();">提交退款</button>
+	</form>
+</div>
+
+
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="{echo: IUrl::creatUrl('')}plugins/jqupload/js/vendor/jquery.ui.widget.js"></script>
+<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+<script src="{echo: IUrl::creatUrl('')}plugins/jqupload/js/load-image.all.min.js"></script>
+<!-- The Canvas to Blob plugin is included for image resizing functionality -->
+<!-- <script src="{echo: IUrl::creatUrl('')}plugins/jqupload/js/canvas-to-blob.min.js"></script> -->
+<!-- blueimp Gallery script -->
+<!-- <script src="{echo: IUrl::creatUrl('')}plugins/jqupload/js/blueimp-gallery.min.js"></script> -->
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="{echo: IUrl::creatUrl('')}plugins/jqupload/js/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="{echo: IUrl::creatUrl('')}plugins/jqupload/js/jquery.fileupload.js"></script>
+<!-- The File Upload processing plugin -->
+<script src="{echo: IUrl::creatUrl('')}plugins/jqupload/js/jquery.fileupload-process.js"></script>
+<!-- The File Upload image preview & resize plugin -->
+<script src="{echo: IUrl::creatUrl('')}plugins/jqupload/js/jquery.fileupload-image.js"></script>
+<!-- The File Upload validation plugin -->
+<script src="{echo: IUrl::creatUrl('')}plugins/jqupload/js/jquery.fileupload-validate.js"></script>
+
+<script type="text/javascript">
+	$(function () {
+		var deleteButton = $('<span/>')
+				.addClass('btn btn-gray btn-xs');
+		function progress_status(state){
+			
+			if(state === true){
+				$('#progress .progress-bar')
+						.removeClass('progress-bar-danger')
+						.addClass('progress-bar-success')
+						.text("上传成功");
+			}else{
+				$('#progress .progress-bar')
+						.css('width', '100%')
+						.removeClass('progress-bar-success')
+						.addClass('progress-bar-danger')
+						.text(state);
+			}
+		}
+
+		$('#fileupload').fileupload({
+			//url: url,
+			url: '{url:/pic/upload_json}',
+			dataType: 'json',
+			autoUpload: true,
+			acceptFileTypes: /(\.|\/)(gif|jpe?g|png|bmp)$/i,
+			maxFileSize: 5000000, //5MB
+			maxNumberOfFiles: 3, //max files number
+			// Enable image resizing, except for Android and Opera,
+			// which actually support image resizing, but fail to
+			// send Blob objects via XHR requests:
+			disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+			previewMaxWidth: 100,
+			previewMaxHeight: 100,
+			previewCrop: true,
+			getNumberOfFiles: function (){
+				return $('#files').find('.upload-item .item-image').length;
+			}
+		}).on('fileuploadadd', function (e, data) {
+			$('#progress .progress-bar')
+							.removeClass('progress-bar-danger')
+							.addClass('progress-bar-success')
+							.css({"transition": "none", "width":0 });
+			data.context = $('<div/>')
+								.addClass('upload-item col-xs-4 mb-6')
+								.css('display', 'none')
+								.appendTo('#files');
+			$.each(data.files, function (index, file) {
+				var node = $('<p/>').addClass('text-center');
+				if(!index) {
+					deleteButton.clone(true).text('删除').appendTo(node);
+				}
+				node.appendTo(data.context);
+			});
+		}).on('fileuploadprocessalways', function (e, data) {
+			var index = data.index,
+					file = data.files[index],
+					node = $(data.context.children()[index]);
+			if (file.preview) {
+				node.prepend('<br>').prepend(file.preview);
+			}
+			if (file.error) {
+				node.parent().remove();
+				progress_status(file.error);
+			} 
+		}).on('fileuploadprogressall', function (e, data) {
+			var progress = parseInt(data.loaded / data.total * 100, 10);
+			$('#progress .progress-bar').css('width', progress + '%');
+		}).on('fileuploaddone', function (e, data) {
+			if (data.result.error == 0) {
+				var file = data.result;
+				if (file.url) {
+					$(data.context.children()[0]).parent().show();
+					var div = $('<div/>').addClass('item-image').attr('data-url', file.url);
+					$(data.context.children()[0]).wrap(div);
+					$(data.context.children()[0]).find('.btn').click(function(){
+						$(this).parents('.upload-item').remove();
+					});
+					progress_status(true);
+				} 
+			}
+		}).on('fileuploadfail', function (e, data) {
+			progress_status('上传失败');
+		}).on('fileuploadstart', function (e){
+			$('#progress').show();
+			$('#progress .progress-bar').css({"transition": "width .6s ease" });
+		}).prop('disabled', !$.support.fileInput)
+				.parent().addClass($.support.fileInput ? undefined : 'disabled');
+	});
+
+	function submit_form()
+	{
+		var image_urls = '';
+		$('#files .upload-item .item-image').each(function(){
+			image_urls += '<br><img src="'+$(this).attr('data-url')+'">';
+		});
+		$('#content').val($('#content2').val()+decodeURIComponent(image_urls));
+
+		//检查是否已选择退款商品和填写退款理由
+		if($('#content').val() == '')
+	    {
+	        alert('请填写退款原因');
+	        return false;
+	    }
+
+	    if($('[name="order_goods_id[]"]:checked').length == 0)
+	    {
+	        alert('请选择要退款的商品');
+	        return false;
+	    }
+	    return true;
+	}
+</script>
+
+
+
+
+
+
+

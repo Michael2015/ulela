@@ -1,0 +1,157 @@
+{js:artTemplate}
+{js:areaSelect}
+
+<div class="bg-white p-10">
+	<form action='{url:/ucenter/info_edit_act}' name='user_info' method="POST" role="form">
+
+		<ul>
+			<li class="mb-10">
+				<div class="input-group input-style">
+					<div class="input-group-addon font-sm"><span>姓名</span></div>
+					<input class="form-control input-sm"  type="text" name='true_name' pattern='required' alt="请填写真实姓名" placeholder="填写真实姓名" />
+				</div>
+			</li>
+			<li class="mb-10">
+				<div class="input-group input-style">
+					<div class="input-group-addon font-sm"><span>性别</span></div>
+					<span class="p-10"></span>
+					<label class="radio-inline">
+						<input type="radio" name="sex"  value="1" >男
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="sex"  value="2" checked="checked">女
+					</label>
+				</div>
+			</li>
+			<li class="mb-10">
+				<div class="input-group input-style special">
+					<div class="input-group-addon font-sm"><span>出生日期</span></div>
+					<select name="year" class="form-control input-sm" >
+						<option value=""></option>
+					</select>
+					<select name="month" class="form-control input-sm" >
+						<option value=""></option>
+					</select>
+					<select name="day" class="form-control input-sm" pattern="required" alt="请选择出生日期" >
+						<option value=""></option>
+					</select>
+				</div>
+			</li>
+			<li class="mb-10">
+				<div class="input-group input-style special">
+					<div class="input-group-addon font-sm"><span>所在地区</span></div>
+					<select class="form-control input-sm" name="province" child="city,area"></select>
+					<select class="form-control input-sm" name="city" child="area"></select>
+					<select class="form-control input-sm" name="area"></select>
+				</div>
+			</li>
+			<li class="mb-10">
+				<div class="input-group input-style">
+					<div class="input-group-addon font-sm"><span>门牌地址</span></div>
+					<input name='contact_addr' type="text" class="form-control input-sm" alt='请输入联系地址' pattern='required' />
+				</div>
+			</li>
+			<li class="mb-10">
+				<div class="input-group input-style">
+					<div class="input-group-addon font-sm"><span>手机号码</span></div>
+					<input name='mobile' class="form-control input-sm" type="text" pattern='mobi' alt='请填写正确的手机号' />
+				</div>
+			</li>
+			<li class="mb-10">
+				<div class="input-group input-style">
+					<div class="input-group-addon font-sm"><span>固定电话</span></div>
+					<input type="text" class="form-control input-sm" pattern='phone' name='telephone' empty alt='请填写正确的电话号码' />
+				</div>
+			</li>
+			<li class="mb-10">
+				<div class="input-group input-style">
+					<div class="input-group-addon font-sm"><span>邮政</span></div>
+					<input name='zip' empty class="form-control input-sm" type="text" pattern='zip' alt='请填写正确的邮政编码' />
+				</div>
+			</li>
+			<li class="mb-10">
+				<div class="input-group input-style">
+					<div class="input-group-addon font-sm"><span>QQ</span></div>
+					<input type="text" class="form-control input-sm" pattern='qq' name='qq' empty alt='请填写正确的QQ号' />
+				</div>
+			</li>
+		</ul>
+
+		<div class="form-group">
+			<button type="submit" class="btn btn-warning btn-block">保存</button>
+		</div>
+	</form>
+</div>
+
+
+
+
+
+<script type='text/javascript'>
+//DOM加载完毕
+$(function(){
+	//初始化日期
+	dateSelectInit();
+
+	//表单回填
+	var areaInstance = new areaSelect('province');
+	{if:$this->memberRow}
+	{set:$area = explode(',',trim($this->memberRow['area'],','))}
+	areaInstance.init({"province":"{$area[0]}","city":"{$area[1]}","area":"{$area[2]}"});
+	{else:}
+	areaInstance.init();
+	{/if}
+
+	{set:$birthday = explode('-',$this->memberRow['birthday'])}
+	var formObj = new Form('user_info');
+	formObj.init({
+		'id':'{$this->memberRow['id']}',
+		'true_name':'{$this->memberRow['true_name']}',
+		'telephone':'{$this->memberRow['telephone']}',
+		'mobile':'{$this->memberRow['mobile']}',
+		'contact_addr':'{$this->memberRow['contact_addr']}',
+		'qq':'{$this->memberRow['qq']}',
+		'sex':'{$this->memberRow['sex']}',
+		'zip':'{$this->memberRow['zip']}',
+		'year':'{$birthday[0]}',
+		'month':'{$birthday[1]}',
+		'day':'{$birthday[2]}',
+	});
+});
+
+
+//出生日期
+function dateSelectInit()
+{
+	var yearHtml = '<option value="">请选择</option>';
+	var dataObj = new Date();
+	var thisYear = dataObj.getFullYear();
+
+	for(var year=thisYear;year>=1940;year--)
+	{
+		yearHtml+= '<option value="'+year+'">'+year+'</option>';
+	}
+
+	var monthHtml = '<option value="">--</option>';
+	for(var month=12;month>=1;month--)
+	{
+		if(month < 10) month = '0' + month;
+		monthHtml+= '<option value="'+month+'">'+month+'</option>';
+	}
+
+	var dayHtml = '<option value="">--</option>';
+	for(var day=31;day>=1;day--)
+	{
+		if(day < 10) day = '0' + day;
+		dayHtml+= '<option value="'+day+'">'+day+'</option>';
+	}
+
+	$('[name="year"]').html(yearHtml);
+	$('[name="month"]').html(monthHtml);
+	$('[name="day"]').html(dayHtml);
+}
+
+
+
+
+</script>

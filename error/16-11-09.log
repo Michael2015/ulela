@@ -1,0 +1,72 @@
+<ERROR_BLOCK>
+excepInfo: can not find the memcache extension
+excepFile: IWEB_PATH/lib/core/cache/memcache_class.php
+excepLine: 26
+excepCode: 0
+excepTime: 2016-11-09 18:15:52
+#0 IWEB_PATH/lib/core/cache/cache_class.php(36): IMemCache->__construct()
+#1 IWEB_PATH/classes/guanyi.php(138): ICache->__construct(memcache)
+#2 IWEB_PATH/classes/order_class.php(343): Guanyi::addOrder()
+#3 IWEB_PATH/controllers/block.php(348): Order_Class::updateOrderStatus(20161109181551985388)
+#4 : Block->server_callback()
+#5 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#6 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(server_callback)
+#8 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: can not find the memcache extension
+excepFile: IWEB_PATH/lib/core/cache/memcache_class.php
+excepLine: 26
+excepCode: 0
+excepTime: 2016-11-09 18:16:43
+#0 IWEB_PATH/lib/core/cache/cache_class.php(36): IMemCache->__construct()
+#1 IWEB_PATH/classes/guanyi.php(138): ICache->__construct(memcache)
+#2 IWEB_PATH/classes/order_class.php(343): Guanyi::addOrder()
+#3 IWEB_PATH/controllers/block.php(348): Order_Class::updateOrderStatus(20161109181642748193)
+#4 : Block->server_callback()
+#5 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#6 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(server_callback)
+#8 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: can not find the memcache extension
+excepFile: IWEB_PATH/lib/core/cache/memcache_class.php
+excepLine: 26
+excepCode: 0
+excepTime: 2016-11-09 18:19:10
+#0 IWEB_PATH/lib/core/cache/cache_class.php(36): IMemCache->__construct()
+#1 IWEB_PATH/classes/guanyi.php(138): ICache->__construct(memcache)
+#2 IWEB_PATH/classes/order_class.php(343): Guanyi::addOrder()
+#3 IWEB_PATH/controllers/block.php(348): Order_Class::updateOrderStatus(20161109181909724819)
+#4 : Block->server_callback()
+#5 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#6 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(server_callback)
+#8 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: can not find the memcache extension
+excepFile: IWEB_PATH/lib/core/cache/memcache_class.php
+excepLine: 26
+excepCode: 0
+excepTime: 2016-11-09 18:23:13
+#0 IWEB_PATH/lib/core/cache/cache_class.php(36): IMemCache->__construct()
+#1 IWEB_PATH/classes/guanyi.php(138): ICache->__construct(memcache)
+#2 IWEB_PATH/classes/order_class.php(343): Guanyi::addOrder()
+#3 IWEB_PATH/controllers/block.php(284): Order_Class::updateOrderStatus(20161109182312298797)
+#4 : Block->callback()
+#5 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#6 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(callback)
+#8 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+

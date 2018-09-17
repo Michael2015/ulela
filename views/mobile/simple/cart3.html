@@ -1,0 +1,44 @@
+<section class="bg-white p-10">
+	<div class="info-head">
+		<span>订单已提交</span>
+	</div>
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<td>订单编号</td><td>{$this->order_num}</td>
+			</tr>
+			<tr>
+				<td>订单金额</td><td>￥{$this->final_sum}</td>
+			</tr>
+			<tr>
+				<td>备货时间</td><td>{$this->stockup_time}天</td>
+			</tr>
+			<tr>
+				<td>支付方式</td><td>{$this->payment}</td>
+			</tr>
+			<tr>
+				<td>配送方式</td><td>{$this->delivery}</td>
+			</tr>
+			<tr>
+				<td>收货人名</td><td>{$accept_name}</td>
+			</tr>
+			<tr>
+				<td>联系方式</td><td>{$mobile}</td>
+			</tr>
+			<tr>
+				<td>收货时间</td><td>{$accept_time}</td>
+			</tr>
+			<tr>
+				<td>发票抬头</td><td>{$this->tax_title}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!--不是货到付款并且支付方式为线上支付-->
+	{if:$this->deliveryType != 1 && $this->paymentType == 1}
+	{set:$tmpId=$this->order_id;}
+	<form action='{url:/block/doPay/order_id/$tmpId}' method='post'>
+		<button type="submit"  style="width:100%" value="" class="btn"  />立即支付</button >
+	</form>
+	{/if}
+</section>

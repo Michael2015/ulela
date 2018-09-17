@@ -1,0 +1,39 @@
+<div class="body-contain bg-white ov-hidden">
+    <div class="w600 margin-0-auto">
+        <div class="m-t-120 m-b-120">
+            <div class="media tips-media p-20">
+                <div class="media-left vm">
+                    <img src="{skin:xiaomi/images/withdraw-cash.png}" alt="error" height="80">
+                </div>
+                <div class="media-body m-l-15">
+                    <h3 class="media-heading">{$name}</h3>
+                    <p class="text-muted m-t-10 m-b-10">{$start_time} 至 {$end_time}</p>
+                    <p class="text-muted m-t-10">{$readme}</p>
+                    <a href="{url:/block/user_add_ticket/tid/$tid/sign/$sign}" >
+                        <button class="btn btn-warning m-r-10">立即领取</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .tips-media{
+        border:1px solid #f1f1f1;
+        -webkit-box-shadow: 0 8px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 10px rgba(0,0,0,0.1);
+        -webkit-transform: translate3d(0, -1px, 0);
+        transform: translate3d(0, -1px, 0);
+        -webkit-border-radius:3px;
+        -moz-border-radius:3px;
+        border-radius:3px;
+    }
+    .media-body{
+        border-left:1px solid #f1f1f1;
+        background-color: white;
+        padding-left: 20px;
+    }
+    .media-body .media-heading{
+        color: #E8B140;
+    }
+</style>

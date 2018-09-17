@@ -1,0 +1,299 @@
+{js:artTemplate}
+<div class="bg-white">
+	{if:$this->count == 0}
+	<div class="msg bg-white">
+		<p><i class="iconfont icon-31wentifankui"></i></p>
+
+		<p><span>“</span>购物车没有商品，赶紧去选购吧<span>”</span></p>
+	</div>
+	<div class="p-10">
+		<a class="btn btn-green btn-block" href="{url:}">去 逛 逛</a>
+	</div>
+
+	{else:}
+
+	<div class="alert alert-danger" id="cart_prompt" style="display:none">
+		<i class="iconfont icon-zhengque"></i> 恭喜，您的订单已经满足了以下优惠活动！
+	</div>
+
+	<!--促销规则模板-->
+	<script type="text/html" id="promotionTemplate">
+		<p class="indent blue"><%=item['plan']%>，<%=item['info']%></p>
+	</script>
+
+	<!--商品列表 开始-->
+	<div class="container-fluid">
+		{foreach:items = $this->goodsList}
+		<div class="cart-list pb-10">
+			<div class="row p-10">
+				<div class="col-xs-4">
+					<div class="cart-pic">
+						<a href="{url:/site/products/id/$item[goods_id]}">
+							<img class="lazy" data-original="{url:/pic/thumb/img/$item[img]/w/80/h/80}" width="80" height="80"
+								 alt="{$item['name']}" title="{$item['name']}"/>
+						</a>
+					</div>
+				</div>
+				<div class="col-xs-8">
+					<p class="ov-h"><a href="{url:/site/products/id/$item[goods_id]}">{echo: IString::substr($item['name'], $length = 50);}</a></p>
+
+					<p>单 价：<strong class="color-light-red">￥{$item['sell_price']}</strong></p>
+					<ul class="spec-list">
+						{if:isset($item['spec_array'])}
+						{set:$spec_array=Block::show_spec($item['spec_array']);}
+						{foreach:items=$spec_array item=$specValue key=$specName}
+						<li>{$specName}：{$specValue} |</li>
+						{/foreach}
+					</ul>
+					{/if}
+					<p><span>小 计：<strong class="color-light-red"
+										 id="sum_{$item['goods_id']}_{$item['product_id']}">{$item['sum']}</strong></span></p>
+				</div>
+			</div>
+			<div class="row p-10">
+				<div class="col-xs-12 clearfix">
+					{set:$item_json = JSON::encode($item)}
+					<span class="pull-left">数量：</span>
+
+					<div class="edit-num pull-left clearfix">
+						<span class="edit-reduce" onclick='cart_reduce({$item_json});'>-</span>
+						<input class="edit-input" type="text" onchange='cartCount({$item_json});' id="count_{$item['goods_id']}_{$item['product_id']}"  value="{$item['count']}"
+							    />
+						<span class="edit-add" onclick='cart_increase({$item_json});'>+</span>
+					</div>
+					<a class="btn btn-no-shadow btn-sm pull-right" href="javascript:;" onclick='remove_cart({$item_json});'>删除</a>
+				</div>
+			</div>
+		</div>
+		{/foreach}
+	</div>
+	<!--商品列表 结束-->
+
+
+	<div class="p-10">
+		<ul class="common-list">
+			<li class="clearfix">
+				<div class="pull-left">商品总重量：</div>
+				<div class="pull-right color-light-red"><strong id='weight'>{$this->weight}</strong>g</div>
+			</li>
+			<li class="clearfix">
+				<div class="pull-left">商品总金额：</div>
+				<div class="pull-right color-light-red"><strong id='origin_price'>{$this->sum}</strong></div>
+			</li>
+			<li class="clearfix">
+				<div class="pull-left">商品优惠：</div>
+				<div class="pull-right color-light-red"><strong id='discount_price'>{$this->reduce}</strong></div>
+			</li>
+			<li class="clearfix">
+				<div class="pull-left">促销活动优惠：</div>
+				<div class="pull-right color-light-red"><strong id='promotion_price'>{$this->proReduce}</strong></div>
+			</li>
+			<li class="clearfix">
+				<div class="pull-left">金额总计（不含运费）：</div>
+				<div class="pull-right color-light-red"><strong id='sum_price'>{$this->final_sum}</strong></div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="bottom-fixed-area">
+		<div class="sum-price-bottom"><small>合计：</small><span class="color-light-red"><strong>￥</strong><strong id="sum-price-bottom">{$this->final_sum}</strong></span></div>
+		<button type="button" class="btn btn-green" onclick="window.history.go(-1);">继续购物</button>
+		{if:$this->goodsList}
+		<button type="button" id="btn_pay" class="btn btn-red" onclick="window.location.href='{url:/simple/cart2}'">去结算</button>
+		{/if}
+	</div>
+	{/if}
+
+</div>
+
+<script type='text/javascript'>
+jQuery(function()
+{
+	{if:$this->promotion}
+	{foreach:items = $this->promotion}
+	$('#cart_prompt').append( template.render('promotionTemplate',{"item":{echo:JSON::encode($item)}}) );
+	{/foreach}
+	$('#cart_prompt').show();
+	{/if}
+});
+
+//dyg_lzq_160224_增加一个判断，防止可能出现的订单商品属数量为负数的情况
+var canClick = true;
+//购物车数量改动计算
+function cartCount(obj)
+{
+	var countInput = $('#count_'+obj.goods_id+'_'+obj.product_id);
+	var countInputVal = parseInt(countInput.val());
+	var oldNum = countInput.data('oldNum') ? countInput.data('oldNum') : obj.count;
+
+	//商品数量大于1件
+	if(isNaN(countInputVal) || (countInputVal <= 0))
+	{
+		alert('购买的数量必须大于1件');
+		countInput.val(1);
+		countInput.change();
+	}
+	//商品数量小于库存量
+	else if(countInputVal > parseInt(obj.store_nums))
+	{
+		alert('购买的数量不能大于此商品的库存量');
+		countInput.val(parseInt(obj.store_nums));
+		countInput.change();
+	}
+	else
+	{
+		var diff = parseInt(countInputVal) - parseInt(oldNum);
+		if(diff == 0)
+		{
+			return;
+		}
+
+		var goods_id   = obj.product_id > 0 ? obj.product_id : obj.goods_id;
+		var goods_type = obj.product_id > 0 ? "product"      : "goods";
+
+		//更新购物车中此商品的数量
+		$.getJSON("{url:/simple/joinCart}",{"goods_id":goods_id,"type":goods_type,"goods_num":diff,"random":Math.random()},function(content){
+			canClick = true;
+			if(content.isError == true)
+			{
+				alert(content.message);
+				countInput.val(1);
+				countInput.change();
+			}
+			else
+			{
+				var goodsId   = [];
+				var productId = [];
+				var num       = [];
+				$('[id^="count_"]').each(function(i)
+				{
+					var idValue = $(this).attr('id');
+					var dataArray = idValue.split("_");
+
+					goodsId.push(dataArray[1]);
+					productId.push(dataArray[2]);
+					num.push(this.value);
+				});
+				countInput.data('oldNum',countInputVal);
+				$.getJSON("{url:/simple/promotionRuleAjax}",{"goodsId":goodsId,"productId":productId,"num":num,"random":Math.random()},function(content){
+					if(content.promotion.length > 0)
+					{
+						$('#cart_prompt .indent').remove();
+
+						for(var i = 0;i < content.promotion.length; i++)
+						{
+							$('#cart_prompt').append( template.render('promotionTemplate',{"item":content.promotion[i]}) );
+						}
+						$('#cart_prompt').show();
+					}
+					else
+					{
+						$('#cart_prompt .indent').remove();
+						$('#cart_prompt').hide();
+					}
+
+					/*开始更新数据*/
+					$('#weight').html(content.weight);
+					$('#origin_price').html(content.sum);
+					$('#discount_price').html(content.reduce);
+					$('#promotion_price').html(content.proReduce);
+					$('#sum_price').html(content.final_sum);
+					$('#sum-price-bottom').html(content.final_sum);
+					$('#sum_'+obj.goods_id+'_'+obj.product_id).html(((obj.sell_price-obj.reduce) * countInputVal).toFixed(2)); //dyg_jzw 20160727 修正在购物车添加商品的小计错误
+				});
+			}
+		});
+	}
+}
+
+//增加商品数量
+function cart_increase(obj)
+{
+	if(canClick){
+		//库存超量检查
+		var countInput = $('#count_'+obj.goods_id+'_'+obj.product_id);
+		if(parseInt(countInput.val()) + 1 > parseInt(obj.store_nums))
+		{
+			alert('购买的数量大于此商品的库存量');
+		}
+		else
+		{
+			canClick = false;
+			countInput.val(parseInt(countInput.val()) + 1);
+			countInput.change();
+		}
+	}else{
+		return;
+	}
+}
+
+//减少商品数量
+function cart_reduce(obj)
+{
+	if(canClick){
+		//库存超量检查
+		var countInput = $('#count_'+obj.goods_id+'_'+obj.product_id);
+		if(parseInt(countInput.val()) - 1 <= 0)
+		{
+			alert('购买的数量必须大于1件');
+		}
+		else
+		{
+			canClick = false;
+			countInput.val(parseInt(countInput.val()) - 1);
+			countInput.change();
+		}
+	}else{
+		return;
+	}
+}
+
+
+//移除购物车
+function remove_cart(obj)
+{
+	var goods_id   = obj.product_id > 0 ? obj.product_id : obj.goods_id;
+	var goods_type = obj.product_id > 0 ? "product"      : "goods";
+	$.getJSON("{url:/simple/removeCart}",{"goods_id":goods_id,"type":goods_type,"random":Math.random()},function()
+	{
+		window.location.reload();
+	});
+}
+
+//列表页加入购物车统一接口
+function joinCart_list(id)
+{
+	$.getJSON('{url:/simple/getProducts}',{"id":id},function(content){
+		if(!content)
+		{
+			joinCart_ajax(id,'goods');
+		}
+		else
+		{
+			var url = "{url:/block/goods_list/goods_id/@goods_id@/type/radio/is_products/1}";
+			url = url.replace('@goods_id@',id);
+			artDialog.open(url,{
+				id:'selectProduct',
+				title:'选择货品到购物车',
+				okVal:'加入购物车',
+				ok:function(iframeWin, topWin)
+				{
+					var goodsList = $(iframeWin.document).find('input[name="id[]"]:checked');
+
+					//添加选中的商品
+					if(goodsList.length == 0)
+					{
+						alert('请选择要加入购物车的商品');
+						return false;
+					}
+					var temp = $.parseJSON(goodsList.attr('data'));
+
+					//执行处理回调
+					joinCart_ajax(temp.product_id,'product');
+					return true;
+				}
+			})
+		}
+	});
+}
+</script>

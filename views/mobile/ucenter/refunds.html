@@ -1,0 +1,27 @@
+{set:$queryRefundmentDocList = Api::run('getRefundmentDocList',$this->user['user_id'])}
+{set:$items = $queryRefundmentDocList->find()}
+
+<div class="bg-white p-10">
+	<div class="info-head"><span>退款申请</span></div>
+
+	<ul class="list-group order-list">
+		{if:$items}
+		{foreach:items = $items}
+		<li class="list-group-item">
+			<a href="{url:/ucenter/refunds_detail/id/$item[id]}" class="show">
+				<p>退款订单：{$item['order_no']}</p>
+				<p class="font-sm">状态：{echo:Order_Class::refundmentText($item['pay_status'])}</p>
+			</a>
+		</li>
+		{/foreach}
+	</ul>
+	{$queryRefundmentDocList->getPageBar()}
+	{else:}
+	<div class="msg bg-white">
+		<p><i class="iconfont icon-31wentifankui"></i></p>
+		<p><span>“</span>当前暂无数据<span>”</span></p>
+	</div>
+	{/if}
+
+</div>
+

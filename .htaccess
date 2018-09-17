@@ -1,0 +1,11 @@
+DirectoryIndex index.html index.php
+<IfModule mod_rewrite.c>
+RewriteEngine on
+
+#RewriteCond %{HTTP_REFERER} !shop.dyg.cn [NC]
+#RewriteRule \.(jpg|png|gif|jpeg)  /favicon.ico [R,NC,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond $1 !^(views|backup|upload|runtime|install)
+RewriteRule ^(.*)$ index.php [L,E=PATH_INFO:$1]
+</IfModule>

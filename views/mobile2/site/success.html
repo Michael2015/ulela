@@ -1,0 +1,23 @@
+<div class="msg msg-success pb-15">
+	<p><i class="iconfont icon-roundcheckfill text-success"></i></p>
+	<p>
+		{if:isset($this->showMessage)}
+			{$this->showMessage}
+		{else:}
+			{echo:IReq::get('message') ? IFilter::act(urldecode(IReq::get('message')),'text') : '操作成功！'}
+		{/if}
+	</p>
+	<div class="font-sm">
+		<span class="text-muted">返回：</span>
+		{set:$callback = plugin::trigger('getCallback')}
+		{if:$callback}
+		<a href="{url:$callback}">继续操作</a> &nbsp;&nbsp;&nbsp;&nbsp;
+		{/if}
+
+		{if:$this->user['user_id']}
+		<a href="{url:/ucenter/index}">个人中心</a>&nbsp;&nbsp;&nbsp;&nbsp;
+		{/if}
+
+		<a href="{url:/site/index}">首页</a>
+	</div>
+</div>

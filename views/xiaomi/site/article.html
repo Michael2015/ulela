@@ -1,0 +1,43 @@
+<div class="body-contain bg-gray ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+            <li class="active">{if:$catRow}{$catRow['name']}{else:}最新资讯{/if}</li>
+        </ol>
+        <!--position-->
+
+        <div class="u-section-left bg-white pull-left m-b-60">
+            <div class="p-15">
+                <h4 class="text-muted">资讯分类</h4>
+                <div class="side-box-content">
+                    <ul class="list-unstyled h-list">
+                        {foreach:items=Api::run('getArticleCategoryList',10)}
+                        <li class="f-12"><a href="{url:/site/article/id/$item[id]}">{$item['name']} <span class="glyphicon glyphicon-chevron-right text-muted"></span></a></li>
+                        {/foreach}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="u-section-right bg-white pull-left m-b-60">
+            <div class="p-30">
+                <h3 class="m-b-40 m-t-20">{if:$catRow}{$catRow['name']}{else:}最新资讯{/if}</h3>
+                <div class="hc-content">
+                    <ul class="list-unstyled h-list">
+                        {foreach:items = $queryArticle->find()}
+                        <li>
+                            <a href="{url:/site/article_detail/id/$item[id]}">{$item['title']}<span class="text-muted">{$item['create_time']}</span></a>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    <div class="pagebar">
+                        {$queryArticle->getPageBar()}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

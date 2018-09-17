@@ -1,0 +1,207 @@
+{set: //定义标题
+	$controller_id = $this->getId();
+	$action_id = IReq::get('action');
+	$action_id = $action_id ? $action_id : 'index';
+
+	$_location = $controller_id."_".$action_id;
+
+	$title_arr = array(
+					'site' => array(
+								'index' => $this->_siteConfig->name,
+								'products' => '商品详情',
+								'search' => '搜索',
+								'sitemap' => '分类',
+								'pro_list' => '分类列表',
+								'search_list' => '搜索结果',
+								'pro_detail' => '商品详情介绍',
+								'success' => '成功提示',
+								'error' => '错误提示',
+								'comments' => '评价商品',
+								'comments_list' => '商品评价',
+								'article' => '最新资讯',
+								'article_detail' => '文章详情',
+								'default' => $this->_siteConfig->name
+							),
+					'simple' => array(
+								'cart' => '购物车',
+								'cart2' => '填写和提交订单信息',
+								'cart3' => '订单提交',
+								'login' => '登录',
+								'reg' => '注册',
+								'find_password' => '找回密码',
+								'find_password_m' => '找回密码',
+								'restore_password' => '找回密码',
+								'default' => $this->_siteConfig->name
+							),
+					'ucenter' => array(
+								'order' => '我的订单',
+								'order_detail' => '订单详情',
+								'integral' => '我的积分',
+								'redpacket' => '我的优惠劵',
+								'account_log' => '账户余额',
+								'withdraw' => '提现申请',
+								'refunds' => '我的退款',
+								'refunds_detail' => '退款详情',
+								'refunds_edit' => '申请退款',
+								'favorite' => '我的收藏',
+								'evaluation' => '商品评价',
+								'isevaluation' => '商品评价',
+								'consult' => '商品咨询',
+								'info' => '个人资料',
+								'address' => '地址管理',
+								'password' => '密码修改',
+								'myteam' => '我的团队',
+								'freeze_log' => '团队奖励',
+								'online_recharge' => '在线充值',
+								'default' => '个人中心',
+							),
+
+				);
+}
+
+{if: isset($title_arr[$controller_id])}
+	{if: isset($title_arr[$controller_id][$action_id])}
+		{set: $mobile_page_name = $title_arr[$controller_id][$action_id]; }
+	{else:}
+		{set: $mobile_page_name = $title_arr[$controller_id]['default']; }
+	{/if}
+{else:}
+	{set: $mobile_page_name = $this->_siteConfig->name; }
+{/if}
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{echo: $mobile_page_name}</title>
+	<link type="image/x-icon" href="/favicon.ico" rel="icon">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="apple-touch-icon-precomposed" href="{skin:images/front/logo.gif}">
+	<!--bootstrap-->
+	<link rel="stylesheet" href="{skin:css/bootstrap.min.css}">
+	<!--iconfont-->
+	<link rel="stylesheet" href="{skin:font/css/iconfont-taobao.css}"/>
+	<!--reset & base class-->
+	<link rel="stylesheet" href="{skin:css/base.css?v=20161228}"/>
+	<!-- main css -->
+	<link rel="stylesheet" href="{skin:css/main.css?v=20161228}"/>	
+
+	<!--Javascript-->
+	<script type='text/javascript' src='http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js'></script>
+	{js:form}
+	<script type='text/javascript' src='{theme:javascript/layer/layer.js}'></script>
+	<script type='text/javascript' src='{theme:javascript/site.js}'></script>
+	<script type='text/javascript' src='{theme:javascript/validate2.js}'></script>
+
+	{js:artTemplate}
+</head>
+<body>
+	<!--头部信息 开始-->
+
+
+	<!--头部信息 结束-->		
+	{if: isset($mobile_page_name) && ! IClient::isWechat() }
+		<!--标题栏 开始-->
+		<div class="container-fluid">
+			<div class="header row">
+				<!-- 返回按钮 -->
+				<div class="col-xs-1 header-item">
+					<a href="javascript:window.history.go(-1);" title="返回"><i class="iconfont icon-fenxiang3"></i></a>
+				</div>
+				<div class="col-xs-10 text-center">{echo: $mobile_page_name}</div>
+				{if: !($controller_id == 'site' && ($action_id == 'index' || $action_id == 'search'))}
+					<div class="col-xs-1 header-item"><a href="{url:/site/search}"><i class="iconfont icon-31sousuo"></i></a></div>
+				{/if}
+			</div>
+		</div>
+		<!--标题栏 结束-->
+	{/if}
+		
+	<!-- 主内容 -->
+	{viewcontent}
+    
+	<!--底部导航 开始-->
+	{set: $nofooter = array( //没有底部导航的页面
+			'site_search',
+			'site_products',
+			'simple_cart',
+			'simple_cart2',
+			'simple_cart3',
+			'simple_bind_user',
+			'ucenter_order',
+			'ucenter_order_detail',
+			'ucenter_experience',
+			'ucenter_integral',
+			'ucenter_redpacket',
+			'ucenter_account_log',
+			'ucenter_online_recharge',
+			'ucenter_refunds',
+			'ucenter_refunds_detail',
+			'ucenter_refunds_edit',
+			'ucenter_evaluation',
+			'ucenter_isevaluation',
+			'ucenter_favorite',
+			'ucenter_consult',
+			'ucenter_info',
+			'ucenter_address',
+			'ucenter_password',
+			'ucenter_myteam',
+			'ucenter_freeze_log',
+			'ucenter_jointeam',
+	);}
+
+	{set: $custom_footer = array(
+			'simple_cart2',
+			'site_products',
+			'simple_cart',
+	); }
+
+	<!-- 底部占位 -->
+	{if: !in_array($_location, $nofooter) || in_array($_location, $custom_footer) }
+		<div class="footer-holder"></div>
+	{/if}
+	
+	{if: !in_array($_location, $nofooter) }
+	
+	<div class="footer-fixed-nav container-fluid">
+		<div class="row text-center">
+			<div class="col-xs-3">
+				<a href="{url:/}" class="show{if: $controller_id=='site' && $action_id=='index'} active{/if}">
+					<i class="iconfont icon-shouye"></i><span>首页</span>
+				</a>
+			</div>
+			<div class="col-xs-3">
+				<a href="{url:site/sitemap}" class="show{if: $controller_id=='site' && ($action_id=='sitemap' || $action_id=='pro_list')} active{/if}">
+					<i class="iconfont icon-tabulation"></i><span>分类</span>
+				</a>
+			</div>
+			<div class="col-xs-3" name="mycart">
+				<a href="{url:simple/cart}" class="show{if: $controller_id=='simple' && $action_id=='cart'} active{/if}">
+					<i class="iconfont icon-gouwuche1"></i><i class="cart-num" name="mycart_count">0</i>
+					<span>购物车</span>
+				</a>
+			</div>
+			<div class="col-xs-3">
+				<a href="{url:ucenter}" class="show{if: $controller_id=='ucenter'} active{/if}">
+					<i class="iconfont icon-wo1"></i><span>个人中心</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	{/if}
+
+	<!--底部导航 结束-->
+	<!-- BootStrap -->
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+	<script type='text/javascript' src="{theme:javascript/common.js?v=20160823}"></script>
+		
+	<div style="display:none">
+		<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253803396'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1253803396' type='text/javascript'%3E%3C/script%3E"));</script>
+	</div>
+	
+	
+</body>
+</html>

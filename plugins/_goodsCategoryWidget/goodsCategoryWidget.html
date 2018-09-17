@@ -1,0 +1,91 @@
+<script id="categoryButtonTemplate" type="text/html">
+<ctrlArea>
+	<input type="hidden" value="<%=templateData['id']%>" name="{$name}" />
+	<button class="btn" type="button" onclick="return confirm('确定删除此分类？') ? $(this).parent().remove() : '';">
+		<span><%=templateData['name']%></span>
+	</button>
+</ctrlArea>
+</script>
+
+<script type="text/javascript">
+//插件value预设值
+jQuery(function()
+{
+	//绑定UI按钮入口
+	$(document).on("click","[name='_goodsCategoryButton']",selectGoodsCategory);
+
+	//完整分类数据
+	{query:name=category order=sort asc items=$categoryData}{/query}
+	art.dialog.data('categoryWhole',{echo:JSON::encode($categoryData)});
+	art.dialog.data('categoryParentData',{echo:JSON::encode(goods_class::categoryParentStruct($categoryData))});
+
+	{if:isset($default)}
+	createGoodsCategory({echo:JSON::encode($default)});
+	{/if}
+});
+
+/**
+ * @brief 商品分类弹出框
+ * @param string urlValue 提交地址
+ * @param string categoryName 商品分类name值
+ */
+function selectGoodsCategory()
+{
+	//根据表单里面的name值生成分类ID数据
+	var categoryName = "{$name}";
+	var result = [];
+	$('[name="'+categoryName+'"]').each(function()
+	{
+		result.push(this.value);
+	});
+	art.dialog.data('categoryValue',result);
+
+	//URL地址
+	{if:isset($type) && $type == "checkbox"}
+	var urlValue = "{url:/block/goods_category/type/checkbox}";
+	{else:}
+	var urlValue = "{url:/block/goods_category/type/radio}";
+	{/if}
+
+	art.dialog.open(urlValue,{
+		title:'选择商品分类',
+		okVal:'确定',
+		ok:function(iframeWin, topWin)
+		{
+			var categoryObject = [];
+			var categoryWhole  = art.dialog.data('categoryWhole');
+			var categoryValue  = art.dialog.data('categoryValue');
+			for(var item in categoryWhole)
+			{
+				item = categoryWhole[item];
+				if(jQuery.inArray(item['id'],categoryValue) != -1)
+				{
+					categoryObject.push(item);
+				}
+			}
+			createGoodsCategory(categoryObject);
+		},
+		cancel:function()
+		{
+			return true;
+		}
+	})
+}
+
+//生成商品分类
+function createGoodsCategory(categoryObj)
+{
+	if(!categoryObj)
+	{
+		return;
+	}
+
+	$('#__categoryBox').empty();
+	for(var item in categoryObj)
+	{
+		item = categoryObj[item];
+		var goodsCategoryHtml = template.render('categoryButtonTemplate',{'templateData':item});
+		$('#__categoryBox').append(goodsCategoryHtml);
+	}
+}
+</script>

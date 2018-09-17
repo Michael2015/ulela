@@ -1,0 +1,395 @@
+<style type="text/css">
+    .act-bg {
+        background-image: url('/iwebshop/iwebshop/upload/image/activity/20161223/bg.jpg');
+        background-repeat: no-repeat;
+        background-position: center top;
+        padding-bottom: 30px;
+    }
+    .bg-light-blue {
+        background-color: #D8EBFA;
+    }
+    .act-body {
+        width: 1200px;
+    }
+    #timeleft {
+        width: 300px;
+        text-align: center;
+        height: 50px;
+        line-height: 50px;
+        padding-top: 893px;
+        color: #fff;
+        font-size: 16px;
+    }
+    .top-product {
+        width: 1200px;
+        height: 367px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .lasttime {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        margin-top: 20px;
+        height: 30px;
+        line-height: 30px;
+    }
+    .progress-div {
+        width: 834px;
+        height: 298px;
+        background-image: url('/iwebshop/iwebshop/upload/image/activity/20161223/03.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+    .progress-div .progress {
+        width: 600px;
+        height: 22px;
+        margin-top: 112px;
+    }
+    .top-user {
+        width: 352px;
+        height: 298px;
+        margin-right: 14px;
+        background-image: url('/iwebshop/iwebshop/upload/image/activity/20161223/02.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+    .top-user .refresh {
+        width: 106px;
+        height: 42px;
+        position: absolute;
+        top: 89px;
+        left: 132px;
+    }
+    .top-user .top-user-info {
+        margin-left: 40px;
+        margin-top: 163px;
+        line-height: 20px;
+        font-size: 18px;
+        color: #fff;
+    }
+    .top-user .top-user-info p {
+        margin-bottom: 20px;
+    }
+    .rule-bg {
+        background-image: url('/iwebshop/iwebshop/upload/image/activity/20161223/04.jpg');
+        background-repeat: no-repeat;
+        background-position: center top;
+        height: 713px;
+    }
+    .prize-table {
+        width: 460px;
+        position: absolute;
+        top: 123px;
+        right: 43px;
+        color:#fff;
+        height: 533px;
+        overflow-y: auto;
+    }
+</style>
+<div class="text-center f-16 bg-red">
+    <strong class="c-white">
+        注意：
+    </strong>
+    <p class="c-white">
+        本活动优惠幅度前所未有，为了不影响本公司同类其他产品的销售
+    </p>
+    <div class="c-white p-b-10">
+        公司决定本活动仅此一次，以后不再有！请抓紧机会抢购！
+    </div>
+</div>
+<div class="act-bg bg-light-blue">
+    <div class="act-body margin-0-auto">
+        <!-- 剩余时间 -->
+        <div class="margin-0-auto" id="timeleft">
+            离活动结束还有：<span id="cd_day_timeleft"></span> 天
+            <span id="cd_hour_timeleft"></span> 小时
+            <span id="cd_minute_timeleft"></span> 分
+            <span id="cd_second_timeleft"></span> 秒
+        </div>
+        <div class="top-product">
+            <a href="/site/products/id/72/promo/groupon/active_id/1" class="show" title="立即购买">
+                <img src="/iwebshop/iwebshop/upload/image/activity/20161223/01.png" width=1200 height="367">
+            </a>
+        </div>
+        <div class="clearfix">
+            <div class="pull-left top-user pos-relative">
+                <a class="show refresh" href="javascript:;" onclick="window.location.reload();">&nbsp;</a>
+                <div class="top-user-info">
+                    <p>用&nbsp;&nbsp;户&nbsp;&nbsp;名：<span id="ring_top_user"></span></p>
+                    <p>成为擂主：<span id="ring_top_time"></span></p>
+                    <p>购买了 <strong id="ring_top_good_nums" class="text-warning"></strong> 盒50%冬虫夏草复方礼盒</p>
+                </div>
+            </div>
+            <div class="pull-left progress-div">
+                <div class="lasttime" id="lasttime">已守擂：<span id="cd_last_hour" class="text-warning"></span> 小时 <span id="cd_last_minute" class="text-warning"></span> 分 <span id="cd_last_second" class="text-warning"></span> 秒</div>
+                <div class="progress margin-0-auto">
+                    <div id="progress-bar" class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuemax="100" style="width: 0%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="rule-bg bg-light-blue">
+    <div class="act-body margin-0-auto pos-relative">
+        <div class="prize-table">
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th class="text-center">用户名</th>
+                        <th class="text-center">守擂时长</th>
+                        <th class="text-center">奖品</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="bg-light-blue">
+    <div class="act-body margin-0-auto">
+        <div>
+            <img src="/iwebshop/iwebshop/upload/image/activity/20161223/05.jpg" width=1200>
+        </div>
+        <div>
+            <img src="/iwebshop/iwebshop/upload/image/activity/20161223/06.jpg" width=1200>
+        </div>
+        <div>
+            <img src="/iwebshop/iwebshop/upload/image/activity/20161223/07.jpg" width=1200>
+        </div>
+        <a class="show" href="/site/products/id/72/promo/groupon/active_id/1">
+            <img src="/iwebshop/iwebshop/upload/image/activity/20161223/08.jpg" width=1200>
+        </a>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+    var game_ring = new gameRing();
+    game_ring.init();
+});
+
+//倒计时
+var countdown2=function()
+{
+    var _self=this;
+    this.handle={};
+    this.parent={'second':'minute','minute':'hour','hour':'day', 'day':''};
+    this.add=function(id)
+    {
+        _self.handle.id=setInterval(function(){_self.work(id,'second');},1000);
+    };
+    this.work=function(id,type)
+    {
+        if(type=="")
+        {
+            return false;
+        }
+
+        var e = document.getElementById("cd_"+type+"_"+id);
+        var value=parseInt(e.innerHTML);
+        if( value == 0 && _self.work( id,_self.parent[type] )==false )
+        {
+            clearInterval(_self.handle.id);
+            return false;
+        }
+        else
+        {
+            e.innerHTML = (value==0?59:(value-1));
+            return true;
+        }
+    };
+};
+
+var gameRing = function(){
+    var _self = this;
+
+    this.cd_parent = {'second':'minute','minute':'hour','hour':""};
+    this.prize_list = {'0':'-','1':'2X东阳光鲜草','2':'1.5X灵芝胶囊', '3':'1X灵芝胶囊'};
+
+    this.init = function(){
+        //获取当前擂主
+        _self.get_top_user();
+
+        //获取离结束还有多久
+        _self.time_left();
+
+        //获取擂主列表
+        _self.get_user_list();
+    };
+
+    this.total_process = new Number(0);
+
+    this.time_left = function(seconds){
+         $.ajax({
+            url: creatUrl('activity_api/ring_get_timeleft'),
+            dataType:'json',
+            success:function(data){
+                if(data.status == 0) {
+                    $('#timeleft').text('活动未开始');
+                } else if(data.status == -1) {
+                    $('#timeleft').text('活动已结束');
+                }else {
+                    var total_sec = data.time;
+
+                    //计算出天数
+                    var days = Math.floor(total_sec/(3600*24));
+                    var leave1 = total_sec%(3600*24);        //计算天数后剩余的秒数
+                    //计算出小时数
+                    var hours = Math.floor(leave1/(3600));
+                    //计算出分钟数
+                    var leave2 = leave1%(3600);        //计算小时数后剩余的秒数  
+                    var minutes = Math.floor(leave2/(60));
+                    //计算相差秒数  
+                    var leave3 = leave2%(60);      //计算分钟数后剩余的秒数  
+                    var seconds = Math.round(leave3); 
+
+                    $('#cd_day_timeleft').text(days);
+                    $('#cd_hour_timeleft').text(hours);
+                    $('#cd_minute_timeleft').text(minutes);
+                    $('#cd_second_timeleft').text(seconds);
+
+                    //开始计时
+                    var cd_timer = new countdown2();
+                    cd_timer.add('timeleft');
+                }
+            }
+        });
+    };
+
+    //获取擂主记录
+    this.get_user_list = function(){
+        $.ajax({
+            url: creatUrl('activity_api/ring_get_history_users'),
+            dataType:'json',
+            success:function(data){
+                var ring_top_user = ''; //擂主用户名
+                var ring_top_time = ''; //成为擂主时间
+                var ring_top_good_nums = 0; //擂主购买数量
+                
+                var html = "";
+
+                if (data.status) {
+                    var hours = 0;
+                    var minutes = 0;
+                    var prize = "";
+                    for (var i = 0; i < data.list.length; i++)
+                    {
+                        if(data.list[i].last_time > 0) {
+                            //计算持续时间
+                            hours = Math.floor(data.list[i].last_time/3600);
+                            //计算出分钟数
+                            minutes = Math.floor((data.list[i].last_time%3600)/60);
+                        } else {
+                            hours = "-";
+                            minutes = "-";
+                        }
+                        //获取奖品奖项
+                        prize = _self.prize_list[data.list[i].prize];
+
+                        if(html.length == 0)
+                        {
+                            //当前擂主
+                            data.list[i].username = '<span title="当前擂主" class="glyphicon glyphicon-tower text-warning"></span> ' + data.list[i].username
+                        }
+
+                        html += "<tr><td>"+data.list[i].username+"</td><td>" + hours + " 小时 " + minutes +" 分钟</td><td>"+prize+"</td></tr>";
+                    }
+                } else {
+                    html += "<tr><td colspan='3' class='text-muted'>暂时空缺</td></tr>"
+                    
+                }
+
+                $("#table-body").html(html);
+            }
+        });
+    };
+
+    //获取当前擂主
+    this.get_top_user = function(){
+        $.ajax({
+            url: creatUrl('activity_api/ring_get_top_user'),
+            dataType:'json',
+            success:function(data){
+                var ring_top_user = ''; //擂主用户名
+                var ring_top_time = ''; //成为擂主时间
+                var ring_top_good_nums = 0; //擂主购买数量
+                if (data.status) {
+                    ring_top_user = data.username;
+                    ring_top_time = data.got_time;
+                    ring_top_good_nums = data.goods_nums;
+                    //持续时间
+                    _self.init_total_time(data.now_time, data.got_time);
+                    //开始计时
+                    setInterval(function(){_self.count_time_start('second');},1000);
+                } else {
+                    ring_top_user = '空缺';
+                    ring_top_time = '-';
+                    $("#lasttime").html('');
+                }
+
+                $('#ring_top_user').text(ring_top_user);
+                $('#ring_top_time').text(ring_top_time);
+                $('#ring_top_good_nums').text(ring_top_good_nums);
+            }
+        });
+    };
+
+    //累计时间初始化
+    this.init_total_time = function(now_time, start_time){
+        var total_ms = new Date(now_time).getTime() - new Date(start_time).getTime();
+
+        //计算出小时数
+        var hours = Math.floor(total_ms/(3600*1000));
+        //计算出分钟数
+        var leave2 = total_ms%(3600*1000);        //计算小时数后剩余的毫秒数  
+        var minutes = Math.floor(leave2/(60*1000));
+
+        //计算相差秒数  
+        var leave3 = leave2%(60*1000);      //计算分钟数后剩余的毫秒数  
+        var seconds = Math.round(leave3/1000); 
+
+        $('#cd_last_hour').text(hours);
+        $('#cd_last_minute').text(minutes);
+        $('#cd_last_second').text(seconds);
+
+        //进度条初始化
+        var progress_length = 0;
+
+        if (total_ms > 8*3600*1000) {
+            progress_length = new Number(1);
+        } else {
+            progress_length = new Number(total_ms / (8*3600*1000));
+        }
+        _self.total_process = progress_length * 600;
+
+        $('#progress-bar').width(_self.total_process.toFixed(2));
+    };
+
+    //持续时间计时
+    this.count_time_start = function(type){
+        var e = document.getElementById("cd_last_"+type);
+        var value=parseInt(e.innerHTML);
+
+        e.innerHTML = (value==59?0:(value+1));
+
+        //进度条增加长度
+        var progress_length = new Number($('#progress-bar').width());
+
+        if(progress_length < 600) {
+            _self.total_process += 0.021;
+            progress_length = _self.total_process.toFixed(2);
+            $('#progress-bar').width(progress_length);
+        }
+
+        if( value == 59 && _self.cd_parent[type].length > 0) {
+            _self.count_time_start(_self.cd_parent[type]);
+        }
+
+    };
+
+};
+</script>

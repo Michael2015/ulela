@@ -1,0 +1,72 @@
+{js:my97date}
+<div class="headbar">
+	<div class="position"><span>统计</span><span>></span><span>日志操作记录</span><span>></span><span>用户充值记录列表</span></div>
+	<div class="operating">
+		<div class="search f_l">
+			<form name="serachuser" action="{url:/}" method="get">
+				<input type='hidden' name='controller' value='market' />
+				<input type='hidden' name='action' value='account_recharge' />
+				从 <input type="text" name='startDate' value='{$this->startDate}' class="Wdate" pattern='date' alt='' onFocus="WdatePicker()" empty /> 到 <input type="text" name='endDate' value='{$this->endDate}' empty pattern='date' class="Wdate" onFocus="WdatePicker()" />
+
+				<select class="auto" name="search">
+					<option value="username">用户名</option>
+					<option value="recharge_no" {if: $this->search == "recharge_no"}selected="selected"{/if}>充值订单号</option>
+				</select>
+				<input class="small" name="keywords" type="text" value="{$this->keywords}">
+				<button class="btn" type="submit"><span class="sch">搜 索</span></button>
+			</form>
+		</div>
+	</div>
+
+	<div class="field">
+		<table class="list_table">
+			<col width="150px" />
+			<col width="300px" />
+			<col width="150px" />
+			<col width="150px" />
+			<col width="300px" />
+			<col />
+			<thead>
+				<tr>
+					<th>用户名</th>
+					<th>充值订单号</th>
+					<th>充值金额</th>
+					<th>时间</th>
+					<th>充值方式</th>
+					<th>状态</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+
+<div class="content">
+	<table class="list_table">
+		<col width="150px" />
+		<col width="300px" />
+		<col width="150px" />
+		<col width="150px" />
+		<col width="300px" />
+		<col />
+		<tbody>
+
+			{foreach:items = $this->onlineRechargeList}
+			<tr>
+				<td>{$item['username']}</td>
+				<td>{$item['recharge_no']}</td>
+				<td>{$item['account']}</td>
+				<td>{$item['time']}</td>
+				<td>{$item['payment_name']}</td>
+				<td>
+					{if:$item['status'] == 1}
+						成功
+					{else:}
+						未成功
+					{/if}
+				</td>
+			</tr>
+			{/foreach}
+		</tbody>
+	</table>
+</div>
+{$this->onlineRechargeObj->getPageBar()}

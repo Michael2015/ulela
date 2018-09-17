@@ -1,0 +1,31 @@
+
+<div class="body-contain bg-gray ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+
+            <li class="active"><a href="{url:/site/help_list/id/$this->cat_row['id']}">{$this->cat_row['name']}</a></li>
+        </ol>
+        <!--position-->
+        <div class="bg-white m-b-60">
+            <div class="p-30">
+                <h3 class="m-b-40 m-t-20">{$this->cat_row['name']}</h3>
+                <div class="hc-content">
+                    <ul class="list-unstyled h-list">
+                        {foreach:items = $this->helpQuery->find()}
+                        <li>
+                            <a href="{url:/site/help/id/$item['id']}">{$item['name']}<span class="text-muted">{echo:date('Y-m-d H:i:s',$item['dateline']);}</span></a>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    <div class="pagebar">
+                        {$this->helpQuery->getPageBar();}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

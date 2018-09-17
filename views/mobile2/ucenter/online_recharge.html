@@ -1,0 +1,81 @@
+<form action="{url:/block/doPay}" method="post" class="form">
+	
+	<div class="bg-white mb-10 p-10 pt-15 pb-10 font-sm">
+		<div class="mb-15">
+			<!--充值金额 开始-->
+			<div class="pull-left text-muted mr-15">
+				<span>充值金额</span>
+			</div>
+
+			<div class="ov-h">
+				<input class="form-control input-sm" type="text" name='recharge'/>
+			</div>
+			<!--充值金额 结束-->
+		</div>
+
+		<div class="mb-15">
+			<!--支付方式 开始-->
+			<div class="pull-left text-muted mr-15">
+				<span>支付方式</span>
+			</div>
+
+			<div class="ov-h">
+				{set:$paymentList=Api::run('getPaymentListByOnline')}
+				{if:$paymentList}
+					{set: $canCharge = true; }
+					<ul class="font-sm ov-h">
+						{foreach:items = $paymentList}
+							<!--dyg_jzw 20151226 只允许支付宝方式充值-->
+							{if: $item['id'] == 15}
+								<li class="pb-10 mb-10 bd-btm-1s bd-color-gray">
+									<div class="cart-radio">
+										<label for="paytype_{$item['id']}" class="mb-0">
+											<input id="paytype_{$item['id']}" class="radio" name="payment_id" type="radio" value="{$item['id']}" />
+											<!-- 是否选择 -->
+											<div class="radio-style">
+												<i class="iconfont icon-weixuanzhong text-muted font-xl"></i>
+												<i class="iconfont icon-xuanzhong text-warning font-xl"></i>
+											</div>
+
+											<strong>{$item['name']}</strong>
+										</label>
+									</div>
+								</li>
+							{/if}
+
+							{if: $item['id'] == 12}
+								{set: $canCharge = false;}
+								<p class="text-danger">目前仅支持支付宝充值，当前浏览器不支持该支付方式。请点击右上角-在浏览器中打开重试</p>
+							{/if}
+						{/foreach}
+					</ul>
+					{if: $canCharge}
+						<button type="submit" class="btn btn-block btn-warning" onclick="return check_form();">确定充值</button>
+					{else:}
+						<button class="btn btn-block btn-default" disabled="disabled">当前环境不支持充值</button>
+					{/if}
+				{else:}
+					<p class="text-danger text-center">暂无支付渠道</p>
+				{/if}
+			</div>
+		</div>
+	</div>
+</form>
+
+<script type='text/javascript'>
+function check_form()
+{
+	if($('[name="payment_id"]:checked').length == 0)
+	{
+		alert('请选择支付方式');
+		return false;
+	}
+	var changeVal = $('[name="recharge"]').val();
+
+	if(isNaN(changeVal) || $('[name="recharge"]').val() <= 0)
+	{
+		alert('请输入正确的充值金额并且大于0元');
+		return false;
+	}
+}
+</script>

@@ -1,0 +1,150 @@
+<ERROR_BLOCK>
+excepInfo: select go.img,go.sell_price,go.name,go.id,go.market_price from iwebshop_category_extend as cat left join iwebshop_goods  as go on cat.goods_id = go.id  GROUP BY go.id  order by go.visit desc limit #limit#
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-10-18 09:02:56
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.img,go.sell_price,go.name,go.id,go.market_price from iwebshop_category_extend as cat left join iwebshop_goods  as go on cat.goods_id = go.id  GROUP BY go.id  order by go.visit desc limit #limit#)
+#1 IWEB_PATH/classes/api.php(153): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/products.php(592): Api::run(getMostVisit)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/products)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/products)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(580): IController->redirect(products)
+#10 : Site->products()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(products)
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.img,go.sell_price,go.name,go.id,go.market_price from iwebshop_category_extend as cat left join iwebshop_goods  as go on cat.goods_id = go.id  GROUP BY go.id  order by go.visit desc limit #limit#
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-10-18 09:03:23
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.img,go.sell_price,go.name,go.id,go.market_price from iwebshop_category_extend as cat left join iwebshop_goods  as go on cat.goods_id = go.id  GROUP BY go.id  order by go.visit desc limit #limit#)
+#1 IWEB_PATH/classes/api.php(153): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/products.php(592): Api::run(getMostVisit)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/products)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/products)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(580): IController->redirect(products)
+#10 : Site->products()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(products)
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.img,go.sell_price,go.name,go.id,go.market_price from iwebshop_category_extend as cat left join iwebshop_goods  as go on cat.goods_id = go.id  GROUP BY go.id  order by go.visit desc limit #limit#
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-10-18 09:03:25
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.img,go.sell_price,go.name,go.id,go.market_price from iwebshop_category_extend as cat left join iwebshop_goods  as go on cat.goods_id = go.id  GROUP BY go.id  order by go.visit desc limit #limit#)
+#1 IWEB_PATH/classes/api.php(153): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/products.php(592): Api::run(getMostVisit)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/products)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/products)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(580): IController->redirect(products)
+#10 : Site->products()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(products)
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.img,go.sell_price,go.name,go.id,go.market_price from iwebshop_category_extend as cat left join iwebshop_goods  as go on cat.goods_id = go.id  GROUP BY go.id  order by go.visit desc limit #limit#
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-10-18 09:03:26
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.img,go.sell_price,go.name,go.id,go.market_price from iwebshop_category_extend as cat left join iwebshop_goods  as go on cat.goods_id = go.id  GROUP BY go.id  order by go.visit desc limit #limit#)
+#1 IWEB_PATH/classes/api.php(153): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/products.php(592): Api::run(getMostVisit)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/products)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/products)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(580): IController->redirect(products)
+#10 : Site->products()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(products)
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.img,go.sell_price,go.name,go.id,go.market_price from iwebshop_category_extend as cat left join iwebshop_goods  as go on cat.goods_id = go.id where cat.category_id = 10 and go.is_del = 0 AND go.id is not null GROUP BY go.id  order by go.visit desc limit #limit#
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-10-18 09:06:14
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.img,go.sell_price,go.name,go.id,go.market_price from iwebshop_category_extend as cat left join iwebshop_goods  as go on cat.goods_id = go.id where cat.category_id = 10 and go.is_del = 0 AND go.id is not null GROUP BY go.id  order by go.visit desc limit #limit#)
+#1 IWEB_PATH/classes/api.php(153): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/products.php(592): Api::run(getMostVisit)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/products)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/products)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(580): IController->redirect(products)
+#10 : Site->products()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(products)
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.img,go.sell_price,go.name,go.id,go.market_price from iwebshop_category_extend as cat left join iwebshop_goods  as go on cat.goods_id = go.id where cat.category_id = 10 and go.is_del = 0 AND go.id is not null GROUP BY go.id  order by go.visit desc limit #limit#
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-10-18 09:06:52
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.img,go.sell_price,go.name,go.id,go.market_price from iwebshop_category_extend as cat left join iwebshop_goods  as go on cat.goods_id = go.id where cat.category_id = 10 and go.is_del = 0 AND go.id is not null GROUP BY go.id  order by go.visit desc limit #limit#)
+#1 IWEB_PATH/classes/api.php(153): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/products.php(592): Api::run(getMostVisit)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/products)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/products)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(580): IController->redirect(products)
+#10 : Site->products()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(products)
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+

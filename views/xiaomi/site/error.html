@@ -1,0 +1,18 @@
+{set:$msg = IReq::get('msg') ? IReq::get('msg') : '发生错误'}
+<div class="body-contain bg-white ov-hidden">
+    <div class="w600 margin-0-auto">
+        <div class="m-t-120 m-b-120">
+            <div class="media tips-media">
+                <div class="media-left">
+                    <img src="{skin:xiaomi/images/error.jpg}" alt="error" height="120">
+                </div>
+                <div class="media-body f-12">
+                    <h3 class="media-heading">{echo:htmlspecialchars($msg,ENT_QUOTES)}</h3>
+                    <p class="text-muted">1.检查刚才的输入</p>
+                    <p class="text-muted">2.到 <a href="{url:/site/help_list}">帮助中心</a> 寻求帮助</p>
+                    <p class="text-muted">3.去其他地方逛逛：<a href='javascript:;' onclick='window.history.go(-1);'>返回上一级操作</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{url:}">网站首页</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{url:/ucenter/order}">我的订单</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{url:/simple/cart}">我的购物车</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>商品列表</title>
+<link rel="stylesheet" href="{skin:css/admin.css}" />
+{js:jquery}
+{js:dialog}
+</head>
+<body>
+<div class="pop_win" style="width:690px;height:550px;overflow-y:scroll">
+	<div class="content">
+		<table class="border_table" style="width:100%">
+			<colgroup>
+				<col width="150px" />
+				<col />
+				<col width="90px" />
+				<col width="70px" />
+			</colgroup>
+			<tbody>
+				{if:$this->data}
+				{foreach:items = $this->data}
+				<tr>
+					<td>
+						<label class='attr'>
+							<input type='{echo:($this->type == null) ? 'checkbox' : $this->type}' name='id[]' value="{$item['goods_id']}" data='{echo:JSON::encode($item)}' />
+							{$item['goods_no']}
+						</label>
+					</td>
+					<td class="t_l">
+						{$item['name']}
+						{set:$spec_array=Block::show_spec($item['spec_array']);}
+						{foreach:items=$spec_array item=$specValue key=$specName}
+						<p>{$specName}：{$specValue}</p>
+							{/foreach}
+					</td>
+					<td>￥{$item['sell_price']}</td>
+					<td><img src="{webroot:$item[img]}" width="40px" class="img_border" /></td>
+				</tr>
+				{/foreach}
+				{else:}
+				<tr>
+					<td colspan="4">对不起，没有找到相关商品</td>
+				</tr>
+				{/if}
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>

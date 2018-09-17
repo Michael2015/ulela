@@ -1,0 +1,12 @@
+{set:$id = IFilter::act(IReq::get('id'),'int')}
+{query:name=goods where=id eq $id}{/query}
+
+<section>
+	<div class="thumbnail">
+		{if:isset($item['content'])}
+			{$item['content']}
+		{else:}
+			<span class="text-muted">暂无详情数据</span>
+		{/if}
+	</div>
+</section>

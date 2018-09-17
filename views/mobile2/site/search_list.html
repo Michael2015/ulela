@@ -1,0 +1,50 @@
+
+{set:$defaultWhere = array('search' => $this->word, 'category_extend' => $this->cat_id)}
+{set:$goodsObj = search_goods::find($defaultWhere, 10);$resultData = $goodsObj->find();}
+	
+<div class="container-fluid  bg-white">
+	{if:$resultData}
+		<ul class="pro-list container-fluid bg-white">
+			{foreach:items=$resultData}
+				{set: $keyword_arr = explode("#|#",$item['keywords']); }
+				{set: $keyword_title = array_shift($keyword_arr); }
+				{set: $keyword_sectitle = array_shift($keyword_arr); }
+				<li class="media">
+					<a class="show ov-hidden" href="{url:/site/products/id/$item['id']}">
+						<div class="media-left">
+							<img src="{webroot:}{echo:Thumb::get($item['img'],60,60)}" alt="{$item['name']}" width="60" height="60">
+						</div>
+						<div class="media-body font-sm">
+							<p class="mb-6">
+								{$keyword_title}
+								&nbsp;&nbsp;<span class="text-warning">{$keyword_sectitle}</span>
+							</p>
+							<p class="mb-6 text-muted">{$item['description']}</p>
+							<div class="clearfix">
+								<span class="color-light-red font-df">￥{$item['sell_price']}</span>
+							</div>
+						</div>
+					</a>
+				</li>
+			{/foreach}
+		</ul>
+
+		{$goodsObj->getPageBar()}
+
+	{else:}
+		<div class="msg bg-white">
+			<p><i class="iconfont icon-31wentifankui"></i></p>
+			<p>对不起，没有找到相关商品</p>
+		</div>
+	{/if}
+
+</div>
+
+
+
+
+
+
+
+
+

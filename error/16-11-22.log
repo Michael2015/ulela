@@ -1,0 +1,660 @@
+<ERROR_BLOCK>
+excepInfo: select go.img,go.sell_price,go.name,go.id,go.market_price,go.keyword from iwebshop_commend_goods as co left join iwebshop_goods  as go on co.goods_id = go.id where co.commend_id = 3 and go.is_del = 0 AND go.id is not null   order by sort asc limit 10
+ -- Unknown column 'go.keyword' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:35:34
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.img,go.sell_price,go.name,go.id,go.market_price,go.keyword from iwebshop_commend_goods as co left join iwebshop_goods  as go on co.goods_id = go.id where co.commend_id = 3 and go.is_del = 0 AND go.id is not null   order by sort asc limit 10)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(352): Api::run(getCommendHot,10)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8
+ -- Unknown column 'go.commend_id' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:52:32
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(406): Api::run(getCategoryExtendList,8)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8
+ -- Unknown column 'go.commend_id' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:52:39
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(406): Api::run(getCategoryExtendList,8)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8
+ -- Unknown column 'go.commend_id' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:52:51
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(406): Api::run(getCategoryExtendList,8)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8
+ -- Unknown column 'go.commend_id' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:52:54
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(406): Api::run(getCategoryExtendList,8)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8
+ -- Unknown column 'go.commend_id' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:53:00
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(406): Api::run(getCategoryExtendList,8)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8
+ -- Unknown column 'go.commend_id' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:53:02
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(406): Api::run(getCategoryExtendList,8)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id, go.img, go.sell_price, go.name from iwebshop_category_extend as c left join iwebshop_goods  as go on go.id = c.goods_id where c.category = 20   order by go.visit DESC limit 5
+ -- Unknown column 'c.category' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:53:04
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id, go.img, go.sell_price, go.name from iwebshop_category_extend as c left join iwebshop_goods  as go on go.id = c.goods_id where c.category = 20   order by go.visit DESC limit 5)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/products.php(601): Api::run(getMostVisit,5)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/products)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/products)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(580): IController->redirect(products)
+#10 : Site->products()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(products)
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8
+ -- Unknown column 'go.commend_id' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:53:45
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(406): Api::run(getCategoryExtendList,8)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8
+ -- Unknown column 'go.commend_id' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:53:50
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(406): Api::run(getCategoryExtendList,8)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8
+ -- Unknown column 'go.commend_id' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:53:53
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(406): Api::run(getCategoryExtendList,8)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id, go.img, go.sell_price, go.name from iwebshop_category_extend as c left join iwebshop_goods  as go on go.id = c.goods_id where c.category = 20   order by go.visit DESC limit 5
+ -- Unknown column 'c.category' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:53:56
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id, go.img, go.sell_price, go.name from iwebshop_category_extend as c left join iwebshop_goods  as go on go.id = c.goods_id where c.category = 20   order by go.visit DESC limit 5)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/products.php(601): Api::run(getMostVisit,5)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/products)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/products)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(580): IController->redirect(products)
+#10 : Site->products()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(products)
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8
+ -- Unknown column 'go.commend_id' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:54:10
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(406): Api::run(getCategoryExtendList,8)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8
+ -- Unknown column 'go.commend_id' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:54:11
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(406): Api::run(getCategoryExtendList,8)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id, go.img, go.sell_price, go.name from iwebshop_category_extend as c left join iwebshop_goods  as go on go.id = c.goods_id where c.category = 20   order by go.visit DESC limit 5
+ -- Unknown column 'c.category' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:54:17
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id, go.img, go.sell_price, go.name from iwebshop_category_extend as c left join iwebshop_goods  as go on go.id = c.goods_id where c.category = 20   order by go.visit DESC limit 5)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/products.php(601): Api::run(getMostVisit,5)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/products)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/products)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(580): IController->redirect(products)
+#10 : Site->products()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(products)
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id, go.img, go.sell_price, go.name from iwebshop_category_extend as c left join iwebshop_goods  as go on go.id = c.goods_id where c.category = 17   order by go.visit DESC limit 5
+ -- Unknown column 'c.category' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 11:57:57
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id, go.img, go.sell_price, go.name from iwebshop_category_extend as c left join iwebshop_goods  as go on go.id = c.goods_id where c.category = 17   order by go.visit DESC limit 5)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/products.php(601): Api::run(getMostVisit,5)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/products.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/products)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/products)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(580): IController->redirect(products)
+#10 : Site->products()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run(products)
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8
+ -- Unknown column 'go.commend_id' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 16:25:27
+#0 IWEB_PATH/lib/core/query_class.php(161): IDB->query(select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(406): Api::run(getCategoryExtendList,8)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(76): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: SELECT * FROM iwebshop_session WHERE id = '3iupcg4cve13ho3tlgv8ftpfu2' limit 1
+ -- Table 'iwebshop.iwebshop_session' doesn't exist
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 17:43:55
+#0 IWEB_PATH/lib/web/model/model_class.php(200): IDB->query(SELECT * FROM iwebshop_session WHERE id = '3iupcg4cve13ho3tlgv8ftpfu2' limit 1)
+#1 IWEB_PATH/lib/web/model/model_class.php(148): IModel->query(id = '3iupcg4cve13ho3tlgv8ftpfu2',*,,1)
+#2 IWEB_PATH/lib/core/util/session_class.php(67): IModel->getObj(id = '3iupcg4cve13ho3tlgv8ftpfu2')
+#3 : ISession::sessRead(3iupcg4cve13ho3tlgv8ftpfu2)
+#4 IWEB_PATH/lib/core/util/session_class.php(30): session_start()
+#5 IWEB_PATH/lib/iweb.php(70): include_once(IWEB_PATH/lib/core/util/session_class.php)
+#6 : IWeb::autoload(ISession)
+#7 : spl_autoload_call(ISession)
+#8 IWEB_PATH/lib/core/util/safe_class.php(60): call_user_func(__theme)
+#9 IWEB_PATH/classes/themeroute.php(31): ISafe::get(__theme)
+#10 : themeroute::onCreateController()
+#11 IWEB_PATH/lib/core/interceptor_class.php(114): call_user_func()
+#12 IWEB_PATH/lib/core/webapplication_class.php(74): IInterceptor::run(onCreateController)
+#13 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#14 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: SELECT * FROM iwebshop_session WHERE id = '3iupcg4cve13ho3tlgv8ftpfu2' limit 1
+ -- Table 'iwebshop.iwebshop_session' doesn't exist
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 17:44:03
+#0 IWEB_PATH/lib/web/model/model_class.php(200): IDB->query(SELECT * FROM iwebshop_session WHERE id = '3iupcg4cve13ho3tlgv8ftpfu2' limit 1)
+#1 IWEB_PATH/lib/web/model/model_class.php(148): IModel->query(id = '3iupcg4cve13ho3tlgv8ftpfu2',*,,1)
+#2 IWEB_PATH/lib/core/util/session_class.php(67): IModel->getObj(id = '3iupcg4cve13ho3tlgv8ftpfu2')
+#3 : ISession::sessRead(3iupcg4cve13ho3tlgv8ftpfu2)
+#4 IWEB_PATH/lib/core/util/session_class.php(30): session_start()
+#5 IWEB_PATH/lib/iweb.php(70): include_once(IWEB_PATH/lib/core/util/session_class.php)
+#6 : IWeb::autoload(ISession)
+#7 : spl_autoload_call(ISession)
+#8 IWEB_PATH/lib/core/util/safe_class.php(60): call_user_func(__theme)
+#9 IWEB_PATH/classes/themeroute.php(31): ISafe::get(__theme)
+#10 : themeroute::onCreateController()
+#11 IWEB_PATH/lib/core/interceptor_class.php(114): call_user_func()
+#12 IWEB_PATH/lib/core/webapplication_class.php(74): IInterceptor::run(onCreateController)
+#13 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#14 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: SELECT * FROM iwebshop_session WHERE id = '3iupcg4cve13ho3tlgv8ftpfu2' limit 1
+ -- Table 'iwebshop.iwebshop_session' doesn't exist
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 17:44:29
+#0 IWEB_PATH/lib/web/model/model_class.php(200): IDB->query(SELECT * FROM iwebshop_session WHERE id = '3iupcg4cve13ho3tlgv8ftpfu2' limit 1)
+#1 IWEB_PATH/lib/web/model/model_class.php(148): IModel->query(id = '3iupcg4cve13ho3tlgv8ftpfu2',*,,1)
+#2 IWEB_PATH/lib/core/util/session_class.php(67): IModel->getObj(id = '3iupcg4cve13ho3tlgv8ftpfu2')
+#3 : ISession::sessRead(3iupcg4cve13ho3tlgv8ftpfu2)
+#4 IWEB_PATH/lib/core/util/session_class.php(30): session_start()
+#5 IWEB_PATH/lib/iweb.php(70): include_once(IWEB_PATH/lib/core/util/session_class.php)
+#6 : IWeb::autoload(ISession)
+#7 : spl_autoload_call(ISession)
+#8 IWEB_PATH/lib/core/util/safe_class.php(60): call_user_func(__theme)
+#9 IWEB_PATH/classes/themeroute.php(31): ISafe::get(__theme)
+#10 : themeroute::onCreateController()
+#11 IWEB_PATH/lib/core/interceptor_class.php(114): call_user_func()
+#12 IWEB_PATH/lib/core/webapplication_class.php(74): IInterceptor::run(onCreateController)
+#13 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#14 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: SELECT * FROM iwebshop_session WHERE id = '3iupcg4cve13ho3tlgv8ftpfu2' limit 1
+ -- Table 'iwebshop.iwebshop_session' doesn't exist
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 17:44:32
+#0 IWEB_PATH/lib/web/model/model_class.php(200): IDB->query(SELECT * FROM iwebshop_session WHERE id = '3iupcg4cve13ho3tlgv8ftpfu2' limit 1)
+#1 IWEB_PATH/lib/web/model/model_class.php(148): IModel->query(id = '3iupcg4cve13ho3tlgv8ftpfu2',*,,1)
+#2 IWEB_PATH/lib/core/util/session_class.php(67): IModel->getObj(id = '3iupcg4cve13ho3tlgv8ftpfu2')
+#3 : ISession::sessRead(3iupcg4cve13ho3tlgv8ftpfu2)
+#4 IWEB_PATH/lib/core/util/session_class.php(30): session_start()
+#5 IWEB_PATH/lib/iweb.php(70): include_once(IWEB_PATH/lib/core/util/session_class.php)
+#6 : IWeb::autoload(ISession)
+#7 : spl_autoload_call(ISession)
+#8 IWEB_PATH/lib/core/util/safe_class.php(60): call_user_func(__theme)
+#9 IWEB_PATH/classes/themeroute.php(31): ISafe::get(__theme)
+#10 : themeroute::onCreateController()
+#11 IWEB_PATH/lib/core/interceptor_class.php(114): call_user_func()
+#12 IWEB_PATH/lib/core/webapplication_class.php(74): IInterceptor::run(onCreateController)
+#13 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#14 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: SELECT * FROM iwebshop_session WHERE id = '3iupcg4cve13ho3tlgv8ftpfu2' limit 1
+ -- Table 'iwebshop.iwebshop_session' doesn't exist
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 17:44:48
+#0 IWEB_PATH/lib/web/model/model_class.php(200): IDB->query(SELECT * FROM iwebshop_session WHERE id = '3iupcg4cve13ho3tlgv8ftpfu2' limit 1)
+#1 IWEB_PATH/lib/web/model/model_class.php(148): IModel->query(id = '3iupcg4cve13ho3tlgv8ftpfu2',*,,1)
+#2 IWEB_PATH/lib/core/util/session_class.php(67): IModel->getObj(id = '3iupcg4cve13ho3tlgv8ftpfu2')
+#3 : ISession::sessRead(3iupcg4cve13ho3tlgv8ftpfu2)
+#4 IWEB_PATH/lib/core/util/session_class.php(30): session_start()
+#5 IWEB_PATH/lib/iweb.php(70): include_once(IWEB_PATH/lib/core/util/session_class.php)
+#6 : IWeb::autoload(ISession)
+#7 : spl_autoload_call(ISession)
+#8 IWEB_PATH/lib/core/util/safe_class.php(60): call_user_func(__theme)
+#9 IWEB_PATH/classes/themeroute.php(31): ISafe::get(__theme)
+#10 : themeroute::onCreateController()
+#11 IWEB_PATH/lib/core/interceptor_class.php(114): call_user_func()
+#12 IWEB_PATH/lib/core/webapplication_class.php(74): IInterceptor::run(onCreateController)
+#13 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#14 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: SELECT * FROM iwebshop_session WHERE id = '2mg8jrnu84stodnc5ohd5k0eb6' limit 1
+ -- Table 'iwebshop.iwebshop_session' doesn't exist
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 17:45:12
+#0 IWEB_PATH/lib/web/model/model_class.php(200): IDB->query(SELECT * FROM iwebshop_session WHERE id = '2mg8jrnu84stodnc5ohd5k0eb6' limit 1)
+#1 IWEB_PATH/lib/web/model/model_class.php(148): IModel->query(id = '2mg8jrnu84stodnc5ohd5k0eb6',*,,1)
+#2 IWEB_PATH/lib/core/util/session_class.php(67): IModel->getObj(id = '2mg8jrnu84stodnc5ohd5k0eb6')
+#3 : ISession::sessRead(2mg8jrnu84stodnc5ohd5k0eb6)
+#4 IWEB_PATH/lib/core/util/session_class.php(30): session_start()
+#5 IWEB_PATH/lib/iweb.php(70): include_once(IWEB_PATH/lib/core/util/session_class.php)
+#6 : IWeb::autoload(ISession)
+#7 : spl_autoload_call(ISession)
+#8 IWEB_PATH/lib/core/util/safe_class.php(60): call_user_func(__theme)
+#9 IWEB_PATH/classes/themeroute.php(31): ISafe::get(__theme)
+#10 : themeroute::onCreateController()
+#11 IWEB_PATH/lib/core/interceptor_class.php(114): call_user_func()
+#12 IWEB_PATH/lib/core/webapplication_class.php(74): IInterceptor::run(onCreateController)
+#13 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#14 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: ALTER TABLE  `iwebshop_bill` ADD  `amount` decimal(15,2) NOT NULL default '0.00' COMMENT '结算的金额';
+ -- Duplicate column name 'amount'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 152
+excepCode: 1000
+excepTime: 2016-11-22 17:47:33
+#0 IWEB_PATH/controllers/update.php(89): IDB->query(ALTER TABLE  `iwebshop_bill` ADD  `amount` decimal(15,2) NOT NULL default '0.00' COMMENT '结算的金额';)
+#1 : Update->index()
+#2 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#3 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#4 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run()
+#5 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#6 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8
+ -- Unknown column 'go.commend_id' in 'field list'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 17:48:01
+#0 IWEB_PATH/lib/core/query_class.php(156): IDB->query(select go.id,go.name,go.img,go.sell_price,go.market_price,go.commend_id from iwebshop_category_extend as ca left join iwebshop_goods  as go on go.id = ca.goods_id where ca.category_id in(8) and go.is_del = 0   order by go.sort asc limit 8)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/runtime/views/xiaomi/site/index.php(406): Api::run(getCategoryExtendList,8)
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/xiaomi/site/index.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/xiaomi/site/index)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/xiaomi/site/index)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/site.php(28): IController->redirect(index)
+#10 : Site->index()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run()
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select count(*) as total from iwebshop_goods as go  where favicon.ico like '%1201010035%' and go.is_del != 1   
+ -- Unknown column 'favicon.ico' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 18:22:06
+#0 IWEB_PATH/lib/core/paging_class.php(56): IDB->query(select count(*) as total from iwebshop_goods as go  where favicon.ico like '%1201010035%' and go.is_del != 1   )
+#1 IWEB_PATH/lib/core/paging_class.php(41): IPaging->setSql(select distinct go.id,go.name,go.sell_price,go.market_price,go.store_nums,go.img,go.is_del,go.seller_id,go.is_share,go.sort from iwebshop_goods as go  where favicon.ico like '%1201010035%' and go.is_del != 1   order by go.id desc )
+#2 IWEB_PATH/lib/core/query_class.php(151): IPaging->__construct(select distinct go.id,go.name,go.sell_price,go.market_price,go.store_nums,go.img,go.is_del,go.seller_id,go.is_share,go.sort from iwebshop_goods as go  where favicon.ico like '%1201010035%' and go.is_del != 1   order by go.id desc ,20,10)
+#3 IWEB_PATH/runtime/views/sysdefault/goods/goods_list.php(172): IQuery->find()
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/sysdefault/goods/goods_list.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/sysdefault/goods/goods_list.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/sysdefault/goods/goods_list)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/sysdefault/goods/goods_list)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/goods.php(394): IController->redirect(goods_list)
+#10 : Goods->goods_list()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(goods_list)
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select count(*) as total from iwebshop_goods as go  where favicon.ico like '%1201010035%' and go.is_del != 1   
+ -- Unknown column 'favicon.ico' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-22 18:22:10
+#0 IWEB_PATH/lib/core/paging_class.php(56): IDB->query(select count(*) as total from iwebshop_goods as go  where favicon.ico like '%1201010035%' and go.is_del != 1   )
+#1 IWEB_PATH/lib/core/paging_class.php(41): IPaging->setSql(select distinct go.id,go.name,go.sell_price,go.market_price,go.store_nums,go.img,go.is_del,go.seller_id,go.is_share,go.sort from iwebshop_goods as go  where favicon.ico like '%1201010035%' and go.is_del != 1   order by go.id desc )
+#2 IWEB_PATH/lib/core/query_class.php(151): IPaging->__construct(select distinct go.id,go.name,go.sell_price,go.market_price,go.store_nums,go.img,go.is_del,go.seller_id,go.is_share,go.sort from iwebshop_goods as go  where favicon.ico like '%1201010035%' and go.is_del != 1   order by go.id desc ,20,10)
+#3 IWEB_PATH/runtime/views/sysdefault/goods/goods_list.php(172): IQuery->find()
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/sysdefault/goods/goods_list.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/sysdefault/goods/goods_list.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/sysdefault/goods/goods_list)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/sysdefault/goods/goods_list)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/goods.php(394): IController->redirect(goods_list)
+#10 : Goods->goods_list()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(goods_list)
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+

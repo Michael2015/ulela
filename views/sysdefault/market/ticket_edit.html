@@ -1,0 +1,315 @@
+{js:my97date}
+<style>
+	.input_color{
+		position: relative;
+	}
+	.input_color .color-active{
+		width: 110px;
+		display: block;
+		height: 22px;
+		border:1px solid #ccc;
+		cursor: pointer;
+		text-align: center;
+	}
+	.input_color .color-active .ic-color{
+		width: 90px;
+		margin-top: 2.5px;
+		height: 15px;
+		display: inline-block;
+		background: #63b359;
+	}
+	.input_color ul.dropdown-menu{
+		background-color: white;
+		padding:10px;
+		position: absolute;
+		top: 35px;
+		display: none;
+		width: 300px;
+		border:1px solid #ccc;
+	}
+	.input_color ul.dropdown-menu .card-bgcolor-box{
+		display: block;
+		float: left;
+		width: 20px;
+		height: 20px;
+		cursor: pointer;
+		margin-right: 5px;
+		margin-bottom: 5px;
+	}
+</style>
+<div class="headbar">
+	<div class="position"><span>营销</span><span>></span><span>优惠券管理</span><span>></span><span>{if:isset($this->ticketRow['id'])}编辑{else:}添加{/if}优惠券</span></div>
+</div>
+<div class="content_box">
+	<div class="content form_content">
+		<form action="{url:/market/ticket_edit_act}" name='ticket_edit'  method="post">
+			<input type='hidden' name='id' />
+			<table class="form_table">
+				<col width="150px" />
+				<col />
+				<tr>
+					<th>优惠券名称：</th>
+					<td>
+						<input type='text' name='name' class='normal' pattern='required' alt='请填写优惠券名称' />
+						<label>* 请为此组优惠券命名</label>
+					</td>
+				</tr>
+				<!-- dyg_jzw 20161226 增加优惠券使用限制 -->
+				<tr>
+					<th>满多少可用：</th>
+					<td><input type='text' class='small' pattern='int' empty alt='必须填写数字' name='at_least_money' /><label>设置满多少可用；如果设置了指定商品，则判断指定商品的汇总；0为不限制</label></td>
+				</tr>
+				<tr>
+					<th>优惠券面额：</th>
+					<td><input type='text' class='small' pattern='float' alt='必须填写数字' name='value' />元<label>* 请填写此组优惠券所能抵销的金额</label></td>
+				</tr>
+				<tr>
+					<th>有效时间段：</th>
+					<td>
+						<input type='text' name='start_time' class='Wdate' pattern='datetime' readonly=true onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" alt='请填写一个日期' /> ～
+						<input type='text' name='end_time' class='Wdate' pattern='datetime' readonly=true onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" alt='请填写一个日期' />
+						<label>* 此组优惠券的使用时间段</label>
+					</td>
+				</tr>
+				<!-- dyg_jzw 20161226 增加优惠券使用限制 -->
+				<tr>
+					<th>设置指定可用商品：</th>
+					<td>
+						<table class='border_table'>
+							<input type='hidden' name='goods_ids' />
+
+							<tbody id='ticket_goods_box'>
+							</tbody>
+
+							<tr><td><button type='button' class='btn' onclick='searchGoods("{url:/block/search_goods/type/checkbox}",searchGoodsCallback);'><span>添加商品</span></button><label>* 添加可使用的商品</label></td></tr>
+						</table>
+						<label>不设置则无限制</label>
+					</td>
+				</tr>
+				<tr>
+					<th>兑换所需积分：</th>
+					<td><input type='text' class='small' pattern='int' empty alt='必须填写数字' name='point' /><label>设置兑换此优惠券所需要的用户积分，如果为空或0则表示此优惠券不支持积分兑换，只支持管理员动手生成</label></td>
+				</tr>
+				<!-- dyg_jzw 20161226 增加优惠券使用限制 -->
+				<tr>
+					<th>每人限兑数量：</th>
+					<td><input type='text' class='small' pattern='int' empty alt='必须填写数字' name='got_limit' /><label>设置每人最多可兑换多少，0为不限制</label></td>
+				</tr>
+				<!-- dyg_jzw 20161226 增加优惠券使用限制 -->
+				<tr>
+					<th>使用说明：</th>
+					<td>
+						<textarea name='readme' empty rows="3"></textarea>
+						<label>优惠券使用说明</label>
+					</td>
+				</tr>
+				<!-- dyg_ymz 20170816 增加优惠券使用限制 -->
+				<tr>
+					<th>是否公开：</th>
+					<td>
+						<input type="radio" name="is_open"   value="0" checked/>否　
+						<input type="radio" name="is_open"  value="1" >是　
+						<label>对应send_ticket_activity插件必须开启</label>
+					</td>
+				</tr>
+				<!-- dyg_ymz 20170816 增加优惠券使用限制 -->
+				<tr>
+					<th>对哪些会员等级开放：</th>
+					<td>
+						{foreach:items = $all_group item = $v}
+						<input type="checkbox" name="user_level_constraint[]"  value="{$v['id']}">{$v['group_name']}
+						{/foreach}
+					</td>
+				</tr>
+				<!--添加的-->
+				<tr>
+					<th>是否选择微信卡券:</th>
+					<td>
+						<input type="radio" name="is_wechat_ticket" class="isWeixinRadio"  value="0" checked/>否　
+						<input type="radio" name="is_wechat_ticket" class="isWeixinRadio" value="1" >是　
+						<label>对应wx_ticket插件必须开启</label>
+					</td>
+				</tr>
+				<tbody id="care_weixin" style="display: none;">
+				<tr>
+					<th>卡券颜色：</th>
+					<td>
+						<div class="input_color" id="selectColor">
+							<span class="color-active">
+								<i class="ic-color" id="colorVal"></i>
+							</span>
+							<input type="hidden" name="wx_ticket_color" id="wx_ticket_color" value="Color010" pattern="required">
+							<label for="wx_ticket_color" style="display: block;">*请选择卡券颜色</label>
+							<ul class="dropdown-menu clearfix">
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #63b359" data-value="#63b359" data-name="Color010"></li>
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #2c9f67" data-value="#2c9f67" data-name="Color020"></li>
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #509fc9" data-value="#509fc9" data-name="Color030"></li>
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #5885cf" data-value="#5885cf" data-name="Color040"></li>
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #9062c0" data-value="#9062c0" data-name="Color050"></li>
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #d09a45" data-value="#d09a45" data-name="Color060"></li>
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #e4b138" data-value="#e4b138" data-name="Color070"></li>
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #ee903c" data-value="#ee903c" data-name="Color080"></li>
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #f08500" data-value="#f08500" data-name="Color081"></li>
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #a9d92d" data-value="#a9d92d" data-name="Color082"></li>
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #dd6549" data-value="#dd6549" data-name="Color090"></li>
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #cc463d" data-value="#cc463d" data-name="Color100"></li>
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #cf3e36" data-value="#cf3e36" data-name="Color101"></li>
+								<li class="js-card-bgcolor card-bgcolor-box" style="background-color: #5E6671" data-value="#5E6671" data-name="Color102"></li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>卡券标题：</th>
+					<td>
+						<input type="text" maxlength="9" class="small"  id="wx_ticket_title" pattern="required"  name="wx_ticket_title" placeholder='最多可输入9个字'>
+						<label for="wx_ticket_title">请输入卡券标题</label>
+					</td>
+				</tr>
+				<tr>
+					<th>卡券副标题：</th>
+					<td>
+						<input type="text" maxlength="18"  id="wx_ticket_sub_title" class="normal" pattern="required" name="wx_ticket_sub_title" placeholder='最多可输入18个字'>
+						<label for="wx_ticket_sub_title">请输入卡券副标题</label>
+					</td>
+				</tr>
+				<tr>
+					<th>联系电话：</th>
+					<td>
+						<input type="text" maxlength="12"  class="normal" name="wx_ticket_tel" id="wx_ticket_tel" pattern="required" placeholder='最多可输入11个字'>
+						<label for="wx_ticket_tel">请输入联系电话</label>
+					</td>
+				</tr>
+				<input type="hidden" name="wx_ticket_cardid" value="">
+				</tbody>
+				<!--添加的-->
+				<tr><td></td><td><button class="submit" type='submit'><span>确 定</span></button></td></tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script type='text/javascript'>
+	//表单回填
+	var formObj = new Form('ticket_edit');
+	formObj.init
+	({
+		'id':'{$this->ticketRow['id']}',
+		'name':'{$this->ticketRow['name']}',
+		'start_time':'{$this->ticketRow['start_time']}',
+		'end_time':'{$this->ticketRow['end_time']}',
+		'value':'{$this->ticketRow['value']}',
+		'point':'{$this->ticketRow['point']}',
+		'at_least_money':'{$this->ticketRow['at_least_money']}',
+		'got_limit':'{$this->ticketRow['got_limit']}',
+        'is_wechat_ticket':'{$this->ticketRow['is_wechat_ticket']}',
+		'readme':'{$this->ticketRow['readme']}',
+        'wx_ticket_color':'{if:$this->ticketRow['wx_ticket_color']}{$this->ticketRow['wx_ticket_color']}{else:}Color010{/if}',
+        'wx_ticket_title':'{$this->ticketRow['wx_ticket_title']}',
+        'wx_ticket_sub_title':'{$this->ticketRow['wx_ticket_sub_title']}',
+        'wx_ticket_tel':'{$this->ticketRow['wx_ticket_tel']}',
+        'wx_ticket_cardid':'{$this->ticketRow['wx_ticket_cardid']}',
+        'is_open':'{$this->ticketRow['is_open']}',
+        'user_level_constraint':'{$this->ticketRow['user_level_constraint']}',
+	});
+
+	//当修改操作时禁止修改金额
+	if($('[name="id"]').val())
+	{
+		$('[name="value"]').attr('readonly',true);
+		$('[name="value"]').css('background','#bbb');
+	}
+
+	//输入筛选商品的条件 //dyg_jzw 20161226 增加优惠券使用限制
+	function searchGoodsCallback(goodsList)
+	{
+		goodsList.each(function()
+		{
+			var temp = $.parseJSON($(this).attr('data'));
+			var content = {
+					"id":temp.goods_id,
+					"name":temp.name
+				};
+			relationCallBack(content);
+		});
+	}
+
+	//关联商品回调处理函数 //dyg_jzw 20161226 增加优惠券使用限制
+	function relationCallBack(content)
+	{
+		if(content)
+		{
+			var _tmp = $('[name="goods_ids"]').val();
+			if (_tmp == "")
+			{
+				_tmp = ",";
+			}
+			$('[name="goods_ids"]').val(_tmp + content['id'] + ',');
+
+			_tmp = $('#ticket_goods_box').html();
+			var html = _tmp + '<tr id="row_'+content['id']+'"><td><button type="button" class="btn" onclick="del_goods(\''+content['id']+'\')"> 删除 </button> '+content['name']+'</td></tr>';
+
+			$('#ticket_goods_box').html(html);
+		}
+	}
+
+	//删除已选的商品
+	function del_goods(_id)
+	{
+		var goods_ids = $('[name="goods_ids"]').val();
+		goods_ids = goods_ids.replace(","+_id+",", ",");
+
+		$('[name="goods_ids"]').val(goods_ids);
+		$('#row_'+_id).remove();
+
+	}
+
+	//关联商品信息 //dyg_jzw 20161226 增加优惠券使用限制
+	{if:!empty($this->ticketRow['goods_ids'])}
+		var goods_json = $.parseJSON('{echo: json_encode($this->ticketRow['goods_list'])}');
+
+		$.each(goods_json, function(index, value){
+			relationCallBack(value);
+		});
+	{/if}
+
+
+    //添加的js代码
+    $('#selectColor .color-active').click(function () {
+        $(this).siblings('.dropdown-menu').fadeIn();
+    })
+    $('#selectColor .dropdown-menu li').click(function () {
+        var color = $(this).css('backgroundColor');
+        var val = $(this).attr('data-name');
+        $('#colorVal').css('backgroundColor',color);
+        $('.input_color').find('input').val(val);
+        $('.dropdown-menu').hide();
+    });
+    $('.isWeixinRadio').click(function () {
+        console.log(1000);
+        if($(this).val()==1){
+            $('#care_weixin').show();
+        }
+        else if($(this).val()==0){
+            $('#care_weixin').hide();
+        }
+
+    })
+
+    if($('.isWeixinRadio:checked').val()==1){
+        $('#care_weixin').show();
+    }
+    else if($('.isWeixinRadio:checked').val()==0){
+        $('#care_weixin').hide();
+    }
+    //初始化输入框颜色
+    if($('[name=wx_ticket_color]').val()){
+        var color = $('[name=wx_ticket_color]').val();
+        $('#colorVal').css('backgroundColor',$('.dropdown-menu [data-name=' + color+']').attr('data-value'));
+    }
+    else{
+        $('#colorVal').css('backgroundColor','#63b359');
+    }
+    //初始化输入框颜色
+    //添加的js代码
+</script>

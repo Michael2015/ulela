@@ -1,0 +1,46 @@
+{js:kindeditor}
+<div class="headbar">
+	<div class="position"><span>会员</span><span>></span><span>会员管理</span><span>></span><span>编辑邀请人</span></div>
+</div>
+<div class="content_box">
+	<div class="content form_content">
+		<form action="{url:/member/member_inviter_edit}" method="post" id="member_inviter">
+			<table class="form_table" cellpadding="0" cellspacing="0">
+				<colgroup>
+					<col width="150px" />
+					<col />
+				</colgroup>
+
+				<tr>
+					<th>被邀用户名（队员）：</th>
+					<td>
+						<input class="normal" id="username" name="username" type="text" value="" pattern="required" alt="用户名不能为空" /><label>* 必选项</label>
+						<label>加入组队的用户名</label>
+					</td>
+				</tr>
+				<tr>
+					<th>邀请人（队长）：</th>
+					<td>
+						<input class="normal" id="inviter" name="inviter" type="text" value="" pattern="required" alt="用户名不能为空" /><label>* 必选项</label>
+						<label>队长用户名</label>
+					</td>
+				</tr>
+				<tr>
+					<td></td><td><button class="submit" onclick="checkForm()"><span>确 定</span></button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+function checkForm()
+{
+	var username = document.getElementById('username').value;
+	var inviter = document.getElementById('inviter').value;
+	if ( confirm("确定要将用户[" + username + "]关联至[" + inviter + "]吗？") )
+	{
+		document.getElementById('member_inviter').submit();
+	}
+}
+</script>

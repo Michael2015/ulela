@@ -1,0 +1,14 @@
+{set:$msg = IReq::get('msg') ? IReq::get('msg') : '发生错误'}
+
+
+<div class="msg msg-err bg-white">
+	<p><i class="iconfont icon-cuowu"></i></p>
+	<p><span>“</span>{echo:htmlspecialchars($msg,ENT_QUOTES)}<span>”</span></p>
+	<div class="font-sm">
+		您现在可以去：
+		{if:$this->user['user_id']}
+		<a href="{url:/ucenter/index}">个人中心 >></a>
+		{/if}
+		<a href="{url:/site/index}">网站首页 >></a>
+	</div>
+</div>

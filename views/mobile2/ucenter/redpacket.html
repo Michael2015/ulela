@@ -1,0 +1,63 @@
+<div class="bg-gray p-10">
+
+	{set:$queryPropList = Api::run('getPropList',$propId)}
+	{set:$propList = $queryPropList->find()}
+	{if: $propList}
+		<ul class="list-unstyled">
+			{foreach:items = $propList}
+				<li class="mb-10">
+					<div class="bd-1s bg-white font-xs pos-relative">
+                        <!-- 状态 -->
+                        <div class="ticket-status {if:$item['is_userd']==1}used{elseif:$item['is_close']==1}ban{elseif:$item['is_close']==2}lock{elseif:(strtotime('now')-strtotime($item['end_time']))>0}expire{else:}useful{/if}"></div>
+                            
+                        <div class="ticket-main p-10 pb-5">
+                            <div class="font-xxl text-warning pull-left col-xs-4">
+                            	<span class="font-xs">￥</span><strong>{echo: substr($item['value'], 0, strlen($item['value'])-3)}<span class="font-lg">{echo: substr($item['value'], -3)}</span></strong>
+                            </div>
+                            <p>
+                                <span class="font-df">{$item['name']}</span>
+                            </p>
+                            
+                            {if: $item['at_least_money'] > 0 }
+                                <p class="text-muted">订单满{$item['at_least_money']}元（不含运费）</p>
+                            {else:}
+                                <p class="text-muted">使用无限制</p>
+                            {/if}
+                        </div>
+                        <div class="pl-10 pr-10 mb-5 text-muted">
+                        	<p>
+                                有效日期：{$item['start_time']} ~ {$item['end_time']}
+                            </p>
+							<p class="m-b-5">
+								使用说明：
+								{if:$item['is_wechat_ticket'] == 1}
+								<span style="float: right;cursor:pointer;" class="is_wechat_ticket">
+                                        <font color="red" onclick="return syncWechat({$item['id']});">同步到微信</font><br>
+                                </span>
+								{else:}
+								{if:$item['is_close']==0 and $item['is_userd']==0}
+								<span style="float: right;cursor:pointer;">
+                                        <font color="red" onclick="window.open('{url:/site/pro_list/prop_id/$item['id']}')">立即使用</font><br>
+                                </span>
+								{/if}
+								{/if}
+							</p>
+                            {if:$item['readme']}
+	                            <p>
+	                                使用说明：{$item['readme']}
+	                            </p>
+	                        {/if}
+                        </div>
+                    </div>
+				</li>
+			{/foreach}
+		</ul>
+		{$queryPropList->getPageBar()}
+	{else:}
+		<div class="msg bg-white">
+			<p><i class="iconfont icon-31wentifankui"></i></p>
+			<p>暂无优惠券</p>
+		</div>
+	{/if}
+
+</div>

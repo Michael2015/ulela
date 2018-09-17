@@ -1,0 +1,36 @@
+<form action="{url:/plugins/kuaishangtong_update}" method="post" name='service_online'>
+	<table class='form_table'>
+		<colgroup>
+			<col width="150px" />
+			<col />
+		</colgroup>
+		<tr>
+			<th>说明教程</th>
+			<td>
+			1.到快商通网站申请账号，注册成功后牢记用户名，密码，公司ID账号。【<a href='http://agent.kuaishang.cn/agent/member/index/425.htm' target='_blank'>免费注册</a>】<br/>
+			2.下载【PC版智慧在线客服】管理软件，登录用户信息，所有客服的管理和处理都基于此系统【<a href='http://www.kuaishang.cn/download.html' target='_blank'>免费下载</a>】<br/>
+			3.获取【浮动客服JS路径】，在【PC版智慧在线客服】管理系统中，顶部菜单【设置中心】——【生成代码】——【获取代码】——【手动添加】——【JS代码】，里面的src就是JS路径<br/>
+			4.获取【链接客服URL路径】，在【PC版智慧在线客服】管理系统中，顶部菜单【设置中心】——【生成代码】——【获取代码】——【链接地址】
+			</td>
+		</tr>
+		<tr>
+			<th>浮动客服JS路径：</th>
+			<td><input type='text' class='normal' value='' name='float' /><label>悬浮客服窗口，注意不要复制script标签，只需要src里面的路径即可。格式：【http://kefu6.kuaishang.cn/...】</label></td>
+		</tr>
+		<tr>
+			<th>链接客服URL路径：</th>
+			<td><input type='text' class='normal' value='' name='link' pattern='url' empty /><label>商品详情页面中点击“联系客服”按钮后跳转的客服相应地址。格式：【http://kefu6.kuaishang.cn/...】</label></td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><button type='submit' class='submit'><span>保存在线客服</span></button></td>
+		</tr>
+	</table>
+</form>
+
+<script type="text/javascript">
+{if:isset($content) && $content}
+var formObj = new Form('service_online');
+formObj.init({echo:JSON::encode($content)});
+{/if}
+</script>

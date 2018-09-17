@@ -1,0 +1,104 @@
+{js:kindeditor}
+{js:my97date}
+{js:artTemplate}
+{js:fileUpload}
+
+<div class="headbar clearfix">
+	<div class="position"><span>模板</span><span>></span><span>模板管理</span><span>></span><span>添加模板</span></div>
+	<ul class="tab" name="menu1">
+		<li id="li_1" class="selected"><a href="javascript:void(0)" hidefocus="true" onclick="select_tab('1')">模板信息</a></li>
+		<li id="li_2"><a href="javascript:void(0)" hidefocus="true" onclick="select_tab('2')">模板描述</a></li>
+	</ul>
+</div>
+
+<div class="content_box">
+	<div class="content form_content">
+		<form action="{url:/goods/edit_template}" name="goodsForm" method="post">
+			<input type="hidden" name="id" value="{$id}" />
+			<div id="table_box_1">
+				<table class="form_table">
+					<col width="150px" />
+					<col />
+					<tr>
+						<th>模板名称：</th>
+						<td>
+							<input class="normal" name="tpl_name" type="text" value="{$tpl_name}" pattern="required" alt="模板名称不能为空" /><label>*</label>
+						</td>
+					</tr>
+					<tr>
+						<th>模板类型：</th>
+						<td>
+							<select class="auto" name="tpl_type">
+								<option value="1" {echo:isset($tpl_type)&&$tpl_type==1 ? 'selected':''}>PC详情头部</option>
+								<option value="2" {echo:isset($tpl_type)&&$tpl_type==2 ? 'selected':''}>移动详情头部</option>
+								<option value="3" {echo:isset($tpl_type)&&$tpl_type==3 ? 'selected':''}>PC详情尾部</option>
+								<option value="4" {echo:isset($tpl_type)&&$tpl_type==4 ? 'selected':''}>移动详情尾部</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>所属分类：</th>
+						<td>
+							<div id="__categoryBox" style="margin-bottom:8px"></div>
+							<button class="btn" type="button" name="_goodsCategoryButton"><span class="add">设置分类</span></button>
+							<!--分类数据显示-->
+							{set:plugin::trigger('goodsCategoryWidget',array("type" => "checkbox","name" => "tpl_cid[]","value" => isset($tpl_cid) ? json_decode($tpl_cid,true) : ""))}
+							<a href='{url:/goods/category_edit}' class='orange'>请点击添加分类</a>
+						</td>
+					</tr>
+					<tr>
+						<th>是否显示：</th>
+						<td>
+							<label class='attr'><input type="radio" name="tpl_is_display" value="1" checked> 是</label>
+							<label class='attr'><input type="radio" name="tpl_is_display" value="0" {echo:isset($tpl_is_display)&&$tpl_is_display==0?"checked":""}> 否</label>
+						</td>
+					</tr>
+					<tr>
+						<th>模板排序：</th>
+						<td>
+							<input class="normal" name="tpl_sort" type="text" value="{$tpl_sort}" pattern="required" /><label>*</label>
+							<label>序号越高，排得越前</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="table_box_2" cellpadding="0" cellspacing="0" style="display:none">
+				<table class="form_table">
+					<colgroup>
+					<col width="150px" />
+					<col />
+					</colgroup>
+					{set:plugin::trigger("onSystemGoodsDetail");}
+					<tr>
+						<th>产品描述：</th>
+						<td><textarea id="content" name="tpl_content" pattern="required" style="width:700px;height:400px;">{$tpl_content}</textarea></td>
+					</tr>
+				</table>
+			</div>
+			<table class="form_table">
+				<col width="150px" />
+				<col />
+				<tr>
+					<td></td>
+					<td><button class="submit" type="submit" onclick="return checkForm()"><span>添加模板</span></button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script language="javascript">
+//创建表单实例
+var formObj = new Form('goodsForm');
+//提交表单前的检查
+//编辑器载入
+KindEditorObj = KindEditor.create('#content',{"filterMode":false});
+//tab标签切换
+function select_tab(curr_tab)
+{
+	$("form[name='goodsForm'] > div").hide();
+	$("#table_box_"+curr_tab).show();
+	$("ul[name=menu1] > li").removeClass('selected');
+	$('#li_'+curr_tab).addClass('selected');
+}
+</script>

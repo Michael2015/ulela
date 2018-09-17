@@ -1,0 +1,99 @@
+<div class="bg-white p-10">
+	<div class="info-head"><span>地址管理</span></div>
+
+	<table class="table table-striped">
+		<th>地址列表</th>
+		<th>操作</th>
+		{foreach:items=$this->address}
+
+		<tr{if:$item['is_default']==1} class="success"{/if}>
+			<td>
+				<p class="font-sm">
+					{if:$item['is_default']==1}
+						<strong><i class="iconfont icon-xuanzhong text-success"></i> <span class="text-success">[默认地址]</span></strong><br>
+					{/if}
+					<i class="iconfont icon-wo2 color-light-red"></i> {$item['accept_name']}&nbsp;
+					<i class="iconfont icon-shumashouji color-light-red"></i> {$item['mobile']}
+				</p>
+				<!--dyg_lzq 20160316 跨境电商专用-->
+				{if:$item['accept_id']}
+					<p class="font-sm">
+						<i class="iconfont icon-gerenziliao1 color-light-red"></i> {$item['accept_id']}
+					</p>
+				{/if}
+				<p class="font-sm text-muted">
+					<i class="iconfont icon-dingwei color-light-red"></i> {$this->areas[$item['province']]}{$this->areas[$item['city']]}{$this->areas[$item['area']]} {$item['address']}
+				</p>
+			</td>
+			<td>
+				<p>
+					<ul class="list-unstyled">
+						<li>
+							<button type='button' class="btn btn-no-shadow btn-xs" onclick='editAddress({$item['id']})' />修改</button>
+						</li>
+						<li>
+							<button type='button' class="btn btn-red btn-no-shadow btn-xs" onclick="delModel({link:'{url:/ucenter/address_del/id/$item['id']}'});"/>删除</button>
+						</li>
+						<li>
+							{if:$item['is_default']==1}
+								<button type='button'  class="btn btn-xs btn-default btn-no-shadow" onclick="window.location.href='{url:/ucenter/address_default/id/$item['id']/is_default/0}'"  />关默认</button>
+							{else:}
+								<button type='button'  class="btn btn-xs btn-green btn-no-shadow" onclick="window.location.href='{url:/ucenter/address_default/id/$item['id']/is_default/1}'" />设默认</button>
+							{/if}
+						</li>
+					</ul>
+				</p>
+			</td>
+		</tr>
+		{/foreach}
+		<tfoot>
+        	<tr>
+        		<td colspan="2">
+        			<button type='button' class="btn btn-no-shadow btn-xs" onclick='editAddress()' />新增地址</button>
+        		</td>
+        	</tr>
+        </tfoot>
+	</table>
+
+</div>
+
+
+<script type='text/javascript'>
+	function editAddress(addressId)
+	{
+		btDialog.open(creatUrl("block/address/id/"+addressId + "?is_cbe=1"), //dyg_jzw 20160613 添加跨境电商地址
+		{
+			"id":"addressWindow",
+			"title":"修改收货地址",
+			"ok":function(){
+				var iframeWin = document.getElementById("iframeWin").contentDocument||document.frames["iframeWin"].document;
+				var formObject = iframeWin.forms[0];
+				if(formObject.onsubmit() === false)
+				{
+					alert("请正确填写各项信息");
+					return false;
+				}
+				$.getJSON(formObject.action,$(formObject).serialize(),function(content){
+					if(content.result == false)
+					{
+						alert(content.msg);
+						return;
+					}
+					addressId ? $('#addressItem'+addressId).remove() : $('#addressItem:first').remove();
+
+					//修改后的节点增加
+					var addressLiHtml = template.render('addressLiTemplate',{"item":content.data});
+					$('.addr-list').prepend(addressLiHtml);
+					$('input:radio[name="radio_address"]:first').trigger('click');
+
+					$('#btdialog-alert').modal('hide');
+					//art.dialog({"id":"addressWindow"}).close();
+				});
+				return false;
+			},
+			"okVal":"修改",
+			"cancel":true,
+			"cancelVal":"取消",
+		});
+	}
+</script>

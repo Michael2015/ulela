@@ -1,0 +1,65 @@
+
+<div class="u-section-right bg-white m-b-20 pull-left">
+    <div class="p-30">
+        <div>
+            <ul class="nav nav-tabs ucenter-tabs">
+                <li class="active">在线充值</li>
+            </ul>
+
+            <form action='{url:/block/doPay}' method='post'>
+                <table class="table no-border goods-cart-list m-b-20">
+                    <colgroup>
+                        <col width="20%">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <td class="text-right no-border"><span class="color-orange">*</span> 充值金额</td>
+                        <td class="no-border info-form">
+                            <div class="info-input small-input">
+                                <div class="form-item clearfix">
+                                    <div class="form-item-right">
+                                        <input class="info-text" type="text" name="recharge" pattern='float' alt='请输入充值的金额'>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right no-border"><span class="color-orange">*</span> 选择充值方式</td>
+                        <td class="no-border checkbox-item">
+                            {set:$paymentList=Api::run('getPaymentListByOnline')}
+                            {if:!empty($paymentList)}
+                            <ul class="checkbox-list">
+                                {foreach:items = $paymentList}
+                                    <li class="dis-i-b checkbox-item">
+                                        <!--dyg_jzw 20151226 只允许支付宝方式充值-->
+                                        {if: $item['id'] == 8}
+                                            <input class="checkbox-item-radio" name="payment_id" title="{$item['name']}" type="radio" value="{$item['id']}"  id="payment{$item['id']}" checked="checked" />
+                                            <label class="label-md" for="payment{$item['id']}">
+                                                <span class="checkbox-item-line">{$item['name']}</span><br/>
+                                                <span class="checkbox-item-line">{$item['note']}，手续费：{if:$item['poundage_type']==2}￥{$item['poundage']}{else:}{$item['poundage']}%{/if}</span>
+                                                <i class="icon-18 icon-checked"></i>
+                                            </label>
+                                        {/if}
+                                    </li>
+                                {/foreach}
+                            </ul>
+                            {else:}
+                                <span class="text-muted">没有线上支付方式</span>
+                            {/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="no-border">&nbsp;</td>
+                        <td class="no-border">
+                            <button type="submit" class='btn btn-warning' onclick='return check_form();'>确定充值</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+
+    </div>
+</div>

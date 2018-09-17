@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script>
+        (function (doc, win) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (!clientWidth) return;
+                    if(clientWidth>=640){
+                        docEl.style.fontSize = '100px';
+                    }else{
+                        docEl.style.fontSize = 100 * (clientWidth / 640) + 'px';
+                    }
+                };
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+        //分享到朋友圈
+        wx.onMenuShareTimeline({
+            title: '诚挚邀请{$client_name}先生/女士参加体育明星慈善高尔夫赛', // 分享标题
+            link: 'http://www.dyg.cn/invitation/invite_client?client_name={$client_name}&sign={$sign}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: 'http://ww4.sinaimg.cn/large/0060lm7Tly1fkokfh49ulj303c03ct8t.jpg', // 分享图标
+            success: function () {
+                //关掉
+                $("#mask-layer").css({
+                    'visibility': 'hidden',
+                    'z-index': '-1'
+                })
+            }
+        });
+        //发送给朋友
+        wx.onMenuShareAppMessage({
+            title: '诚挚邀请{$client_name}先生/女士参加体育明星慈善高尔夫赛', // 分享标题
+            desc: '诚挚邀请{$client_name}先生/女士参加体育明星慈善高尔夫赛', // 分享描述
+            link: 'http://www.dyg.cn/invitation/invite_client?client_name={$client_name}&sign={$sign}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: 'http://ww4.sinaimg.cn/large/0060lm7Tly1fkokfh49ulj303c03ct8t.jpg', // 分享图标
+            success: function () {
+                //关掉
+                $("#mask-layer").css({
+                    'visibility': 'hidden',
+                    'z-index': '-1'
+                })
+            }
+        });
+    </script>
+    <title>诚挚邀请{$client_name}先生/女士参加体育明星慈善高尔夫赛</title>
+    <style>
+        html, body, form, button, input {
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+        .img-content {
+            width: 100%;
+            max-width: 6.4rem;
+            margin: 0 auto;
+        }
+        .img-content img {
+            width: 100%;
+        }
+        .footer {
+            position: fixed;
+            text-align: center;
+            width: 100%;
+            left: 0;
+            right: 0;
+            bottom: 10px;
+            margin: 0 auto;
+            vertical-align: top;
+            font-size: 0.32rem;
+            max-width: 6.4rem;
+        }
+        .footer .reset{
+            float: left;
+            display: block;
+            left: 0;
+            margin-left: 10px;
+        }
+        .footer .share {
+            float: right;
+            margin-right: 10px;
+        }
+        .mask-layer {
+            position: fixed;
+            max-width: 6.4rem;
+            height: 100%;
+            width: 100%;
+            visibility: hidden;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            top: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+        .arrow {
+            position: absolute;
+            right: 14px;
+            -webkit-transform: rotate(100deg);
+            -ms-transform: rotate(100deg);
+            -o-transform: rotate(100deg);
+            transform: rotate(100deg);
+        }
+        .share-tip {
+            position: absolute;
+            top: 66px;
+            right: 38px;
+            font-size: 0.34rem;
+            color: #fff;
+        }
+        .save-tip {
+            position: fixed;
+            text-align: center;
+            width: 100%;
+            left: 0;
+            right: 0;
+            bottom: 66px;
+            margin: 0 auto;
+            max-width: 6.4rem;
+            background-image: -webkit-linear-gradient(left, #ffffff, #787878 25%, #ffffff 50%, #787878 75%, #ffffff);
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-background-size: 200% 100%;
+            -webkit-animation: save-tip-animation 4s infinite linear;
+        }
+
+        .save-tip{
+            text-align: center;
+            background-image: -webkit-linear-gradient(left, #ffffff, #787878 25%, #ffffff 50%, #787878 75%, #ffffff);
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-background-size: 200% 100%;
+            -webkit-animation: save-tip-animation 4s infinite linear;
+        }
+        @-webkit-keyframes save-tip-animation {
+            0%{ background-position: 0 0;}
+            100% { background-position: -100% 0;}
+        }
+    </style>
+</head>
+<body>
+<!-- 图片 -->
+<div class="img-content">
+    <img id="img" src="{$client_invitation}" alt="生成中...">
+</div>
+<div class="footer">
+    <!-- 重新生成 -->
+   {if:$is_reset == 1}
+    <div class="reset">
+        <a href="{url:/client_invitation/welcome}" class="btn btn-warning btn-sm">重新生成</a>
+    </div>
+    {/if}
+    <!-- 分享 -->
+    <div class="share" id="share">
+        <a class="btn btn-link share-to-font" style="color: white;padding-right: 5px;">分享朋友圈</a><img id="share-button" src="/plugins/client_invitation/share.png" alt="" style="height: 22px;">
+    </div>
+    <!-- 遮罩层 -->
+</div>
+<div class="save-tip">
+    <span>长按图片可保存</span>
+</div>
+<!-- 遮罩层 -->
+<div id="mask-layer" style="position: fixed; width: 100%; height: 100%; left: 0px; top: 0px; -webkit-transition: opacity 0.3s linear; transition: opacity 0.3s linear; opacity: 1; z-index: 900; background-color: rgba(0, 0, 0, 0.9); display:none">
+    <div style="display: block; width: 172px; height: 195px; overflow: hidden; position: absolute; right: 10px; top: 10px; background: url(http://dev.vxtong.com/cases/nuannan/imgs/share-it.png) 0px 0px / 100% 100% no-repeat;"></div>
+    <h3 style="padding: 0px; position: absolute; width: 100%; height: auto; text-align: center; top: 50%; margin: -60px 0px 0px; font-size: 20px; line-height: 28px; color: rgb(255, 255, 255);">请点击右上角<br>通过 【分享朋友圈】功能</h3>
+</div>
+{js:jquery}
+<script>
+    // 分享朋友圈
+    $("#share").click(function () {
+        // 打开遮罩层
+        $("#mask-layer").css({
+            'display': 'block',
+            'z-index': '100'
+        })
+    })
+    // 点击遮罩层，关闭
+    $("#mask-layer").click(function () {
+        $(this).css({
+            'display': 'block',
+            'z-index': '-1'
+        })
+    })
+</script>
+</body>
+</html>

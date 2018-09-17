@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	{js:jquery}
+	{js:validate}
+	{js:artTemplate}
+	{js:dialog}
+	{js:form}
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+<form action="{url:/plugins/seller_group_update}" method="post" name='seller_group'>
+	<input name='id' type='hidden' />
+	<table class="table">
+		<tr>
+			<td>商盟名称</td>
+			<td>
+				<input name='name' type='text' class='form-control' pattern='required' />
+			</td>
+		</tr>
+	</table>
+	<table class='table'>
+		<tr>
+			<td>
+				<table class='table' id='seller_box'>
+					<thead>
+						<tr>
+							<th>商户ID</th>
+							<th>权重(总和等于1)</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+
+					<tbody></tbody>
+
+					<tfoot>
+						<tr>
+							<td colspan='3'>
+								<button type='button' class='glyphicon glyphicon-plus btn btn-info' onclick="add_seller();">添加商户项</button>
+							</td>
+						</tr>
+					</tfoot>
+
+					<script type='text/html' id='serviceTrTemplate'>
+					<tr>
+						<td><input type='text' name='seller_id[]' class='form-control' value='<%=seller_id%>' pattern='required'  /></td>
+						<td><input type='text' name='weight[]' class='form-control' value='<%=weight%>' pattern='required' /></td>
+						<td>
+							<button type="button" class='operator glyphicon glyphicon-remove btn btn-default' alt='删除' title='删除'></button>
+						</td>
+					</tr>
+					</script>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="submit" class="btn btn-success" value="保存商盟" />
+				<input type="button" class="btn btn-danger" value="取 消" onclick="window.location.href='{url:/plugins/seller_group_list/}';" />
+			</td>
+		</tr>
+	</table>
+</form>
+</div>
+</body>
+
+<script type="text/javascript">
+//生成在线客服
+jQuery(function()
+{
+	{if:isset($sellerGroupData) && $sellerGroupData}
+		var formObj = new Form();
+		formObj.init({echo:JSON::encode($sellerGroupData)});
+		var sellerGroup = {echo:JSON::encode($sellerGroupData['seller'])};
+		for(var index in sellerGroup)
+		{
+			add_seller(sellerGroup[index]);
+		}
+	{else:}
+		add_seller();
+	{/if}
+});
+
+//添加商户
+function add_seller(data)
+{
+	var data = data ? data : {};
+	var serviceTrHtml = template.render('serviceTrTemplate',data);
+	$('#seller_box tbody').append(serviceTrHtml);
+	var last_index = $('#seller_box tbody tr').size()-1;
+	buttonInit(last_index,'#seller_box');
+}
+
+//操作按钮绑定
+function buttonInit(indexValue,ele)
+{
+	ele = ele || "#guide_box";
+	if(indexValue == undefined || indexValue === '')
+	{
+		var button_times = $(ele+' tbody tr').length;
+
+		for(var item=0;item < button_times;item++)
+		{
+			buttonInit(item,ele);
+		}
+	}
+	else
+	{
+		var obj = $(ele+' tbody tr:eq('+indexValue+') .operator')
+
+		//功能操作按钮
+		obj.each(
+			function(i)
+			{
+				switch(i)
+				{
+					//删除排序
+					case 0:
+					{
+						$(this).click(
+							function()
+							{
+								var obj = $(this);
+								art.dialog.confirm('确定要删除么？',function(){obj.parent().parent().remove()});
+							}
+						)
+					}
+					break;
+				}
+			}
+		)
+	}
+}
+</script>

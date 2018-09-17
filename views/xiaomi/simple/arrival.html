@@ -1,0 +1,51 @@
+{set:$goods_id = IFilter::act(IReq::get('goods_id'),'int');}
+<div class="body-contain bg-gray ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+            <li class="active">订阅到货通知</li>
+        </ol>
+        <!--position-->
+    </div>
+
+    <div class="w600 margin-0-auto m-t-60 m-b-60 ov-hidden bg-white">
+        <div class="p-30">
+            <h3 class="m-t-0 m-b-10 text-center text-center">订阅到货通知</h3>
+            <p class="m-b-40 text-center f-12 text-muted">如果您所需要购买的商品到货，我们会用邮件或短信通知您</p>
+            <form action="{url:/simple/arrival_notice}" method="post">
+                <input name="goods_id" type="hidden" value="{$goods_id}"/>
+                <ul class="info-form form-content">
+                    <li class="clearfix">
+                        <div class="info-label pull-left text-right"><span class="color-orange f-w-b">* </span>邮箱地址</div>
+                        <div class="info-input pull-left medium-input">
+                            <div class="form-item clearfix">
+                                <div class="form-item-right">
+                                    <input name="email" class="info-text" type="text" pattern="email" alt="请输入正确的邮件地址">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="clearfix">
+                        <div class="info-label pull-left text-right">手机号码</div>
+                        <div class="info-input pull-left medium-input">
+                            <div class="form-item clearfix">
+                                <div class="form-item-right">
+                                    <input name="mobile" class="info-text" type="text" pattern="mobi" empty alt="手机号码格式不正确">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="clearfix m-t-40">
+                        <div class="text-center">
+                            <a href="{url:/site/products/id/$goods_id}" class="btn btn-gray m-r-30">返回商品</a>
+                            <button type="submit" class='btn btn-warning'>订阅</button>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>

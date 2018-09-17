@@ -1,0 +1,80 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li class="active">我的团队</li>
+            <li><a href="{url:/ucenter/freeze_log}">销售记录</a></li>
+            <li><a href="{url:/ucenter/my_consume}">消费统计</a></li>
+        </ul>
+
+        <div class="media tips-media">
+            <div class="media-left">
+                <img src="{skin:xiaomi/images/team.png}" alt="">
+            </div>
+            <div class="media-body">
+                <p>队员数量：</p>
+                <p><span class="f-w-b color-orange">{echo: count($this->team_users_arr);}</span> 人</p>
+                <p class="f-12"><a href="{url:/ucenter/jointeam}">邀请更多队员加入</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="m-b-40">
+            <h5 class="m-b-20">队员列表</h5>
+            <table class="table table-bordered table-striped text-center f-12">
+                <tbody>
+                <tr class="active text-muted">
+                    <td>用户名</td>
+                    <td>真实姓名</td>
+                    <td>注册时间</td>
+                    <td>当前级别</td>
+                    <td>消费提成</td>
+                    <td>累计消费</td>
+                </tr>
+                {if: $this->team_users_arr}
+                {foreach: items = $this->team_users_arr}
+                <tr>
+                    <td>
+                        {$item['username']}
+                    </td>
+                    <td>
+                        {$item['info']['true_name']}
+                    </td>
+                    <td >
+                        {$item['info']['time']}
+                    </td>
+                    {set:$group_name = $item['info']['group_id']?$this->user_group_arr[$item['info']['group_id']]:'无'}
+                    <td >
+                        {$group_name}
+                    </td>
+                    <td >
+                        {echo: isset($this->fanli[$item['info']['group_id']])? $this->fanli[$item['info']['group_id']] . '%' : '暂无'; }
+                    </td>
+                    <td >
+                        {$item['info']['total_consume']}
+                    </td>
+                </tr>
+                {/foreach}
+                {else:}
+                <tr>
+                    <td colspan="6">暂无队员，<a class="color-orange" href="{url:/ucenter/jointeam}">马上邀请</a></td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="f-12">
+            <p><strong>消费提成说明：</strong></p>
+            <p class="indent">1、提成比例：第1单按最低比例执行，第2~4单按最低比例+2%，第5单及之后按最高比例（比如消费提成为6~10%：某队员消费第1单，您可获提成6%，第2~4单可获得8%，第5单及之后一直可获得10%）</p>
+            <p class="indent">2、当提成订单为完成状态，奖励预存款才正式解冻可用，奖励明细请查看<a class="color-orange" href="freeze_log">销售记录</a>。（手动或自动确认收货后，在30天售后维权期无退款即为完成订单）</p>
+            <p class="indent">3、床垫、冬虫夏草相关、阳光全球购、活动期间等产品无提成或比例不同，具体以系统计算为准。</p>
+        </div>
+    </div>
+</div>

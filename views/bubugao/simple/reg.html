@@ -1,0 +1,44 @@
+<div class="wrapper clearfix">
+	<div class="wrap_box">
+		<h3 class="notice">用户注册</h3>
+		<p class="tips"><span class="gray f_r">已有{echo:$this->_siteConfig->name}帐号？请点<a class="orange bold" href="{url:/simple/login}">这里</a>登录</span>欢迎来到我们的网站，如果您是新用户，请填写下面的表单进行注册</p>
+		<div class="box clearfix">
+			<form action='{url:/simple/reg_act}' id='regForm' method='post'>
+				<table class="form_table f_l">
+					<colgroup>
+						<col width="260px" />
+						<col />
+					</colgroup>
+					<tr><th>邮箱：</th><td><input class="gray" type="text" name='email' pattern="email" alt="填写正确的邮箱格式" /><label>填写正确的邮箱地址 (一经确认无法修改)</label></td></tr>
+					<!--dyg_jzw 20150811 修改使用手机号作为用户名-->
+					<!--<tr><th>用户名：</th><td><input class="gray" name='username' type="text" pattern="^[\w\u0391-\uFFE5]{2,20}$" alt="填写2-20个字符，可以为字数，数字下划线和中文" /><label>请填写用户名，格式为2-20个字符，可以为字数，数字下划线和中文</label></td></tr>-->
+					<tr><th>手机号：</th><td><input class="gray" name='username' type="text" pattern="mobi" alt="填写正确的手机号" /><label>填写正确的手机号 (一经确认无法修改)</label></td></tr>
+					<tr><th>设置密码：</th><td><input class="gray" type="password" name='password' pattern="^\S{6,32}$" bind='repassword' alt='填写6-32个字符' /><label>填写登录密码，6-32个字符</label></td></tr>
+					<tr><th>确认密码：</th><td><input class="gray" type="password" name='repassword' pattern="^\S{6,32}$" bind='password' alt='重复上面所填写的密码' /><label>重复上面所填写的密码</label></td></tr>
+
+					<!--dyg_jzw 20150623-->
+					{set: $inviter = isset($_GET['inviter'])?$_GET['inviter']:NULL}
+					<tr>
+						<th>邀请码：</th>
+						<td>
+							<input id="inviter" class="gray" type="text" name='inviter' alt='填写邀请人的手机号 (注册后终身绑定)' pattern="mobi" {if: $inviter} value="{$inviter}" readonly="readonly" {/if} />
+							<label>填写邀请人的手机号（注册后终身绑定）	</label>
+						</td>
+					</tr>
+
+					<tr><th>验证码：</th><td><input type='text' class='gray_s' name='captcha' pattern='^\w{5,10}$' alt='填写下面图片所示的字符' /><label>填写下面图片所示的字符</label></td></tr>
+					<tr class="low"><th></th><td><img src='{url:/simple/getCaptcha}' id='captchaImg' /><span class="light_gray">看不清？<a class="link" href="javascript:changeCaptcha('{url:/simple/getCaptcha}');">换一张</a></span></td></tr>
+					<tr><td></td><td><input class="submit_reg" type="submit" value="同意以下条款，提交" /><label></label></td></tr>
+					<tr><td></td><td><a href="/site/help/id/54" target="_blank">《{echo: $this->_siteConfig->name}用户注册协议》</td></tr>
+				</table>
+			</form>
+			
+		</div>
+	</div>
+</div>
+
+<script type='text/javascript'>
+$(function(){
+	$(".form_table input:text").focus(function(){$(this).addClass('current');}).blur(function(){$(this).removeClass('current');})
+});
+</script>

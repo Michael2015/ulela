@@ -1,0 +1,243 @@
+{js:my97date}
+<article class="module width_full">
+	<header>
+		<h3 class="tabs_involved">商品列表</h3>
+		<ul class="tabs">
+			<li><input type="button" class="alt_btn" onclick="filterResult();" value="检索" /></li>
+			<li><input type="button" class="alt_btn" onclick="window.location.href='{url:/seller/goods_edit}';" value="添加商品" /></li>
+			<li><input type="button" class="alt_btn" onclick="selectAll('id[]');" value="全选" /></li>
+			<li><input type="button" class="alt_btn" onclick="goods_del();" value="删除" /></li>
+			<li><input type="button" class="alt_btn" onclick="goods_status(2);" value="下架" /></li>
+			<li><input type="button" class="alt_btn" onclick="goods_status(3);" value="提交审核" /></li>
+            <li><input type="button" class="alt_btn" onclick="goodsSetting();" value="批量设置" /></li>
+			<li><input type="button" class="alt_btn" onclick="window.open('{url:/seller/goods_report/?$searchParam}');" value="导出Excel" /></li>
+		</ul>
+	</header>
+
+	<form action="{url:/seller/goods_del}" method="post" name="goodsForm">
+		<table class="tablesorter" cellspacing="0">
+			<colgroup>
+				<col width="25px" />
+				<col />
+				<col width="150px" />
+				<col width="70px" />
+				<col width="70px" />
+				<col width="70px" />
+				<col width="70px" />
+				<col width="80px" />
+			</colgroup>
+
+			<thead>
+				<tr>
+					<th class="header"></th>
+					<th class="header">商品名字</th>
+					<th class="header">分类</th>
+					<th class="header">销售价</th>
+					<th class="header">库存</th>
+					<th class="header">状态</th>
+					<th class="header">排序</th>
+					<th class="header">操作</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{foreach:items = $this->goodHandle->find()}
+				<tr>
+					<td><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
+					<td><img src='{url:/pic/thumb/img/$item[img]/w/100/h/100}' class="ico" /><a href="javascript:jumpUrl('{$item['is_del']}','{url:/site/products/id/$item[id]}')" title="{echo:htmlspecialchars($item['name'])}">{$item['name']}</a></td>
+					<td>
+						{set:$catName = array()}
+						{query:name=category_extend as ce join=left join category as cd on cd.id eq ce.category_id fields=cd.name where=goods_id eq $item[id] item=$catData}
+							{set:$catName[] = $catData['name']}
+						{/query}
+						{echo:join(',',$catName)}
+					</td>
+					<td>{$item['sell_price']}</td>
+					<td>{$item['store_nums']}</td>
+					<td class="{echo:$item['is_del']==0 ? "green":"red"}">{echo:goods_class::statusText($item['is_del'])}</td>
+					<td><input class="tiny" type="text" value="{$item['sort']}" onchange="changeSort({$item['id']},this);" /></td>
+					<td>
+						<a href="{url:/seller/goods_edit/id/$item[id]}"><img src="{skin:images/main/icn_edit.png}" title="编辑" /></a>
+						<a href="javascript:delModel({link:'{url:/seller/goods_del/id/$item[id]}'})"><img src="{skin:images/main/icn_del.png}" title="删除" /></a>
+					</td>
+				</tr>
+				{/foreach}
+			</tbody>
+		</table>
+	</form>
+	{$this->goodHandle->getPageBar()}
+</article>
+
+<script type="text/html" id="filterTemplate">
+<form action="{url:/}" method="get" name="filterForm">
+	<input type='hidden' name='controller' value='seller' />
+	<input type='hidden' name='action' value='goods_list' />
+
+	<div class="module_content">
+		<fieldset>
+		<label>商品名称</label>
+		<input name="search[name]" value="" type="text" />
+
+		<label>商品货号</label>
+		<input name="search[goods_no]" value="" type="text" />
+
+		<label>商品分类</label>
+		<div class="box">
+			<span id="__categoryBox" style="margin-bottom:8px"></span>
+			<input type="button" class="alt_btn" name="_goodsCategoryButton" value="设置分类" />
+		</div>
+
+		<label>商品状态</label>
+		<select name="search[is_del]">
+			<option value="">不限</option>
+			<option value="0">上架</option>
+			<option value="2">下架</option>
+			<option value="3">待审</option>
+		</select>
+
+		<label>商品库存</label>
+		<select name="search[store_nums]">
+			<option value="">选择库存</option>
+			<option value="0">无货</option>
+			<option value="1">低于10</option>
+			<option value="2">10-100</option>
+			<option value="3">100以上</option>
+		</select>
+
+		<label>商品品牌</label>
+		<select name="search[brand_id]">
+			<option value="">选择商品品牌</option>
+			{query:name=brand}
+			<option value="{$item['id']}">{$item['name']}</option>
+			{/query}
+		</select>
+
+		<label>商品价格</label>
+		<div class="box">
+			<input name="search[sell_price_start]" value="" type="text" class="small" /> ——
+			<input name="search[sell_price_end]" value="" type="text" class="small" />
+		</div>
+
+		<label>创建时间</label>
+		<div class="box">
+			<input name="search[create_time_start]" value="" type="text" class="small" onfocus="WdatePicker()" /> ——
+			<input name="search[create_time_end]" value="" type="text" class="small" onfocus="WdatePicker()" />
+		</div>
+		</fieldset>
+	</div>
+</form>
+</script>
+{set:plugin::trigger('goodsCategoryWidget',array("name" => "search[category_id]"))}
+
+<script type="text/javascript">
+//检索商品
+function filterResult()
+{
+	var goodsHeadHtml = template.render('filterTemplate');
+	art.dialog(
+	{
+		"init":function()
+		{
+			var filterPost = {echo:JSON::encode(IReq::get('search'))};
+			var formObj = new Form('filterForm');
+			for(var index in filterPost)
+			{
+				formObj.setValue("search["+index+"]",filterPost[index]);
+			}
+		},
+		"title":"检索条件",
+		"content":goodsHeadHtml,
+		"okVal":"立即检索",
+		"ok":function(iframeWin, topWin)
+		{
+			iframeWin.document.forms[0].submit();
+		}
+	});
+}
+
+//删除
+function goods_del()
+{
+	var checkNum = $('input:checkbox[name="id[]"]:checked').length;
+	if(checkNum > 0)
+	{
+		$("form[name='goodsForm']").attr('action',"{url:/seller/goods_del}");
+		confirm('确定要删除所选中的商品吗？','formSubmit(\'goodsForm\')');
+	}
+	else
+	{
+		alert('请选择要删除的商品');
+		return false;
+	}
+}
+
+//商品状态修改
+function goods_status(is_del)
+{
+	var checkNum = $('input:checkbox[name="id[]"]:checked').length;
+	if(checkNum > 0)
+	{
+		var postUrl = "{url:/seller/goods_status/is_del/@is_del@}";
+		postUrl = postUrl.replace("@is_del@",is_del);
+		$("form[name='goodsForm']").attr('action',postUrl);
+		confirm('确定要修改所选中的商品吗？','formSubmit(\'goodsForm\')');
+	}
+	else
+	{
+		alert('请选择要修改的商品');
+		return false;
+	}
+}
+
+//修改排序
+function changeSort(gid,obj)
+{
+	var selectedValue = obj.value;
+	$.getJSON("{url:/seller/ajax_sort}",{"id":gid,"sort":selectedValue});
+}
+
+//商品详情的跳转连接
+function jumpUrl(is_del,url)
+{
+	is_del == 0 ? window.open(url) : alert("该商品没有上架无法查看");
+}
+
+//upload csv file callback
+function artDialogCallback(message)
+{
+	message ? alert(message) : window.location.reload();
+}
+
+// 商品批量设置
+function goodsSetting()
+{
+	if($('input:checkbox[name="id[]"]:checked').length > 0)
+	{
+		var idArray = [];
+		var idString = '';
+		$('input:checkbox[name="id[]"]:checked').each(function(i)
+		{
+			idArray.push(this.value);
+		});
+		idString = idArray.join(',');
+
+		var urlVal = "{url:/goods/goods_setting/id/@id@/seller_id/@seller_id@}";
+		urlVal = urlVal.replace("@id@",idString).replace("@seller_id@","{$this->seller['seller_id']}");
+		art.dialog.open(urlVal,{
+			id:'goods_setting',
+			title:'商品批量设置',
+			okVal:'保存设置',
+			ok:function(iframeWin, topWin){
+				var formObject = iframeWin.document.forms[0];
+				formObject.submit();
+				loadding();
+				return false;
+			}
+		});
+	}
+	else
+	{
+		alert("请选择您要操作的商品");
+	}
+}
+</script>

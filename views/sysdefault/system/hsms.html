@@ -1,0 +1,129 @@
+
+<div class="headbar">
+	<div class="position"><span>系统</span><span>></span><span>第三方平台</span><span>></span><span>短信平台</span></div>
+</div>
+<div class="content_box">
+	<div class="content form_content">
+		<form action="#" method="post" name='sms_conf'>
+			<table class="form_table">
+				<colgroup>
+					<col width="150px" />
+					<col />
+				</colgroup>
+				<tr>
+					<th>说明：</th>
+					<td>
+						立即接入短信平台！让您的客户把握第一手商城咨询和订单动态
+						<a href="http://www.aircheng.com/notice/75-hsms" target="_blank" class="orange">如何使用？</a>
+						<p>商城所用的短信内容模板在【/classes/smstemplate.php】文件中，尽量用原始的短信模板，否则会导致短信发送延迟等问题</p>
+						<p>如果想关闭某个短信发送环节，可以直接把相应方法的返回值设置为空</p>
+					</td>
+				</tr>
+				<tr>
+					<th>管理员手机号：</th>
+					<td><label class="red">【系统】——【网站设置】——【手机号】</label></td>
+				</tr>
+				<tr>
+					<th>短信平台：</th>
+					<td>
+						<select name="sms_platform" class="normal">
+							<option value="haiyan">HY短信平台</option>
+							<option value="zhutong">ZT短信平台</option>
+							<option value="yunpian">云片短信平台</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>商户ID：</th>
+					<td><input type='text' class='normal' name='sms_userid' alt='' /><label>购买后分配的<用户ID></label></td>
+				</tr>
+				<tr>
+					<th>用户名：</th>
+					<td><input type='text' class='normal' name='sms_username' pattern='required' alt='' /><label>购买后分配的<用户帐号></label></td>
+				</tr>
+				<tr>
+					<th>密码：</th>
+					<td><input type='text' class='normal' name='sms_pwd' pattern='required' alt='' /><label>购买后分配的<用户账号密码></label></td>
+				</tr>
+				<tr>
+					<th>测试手机号码：</th>
+					<td><input type='text' class='normal' name='mobile' pattern='mobi' empty alt='填写正确的手机号码' /><label>必须先<保存>配置后，在测试短信发送的功能【可选】</label></td>
+				</tr>
+				<!--dyg_jzw 20150810 增加发送短信情况-->
+				<tr>
+					<th>发送短信情况：</th>
+					<td>
+						<p><input type="checkbox" name="sms_send_config" value="sms_order_pay"> 订单支付成功通知会员</p>
+						<p><input type="checkbox" name="sms_send_config" value="sms_takeself"> 自提订单通知会员</p>
+						<p><input type="checkbox" name="sms_send_config" value="sms_admin_order"> 订单通知管理员(在网站设置中添加)</p>
+						<p><input type="checkbox" name="sms_send_config" value="sms_order_send"> 订单发货提醒会员</p>
+						<p><input type="checkbox" name="sms_send_config" value="sms_seller_status"> 商户状态变更通知商户</p>
+						<p><input type="checkbox" name="sms_send_config" value="sms_seller_reg"> 新商户注册通知管理员(在网站设置中添加)</p>
+						<p><input type="checkbox" name="sms_send_config" value="sms_find_password"> 手机号找回密码</p>
+					</td>
+				</tr>
+				<tr>
+					<th></th>
+					<td>
+						<button type='button' class="submit" onclick="submitConfig();"><span>保 存</span></button>
+                        <button class="submit" type='button' onclick="test_sendhsms(this);"><span id='testmobile'>测试短信发送</span></button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script type='text/javascript'>
+jQuery(function()
+{
+	var formobj = new Form('sms_conf');
+	formobj.init({echo:JSON::encode($this->_siteConfig->getInfo())});
+});
+
+//ajax提交信息
+function submitConfig()
+{
+	var sendData = {};
+	sendData["sms_send_config"] = "";
+	$('select,input[name^="sms_"]').each(function()
+	{
+		if ($(this).attr('name') == 'sms_send_config')
+		{
+			if($(this).is(":checked"))
+			{
+				sendData[$(this).attr('name')] += $(this).val() + ';';
+			}
+		}
+		else
+		{
+			sendData[$(this).attr('name')] = $(this).val();
+		}	
+	});
+	$.post("{url:/system/save_conf}",sendData,function(content)
+	{
+		alert('保存成功');
+	});
+}
+//测试短信发送
+function test_sendhsms(obj)
+{
+	$('form[name="sms_conf"] input:text').each(function(){
+		$(this).trigger('change');
+	});
+	if($('form[name="sms_conf"] input:text.invalid-text').length > 0)
+	{
+		return;
+	}
+	//按钮控制
+	obj.disabled = true;
+	$('#testmobile').html('正在测试发送请稍后...');
+	var ajaxUrl = '{url:/system/test_sendhsms/random/@random@}';
+	ajaxUrl     = ajaxUrl.replace('@random@',Math.random());
+	$.getJSON(ajaxUrl,$('form[name="sms_conf"]').serialize(),function(content){
+		obj.disabled = false;
+		$('#testmobile').html('测试短信发送');
+		alert(content.message);
+	});
+}
+</script>

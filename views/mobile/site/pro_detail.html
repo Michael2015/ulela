@@ -1,0 +1,14 @@
+{set:$id = IFilter::act(IReq::get('id'),'int')}
+{query:name=goods where=id eq $id}{/query}
+
+<section>
+	<ul >
+		<li class="kros_order">
+		{if:isset($item['content'])}
+			{$item['content']}
+		{else:}
+			暂无详情数据
+		{/if}
+		</li>
+	</ul>
+</section>

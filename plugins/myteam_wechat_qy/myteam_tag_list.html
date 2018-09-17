@@ -1,0 +1,42 @@
+<div class="headbar">
+	<div class="position"><span>插件管理</span><span>></span><span>插件</span><span>></span><span>团队对接微信企业号列表</span></div>
+	<div class="operating">
+		<a href="javascript:void(0)" onclick="event_link('{url:/plugins/myteam_tag_edit}')"><button class="operating_btn" type="button"><span class="addition">添加团队</span></button></a>
+	</div>
+</div>
+<div class="content">
+	<table id="list_table" class="list_table">
+		<colgroup>
+			<col width="200px" />
+			<col width="180px" />
+			<col />
+			<col />
+			<col width="120px" />
+		</colgroup>
+
+		<thead>
+			<tr>
+				<th>队名</th>
+				<th>队长用户名</th>
+				<th>企业号标签ID</th>
+				<th>更新时间</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{query: name=myteam_tag}
+			<tr>
+				<td>{$item['teamname']}</td>
+				<td>{$item['username']}</td>
+				<td>{$item['tag_id']}</td>
+				<td>{$item['datetime']}</td>
+				<td>
+					<a href='{url:/plugins/myteam_tag_edit/id/$item['id']}'><img class="operator" src="{skin:images/admin/icon_edit.gif}" alt="编辑" title="编辑" /></a>
+					<a href='{url:/plugins/myteam_tag_del/id/$item['id']}'><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" title="删除" /></a>
+				</td>
+			</tr>
+			{/query}
+		</tbody>
+	</table>
+</div>

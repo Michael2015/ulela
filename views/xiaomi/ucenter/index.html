@@ -1,0 +1,157 @@
+
+            <div class="u-section-right bg-white m-b-20 pull-left">
+                    <div class="p-30 wave-bottom clearfix">
+                        <ul class="order-wait-list list-inline pull-left">     
+                            <li>
+                                <a class="status-icon" href="{url:/ucenter/order}" title="待付款订单"><img src="{skin:xiaomi/images/pay.png}" alt=""/><span class="status-num">{echo:statistics::countUserWaitPay($this->user['user_id'])}</span></a>
+                                <div class="text-center f-12"><a href="{url:/ucenter/order}">待付款订单</a></div>
+                            </li>
+                            <li>
+                                <a class="status-icon" href="{url:/ucenter/order}" title="待确认收货"><img src="{skin:xiaomi/images/recive.png}" alt=""/><span class="status-num">{echo:statistics::countUserWaitCommit($this->user['user_id'])}</span></a>
+                                <div class="text-center f-12"><a href="{url:/ucenter/order}">待确认收货</a></div>
+                            </li>
+							<li>
+                                <a class="status-icon" href="{url:/ucenter/evaluation}" title="待评价商品"><img src="{skin:xiaomi/images/comment.png}" alt=""/><span class="status-num">{echo:statistics::countUserWaitComment($this->user['user_id'])}</span></a>
+                                <div class="text-center f-12"><a href="{url:/ucenter/evaluation}">待评价商品</a></div>
+                            </li>
+                        </ul>
+                        <div class="account-info">
+                            <ul class="acount-info-list list-unstyled f-12 pull-left">
+                                <li><span class="text-muted">订单数：</span> <a href="{url:/ucenter/order}" title="进入订单中心">{$statistics['num']}</a></li>
+                                <li><span class="text-muted">总消费：</span> {echo: $statistics['amount']?$statistics['amount']:0}</li>
+                                <li><span class="text-muted">积&nbsp;&nbsp;&nbsp;&nbsp;分：</span> <a href="{url:/ucenter/integral}" title="查看积分明细">{$user['point']}</a></li>
+                            </ul>
+                            <ul class="acount-info-list list-unstyled f-12 pull-left">
+                                <li><span class="text-muted">优惠券：</span> <a href="{url:/ucenter/redpacket}" title="查看优惠券">{$propData['prop_num']}</a></li>
+                                <li><span class="text-muted">余&nbsp;&nbsp;&nbsp;&nbsp;额：</span> <a href="{url:/ucenter/account_log}" title="查看余额明细">{$user['balance']}</a></li>
+                                <li><span class="text-muted">会员等级：</span> <a href="{url:/ucenter/experience}" title="查看经验值明细">{$user['group_name']}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+
+            <div class="u-section-right bg-white m-b-20 pull-left">
+                <div class="p-30">
+                    <div class="clearfix">
+                        <div class="pull-left">
+                            <div class="f-w-b f-16 m-b-20">最近订单</div>
+                        </div>
+                        <div class="pull-right"><a class="f-12 text-muted" href="{url:/ucenter/order}">进入订单中心 <span class="glyphicon glyphicon-chevron-right"></span></a></div>
+                    </div>
+
+
+                    {foreach:items=Api::run('getOrderListByUserid',array('#user_id#',$user['user_id']))}
+                    {set: $order_id=$item['id']}
+                    <table class="table table-bordered order-item f-12 m-b-20">
+                        <tr class="active">
+                            <td colspan="8">
+                                <span class="text-muted m-r-30 pull-left">{$item['create_time']}</span>
+                                <span class="text-muted">订单号：</span> <a href="{url:/ucenter/order_detail/id/$order_id}">{$item['order_no']}</a>
+                            </td>
+                        </tr>
+                       
+                        
+                        {set: $orderStatus = Order_Class::getOrderStatus($item)}
+                        {set: $_goods_list = Api::run('getOrderGoodsListByGoodsid_cache',array('#order_id#',$order_id));}
+                        {set: $_goods_rows = count($_goods_list); }
+
+                        {foreach: items=$_goods_list item=$good key=$index}
+                        {set: $_good_info = JSON::decode($good['goods_array'])}
+                            <tr class="item-bd">
+                                <!-- 产品略缩图 -->
+                                <td class="no-border-lr" width="85">
+                                    <a href="{url:/site/products/id/$good['goods_id']}" title="{$_good_info['name']} {$_good_info['value']}" target="_blank" class="show m-l-15">
+                                        <img src="{webroot:}{echo:Thumb::get($good['img'],70,70)}" width="70" height="70" alt="{$_good_info['name']} {$_good_info['value']}"/>
+                                    </a>
+                                </td>
+                                <!-- 产品名称 -->
+                                <td class="no-border-lr text-left">
+                                    <p><a href="{url:/site/products/id/$good['goods_id']}" target="_blank">{$_good_info['name']}</a></p>
+                                    <p class="text-muted">{$_good_info['value']}</p>
+                                </td>
+                                <!-- 购买数量 -->
+                                <td class="no-border-lr" width="50">
+                                    <span class="text-muted">&times; {$good['goods_nums']}</span>
+                                </td>
+                                <!-- 是否可评价 -->
+                                <td class="no-border-lr" width="60">
+                                    {if: $item['status'] == 5 }
+                                        {set: $_comment_row = Api::run('getOrderComment', $item['order_no'], $good['goods_id']); }
+                                        {if: isset($_comment_row['status'])}
+                                            {if: $_comment_row['status']}
+                                                <span class="text-muted">已评价</span>
+                                            {else:}
+                                                <a href="{url:/site/comments/id/$_comment_row['id']}" class="color-orange">待评价</a>
+                                            {/if}
+                                        {/if}
+                                    {/if}
+                                    &nbsp;
+                                </td>
+
+                                {if: $index == 0}
+                                    <!-- 收件人 -->
+                                    <td width="95" rowspan="{$_goods_rows}">
+                                        {$item['accept_name']}
+                                    </td>
+
+                                    <!-- 金额 -->
+                                    <td width="95" rowspan="{$_goods_rows}">
+                                        <strong>￥{echo:($item['order_amount'])}</strong>
+                                    </td>
+
+                                    <!-- 订单状态 和 详情 -->
+                                    <td width="95" rowspan="{$_goods_rows}">
+                                        <?php
+                                            switch($orderStatus)
+                                            {
+                                                case 2: //等待付款
+                                                    $status_class = "text-danger";
+                                                    break;
+                                                case 3: //已发货
+                                                case 11:
+                                                    $status_class = "text-success";
+                                                    break;
+                                                case 4: //等待发货
+                                                    $status_class = "text-primary";
+                                                    break;
+                                                default: 
+                                                    $status_class = "text-muted";
+                                            }
+
+                                        ?>
+                                        <p class="{echo: $status_class}">{echo:Order_Class::orderStatusText($orderStatus)}</p>
+                                        <p><a href="{url:/ucenter/order_detail/id/$order_id}">订单详情</a></p>
+                                    </td>
+
+                                    <!-- 确认收货 / 取消订单 / 再次购买 / 订单评价 -->
+                                    <td width="95" rowspan="{$_goods_rows}">
+                                        {if:$orderStatus == 2}
+                                            <p><a class="btn btn-sm btn-danger" type="button" href="{url:/block/payment/id/$order_id}">立即付款</a></p>
+                                        {/if}
+
+                                        {if:in_array($orderStatus,array(1,2))}
+                                            <p>
+                                                <a href="javascript:;" onclick="confirm('确定取消订单吗？', function(){window.location.href='{url:/ucenter/order_status/order_id/$order_id/op/cancel}';})">取消订单</a>
+                                            </p>
+                                        {/if}
+
+                                        {if:in_array($orderStatus,array(11,3))}
+                                            <p>
+                                                <a class="btn btn-sm btn-primary" type="button" href="{url:/ucenter/order_status/order_id/$order_id/op/confirm}">确认收货</a>
+                                            </p>
+                                        {/if}
+
+                                        {if: Order_Class::isRefundmentApply($item)}
+                                            <p>
+                                                <a href="{url:/ucenter/refunds_edit/order_id/$order_id}">申请退款</a>
+                                            </p>
+                                        {/if}
+                                        &nbsp;
+                                    </td>
+                                {/if}
+                            </tr>
+                        {/foreach}
+                    </table>
+                    {/foreach}
+                </div>
+            </div>

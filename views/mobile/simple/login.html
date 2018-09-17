@@ -1,0 +1,92 @@
+<section class="login bg-white">
+	<div class="p-10">
+	    <form action='{url:/simple/login_act}' method='post'>
+	    	<!--dyg_jzw 20150710-->
+			{if: isset($_GET['wx_nickname'])}
+			<p>
+				请登录或注册绑定您的微信“{$_GET['wx_nickname']}”
+			</p>
+			{/if}
+	        <ul class="user-info">
+	            <li>
+					<div class="input-group input-style">
+						<div class="input-group-addon"><span>手机号/邮箱</span></div>
+	                	<input type="text" class='form-control' initmsg="验证通过" name="login_info" id="login_info" value="{echo:ICookie::get('loginName');}" pattern='required' alt='填写手机号或邮箱' placeholder="填写手机号或邮箱" />
+					</div>
+	            </li>
+	            <li class="pb-10">
+					<div class="input-group input-style">
+						<div class="input-group-addon"><span>密码</span></div>
+						<input type="password" class='form-control' name="password" pattern='^\S{6,32}$' alt='请填写登录密码' placeholder="填写登录密码"  />
+					</div>
+	            </li>
+					
+	            <li class="pb-10">
+	                <button type="submit" class='btn btn-block' >立即登录</button>
+	            </li>
+	            <li class="clearfix">
+	                <span class="pull-left">
+	                	<a href="{url:simple/reg}" >还没有注册？</a><i class="fa fa-chevron-right" style="color: #D4D5D0;float:none"></i>
+	                </span>
+					<span class="pull-right">
+	                	<a href="{url:simple/find_password}" >忘记密码</a>
+	                </span>
+	            </li>
+				<li>
+					{foreach:items=Api::run('getOauthList')}
+					<a href="javascript:oauthlogin('{$item['id']}');"><img src='{webroot:$item[logo]}' /></a>
+					{/foreach}
+				</li>
+	        </ul>
+	    </form>
+	</div>
+</section>
+
+<script type='text/javascript'>
+
+//DOM加载结束
+$(function(){
+	//错误信息提示
+	{if:$this->message}
+	alert("{$this->message}");
+	{/if}
+});
+
+//多平台登录
+function oauthlogin(oauth_id)
+{
+	$.getJSON('{url:/simple/oauth_login}',{"id":oauth_id},function(content){
+		if(content.isError == false)
+		{
+			window.location.href = content.url;
+		}
+		else
+		{
+			alert(content.message);
+		}
+	});
+}
+
+//下一步操作
+function next_step()
+{
+	var step_val = $('[name="next_step"]:checked').val();
+	if(step_val == 'acount')
+	{
+		{set:$url = plugin::trigger('getCallback')."/tourist/yes"}
+		window.location.href = '{url:$url}';
+	}
+	else if(step_val == 'reg')
+	{
+		window.location.href = '{url:/simple/reg}';
+	}
+}
+
+$(function()
+{
+	$(".kros_foot").css({ display: "none" });
+    $(".s_footer").css({ display: "none" });
+	$("#kros_c").css({ color: "#ff0011" });
+    $(".headline").text('登录');
+})
+</script>

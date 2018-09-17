@@ -1,0 +1,27 @@
+<!--抢购正常-->
+{set:$free_time = ITime::getDiffSec($time['end_time']);}
+
+<dl>
+	<dt class="pull-left info-left text-muted">价格</dt>
+	<dd class="pull-left normal-price"><span class="rmb">￥</span><span class="data_sellPrice">{$sell_price}</span></dd>
+</dl>
+
+<dl class="sell-price-line">
+	<dt class="pull-left info-left text-muted">抢购价</dt>
+	<dd class="pull-left sell-price">
+		<span class="rmb">￥</span>{$time['award_value']}
+		<span class="time f-14 text-muted" id="timeCount">
+			还剩 <strong class="text-danger" id='cd_hour_timeCount'>{echo:floor($free_time/3600);}</strong>
+			小时 <strong class="text-danger" id='cd_minute_timeCount'>{echo:floor(($free_time%3600)/60);}</strong>
+			分 <strong class="text-danger" id='cd_second_timeCount'>{echo:$free_time%60;}</strong>
+			秒结束
+		</span>
+	</dd>
+</dl>
+
+
+<script type="text/javascript">
+//开启倒计时功能
+var cd_timer = new countdown();
+cd_timer.add('timeCount');
+</script>

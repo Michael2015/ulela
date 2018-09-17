@@ -1,0 +1,82 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li class="active">交易记录</li>
+            <li><a href="{url:/ucenter/withdraw}">提现申请</a></li>
+        </ul>
+
+        <div class="clearfix">
+            <div class="media tips-media">
+                <div class="media-left">
+                    <img src="{skin:xiaomi/images/pay-records.png}" alt=""> 
+                </div>
+                <div class="media-body">
+                    <p>
+                        账户可用余额： 
+                        <span class="color-red f-w-b">￥{$this->memberRow['balance']}</span>
+                    </p>
+                    <p>
+                        待返还金额： 
+                        <span  class="color-orange f-w-b">￥{$this->memberRow['balance_freeze']}</span>
+                        <a href="{url:/ucenter/freeze_log}" class="f-12 m-l-15">查看详情</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white m-b-20">
+            <h5 class="m-b-20">余额明细</h5>
+            {set:$queryAccountLogList = Api::run('getUcenterAccoutLog',$this->user['user_id'])}
+            {set:$items = $queryAccountLogList->find()}
+            {if:$items}
+            <table class="table table-bordered text-center table-striped f-12 m-b-20">
+                <tbody>
+                <tr class="active text-muted">
+                    <td>时间</td>
+                    <td>收入/支出</td>
+                    <td>历史金额</td>
+                    <td>事件</td>
+                </tr>
+                {foreach:items = $items}
+                <tr>
+                    <td class="text-muted">
+                        {$item['time']}
+                    </td>
+                    
+                    <td class="{echo: ($item['amount']>0)?'text-success':'text-danger';}">
+                        {echo: $item['amount']}
+                    </td>
+                    <td >
+                        {$item['amount_log']}
+                    </td>
+                    <td>
+                        {$item['note']}
+                    </td>
+                </tr>
+                {/foreach}
+
+                </tbody>
+            </table>
+            <div class="pagebar">
+                {$queryAccountLogList->getPageBar()}
+            </div>
+
+            {else:}
+            <div class="m-t-40 m-b-20">
+                <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+                <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+            </div>
+            {/if}
+        </div>
+    </div>
+
+</div>

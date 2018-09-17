@@ -1,0 +1,54 @@
+
+.cart-list{
+    border-bottom:1px solid #ddd;
+}
+.container-fluid .cart-list:last-child{
+    border-bottom:none;
+}
+.cart-pic{
+    padding:5px;
+    border:1px solid #ddd;
+    margin-right:8%;
+    text-align: center;
+}
+
+.spec-list li{
+    display: inline-block;
+    font-size:.857rem;
+    color:#999;
+}
+.sum-price-bottom{
+    display:inline-block;
+    font-size:1.143rem;
+    color:#fff;
+    padding-right:5%;
+}
+.addr-show{
+    position: relative;
+    padding:15px 0;
+}
+.addr-show-bg-top,
+.addr-show-bg-bottom{
+    position:absolute;
+    left:0;
+    height:3px;
+    width:100%;
+    background:url(../images/addr-bg.png) repeat-x;
+    background-size:64px 3px;
+}
+.addr-show-bg-top{
+    top:0;
+}
+.addr-show-bg-bottom{
+    bottom:0;
+}
+.addr-show p{
+    padding:7px 0 7px 10px;
+}
+
+.addr-list .user-contact div.radio {
+    margin: 0 0 5px 0;
+}
+
+
+

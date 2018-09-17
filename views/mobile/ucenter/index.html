@@ -1,0 +1,105 @@
+<div class="u-info">
+	<div class="u-bg">
+		<img class="lazy" data-original="{skin:images/u-bg.jpg}" width="380" height="140" alt=""/>
+	</div>
+	<div class="u-content">
+		<div class="user-pic"><img src="{webroot:$this->user['head_ico']}" width="100%" height="100%" alt="" onerror="this.src='{skin:images/user_ico.gif}'" /></div>
+		<p class="user-name mb-10">{$this->user['username']}&nbsp;&nbsp;余额: {$user['balance']}</p>
+		<div class="container-fluid">
+			<div class="row text-center">
+				<p class="col-xs-6">当前等级<br><strong class="color-light-red">{$user['group_name']}</strong></p>
+				<p class="col-xs-6">经验值<br><strong class="color-light-red">{$user['exp']}</strong></p>
+				<!--<p class="col-xs-4">优惠券：<strong class="color-light-red">{$propData['prop_num']} 张</strong></p>-->
+			</div>
+		</div>
+	</div>
+
+</div>
+	<div class="pb-10">
+		<div class="container-fluid">
+			<ul class="user-box row common-nav">
+				<li class="col-xs-4">
+					<a href="{url:/ucenter/order}">
+						<i class="iconfont icon-quanbudingdan"></i><span>我的订单</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/integral}">
+						<i class="iconfont icon-jifen1"></i><span>我的积分</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/experience}">
+						<i class="iconfont icon-rank"></i><span>我的经验值</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/redpacket}">
+						<i class="iconfont icon-wodeyouhuijuan"></i><span>我的代金卷</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/account_log}">
+						<i class="iconfont icon-31hongbao"></i><span>账户余额</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/withdraw}">
+						<i class="iconfont icon-goumai"></i><span>申请提现</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/refunds}">
+						<i class="iconfont icon-tuikuantuihuo"></i><span>我的退款</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/favorite}">
+						<i class="iconfont icon-shoucangshangpin"></i><span>我的收藏</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/evaluation}">
+						<i class="iconfont icon-pinglun"></i><span>商品评价</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/consult}">
+						<i class="iconfont icon-community"></i><span>商品咨询</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/online_recharge}">
+						<i class="iconfont icon-chongzhi"></i><span>在线充值</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/info}">
+						<i class="iconfont icon-guanyuwo"></i><span>个人资料</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/address}">
+						<i class="iconfont icon-dingwei"></i><span>地址管理</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/password}">
+						<i class="iconfont icon-mima"></i><span>密码修改</span>
+					</a>
+				</li>
+				<li class=" col-xs-4">
+					<a href="{url:ucenter/myteam}">
+						<i class="iconfont icon-friend"></i><span>我的团队</span>
+					</a>
+				</li>
+				
+			</ul>
+		</div>
+		<div class="p-10">
+			<a href="{url:/simple/logout}" class="btn btn-block" id="btn  btn-block">退出登录</a>
+		</div>
+
+
+		<!--账户管理菜单 结束-->
+	</div>

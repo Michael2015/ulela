@@ -1,0 +1,218 @@
+<div class="ov-h">
+	<!-- 查询防伪码 -->
+	<div id="scodeForm">
+		<div class="bg-white mb-10">
+			<h3 class="text-center font-lg lh-xxl"><strong>防伪查询</strong></h3>
+			<div class="p-10 pt-0">
+				<form action="" method="post" id="scode_form" onsubmit="return checkForm();">
+					<p class="mb-5 font-sm">请输入16位防伪码</p>
+					<div class="row mb-10 js_scode">
+						<div class="col-xs-6 mb-5">
+							<input class="form-control text-center" name="scode1" value="{echo: $this->scode1;}">
+						</div>
+						<div class="col-xs-6 mb-5">
+							<input class="form-control text-center" name="scode2" value="{echo: $this->scode2;}">
+						</div>
+						<div class="col-xs-6">
+							<input class="form-control text-center" name="scode3" value="{echo: $this->scode3;}">
+						</div>
+						<div class="col-xs-6">
+							<input class="form-control text-center" name="scode4" value="{echo: $this->scode4;}">
+						</div>
+					</div>
+
+					<button type="submit" class='btn btn-block btn-warning'>查询真伪</button>
+				</form>
+			</div>
+		</div>
+
+		<div class="bg-white mb-10">
+			<div class="p-10">
+				<h3 class="font-df lh-xl">如何获取防伪码</h3>
+				<div class="font-sm text-muted">
+		            <p class="mb-5">您可在产品外包装上找到防伪贴纸，刮开涂层或揭开表层，获得16位防伪码。</p>
+		            <p class="text-center">如以下样例：</p>
+		            <p class="mb-5 text-center"><img width="60%" src="{skin:images/scode_simple.jpg}"></p>
+		            <p>如包装盒没有该标签，或标签与上述不同，您购买的产品有可能不是官方出品。</p>
+		        </div>
+	        </div>
+		</div>
+	</div>
+	<div id="check_result_content">
+    </div>
+    <script type='text/html' id='check_result_temple'>
+    	<div class="bg-white mb-10 p-10">
+
+	        <h4 class="font-lg lh-xxl text-center">
+	            防伪查询结果：
+	            <%if(stat == 1){%>
+	                <span class="text-success">【正品】</span>
+	            <%}else if(stat == 3){%>
+	                <span class="color-light-red">【已查询过】</span>
+	            <% }else{%>
+	                <span class="color-light-red">【查询错误】</span>
+	            <%}%>
+	        </h4>
+	        
+	        <div class="text-center">
+	            <p class="text-muted font-sm mb-10">您查询的防伪码为 <%=scode%></p>
+
+	            <p class="font-df mb-10">
+	                <%if(stat == 1){%>
+	                    <span class="text-success">恭喜，您查询的是东阳光大健康商城出品的<%=product_name%>，查询系正品。请放心使用！</span>
+	                <%}else if(stat == 3){%>
+	                    <span class="color-light-red"><%=message%></span>
+	                <% }else{%>
+	                    <span class="color-light-red">不存在的防伪码，请确认是否输入有误，否则该产品有可能不是官方出品！</span>
+	                <%}%>
+	            </p>
+	        </div>
+
+	        <%if(stat == 1){%>
+	            <div class="text-center">
+	                <a href="<%=product_buy_url%>" class="btn btn-danger margin-0-auto">再次购买</a>
+	            </div>
+
+	            <div class="mt-15">
+	                <table class="table font-sm">
+	                    <tr>
+	                        <td width="25%">产品名称</td>
+	                        <td><%=product_name%></td>
+	                    </tr>
+	                    <tr>
+	                        <td>产品特点</td>
+	                        <td><%=product_point%></td>
+	                    </tr>
+	                    <tr>
+		                    <td colspan="2">
+		                    	<div class="thumbnail p-0">
+		                        	<%=#product_content%>
+		                        </div>
+		                    </td>
+	                    </tr>
+	                </table>
+	            </div>
+	        <% }else{%>
+	        <div class="text-center"><a href="{url:/site/scode}" class="btn btn-warning margin-0-auto">返 回</a></div>
+	        <%}%>
+        </div>
+    </script>
+</div>
+
+<script type="text/javascript">
+    //检查输入
+    function checkForm() {
+        var scode1 = $("input[name='scode1']").val();
+        var scode2 = $("input[name='scode2']").val();
+        var scode3 = $("input[name='scode3']").val();
+        var scode4 = $("input[name='scode4']").val();
+
+        if (scode1.length + scode2.length + scode3.length + scode4.length != 16) {
+            alert("请输入正确的防伪码");
+            return false;
+        }
+
+        //loading显示
+        window.loadding("努力查询中，请勿刷新");
+
+        //ajax提交
+        $.ajax({
+            type: 'POST',
+            url: '{url:/site/scode_act}',
+            data: "scode="+scode1+scode2+scode3+scode4,
+            dataType: 'json',
+            success: function(data) {
+                window.unloadding();
+
+                if(data.success) {
+                    //隐藏输入框
+                    $("#scodeForm").hide();
+                    //填充内容
+                    var resultHtml = template.render('check_result_temple',
+                                                    {
+                                                        "stat": data.stat,
+                                                        "scode": data.scode,
+                                                        "product_name":  (data.product == "") ? "" : data.product.name,
+                                                        "product_content": (data.product == "") ? "" : data.product.content,
+                                                        "product_point": (data.product == "") ? "" : data.product.point,
+                                                        "product_buy_url": (data.product == "") ? "" : data.product.buy_url,
+                                                        "message": data.message,
+                                                    });
+                    
+                    $('#check_result_content').append(resultHtml);
+
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function(err) {
+                window.unloadding();
+                changeCaptcha();
+                alert("网络获取失败，请稍后重试");
+            }
+        });
+
+        return false;
+    }
+
+
+    var ScodeInput = (function(){
+
+        //私有方法
+        //绑定事件
+        var _bind = function(that){
+
+            that.scode_inputs.on('keydown', function(event){
+                //只允许输入数字
+                var keyCode = event.which; 
+                if (!((keyCode >= 96 && keyCode <= 105 ) || (keyCode >= 48 && keyCode <= 57) || keyCode == 8)) {
+                    alert("只允许输入数字");
+                    return false;
+                }
+
+                if($(this).val().length > 3 ){
+                    if (event.which != 8) {
+                        return false;
+                    }                     
+                }
+
+                return true;
+            });
+
+            that.scode_inputs.on('keyup', function(){
+                if($(this).val().length > 3 ){
+                    if($(this).parent().next().length > 0){ //存在下一个输入框
+                        $(this).parent().next().children('input').focus();
+                    }       
+                }
+            });
+
+        }
+
+        //构造函数
+        var ScodeInputFun = function(config){
+            this.handlers = [];
+        }
+
+        ScodeInputFun.prototype.init = function(config){
+            this.input_texts = $(config.input_texts);
+            this.scode_inputs = $(config.scode_inputs);
+            _bind(this);
+            return this;
+        }
+
+        //返回构造函数
+        return ScodeInputFun;
+    })();
+
+    $(function(){
+        var scode_input = new ScodeInput().init({input_texts: '.js_scode .form-control', scode_inputs: '.js_scode .form-control'});
+    	
+    	
+    	{if: $this->scode1 && $this->scode2 && $this->scode3 && $this->scode4 }
+    		//自动提交
+    		$("#scode_form").submit();
+    	{/if}
+
+    });
+</script>

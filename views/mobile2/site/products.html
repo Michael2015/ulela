@@ -1,0 +1,525 @@
+<!-- LazyLoad -->
+<script src="http://cdn.bootcss.com/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+<script type="text/javascript" src="{theme:javascript/products.js?v=20170119}"></script>
+<link rel="stylesheet" href="{skin:css/product-detail.css?v=20160727}" />
+<section class="ov-h">
+	<!--货品ID，当为商品时值为空-->
+	<input type='hidden' id='product_id' alt='货品ID' value='' />
+	
+	<div class="bg-white">
+		<!--商品相册 开始-->
+		<section>
+			<div id="carousel-products" class="carousel slide" data-ride="carousel">
+			  	<!-- Indicators -->
+			  	<ol class="carousel-indicators">
+			  		{foreach:items=$photo key=$slide_index}
+				    <li data-target="#carousel-products" data-slide-to="{$slide_index}"{if: $slide_index==0} class="active"{/if}></li>
+				    {/foreach}
+			  	</ol>
+
+				<!-- Wrapper for slides -->
+				<div class="carousel-inner" role="listbox">
+					{foreach:items=$photo key=$slide_index}
+						<div class="item{if: $slide_index==0} active{/if}">
+							<img class="img-responsive" src="{url:/pic/thumb/img/$item['img']/w/400/h/400}" alt="{$name}">
+					    </div>
+				    {/foreach}
+				</div>
+
+				<div class="detail-price clearfix">
+					<!--抢购-->
+					{if:$promo == 'time' && isset($time)}
+						<div class="pull-left color-orange font-xl text-line-through">
+							<span class="font-xs text-line-through">￥</span>{$sell_price}
+						</div>
+					{/if}
+
+					<!--团购-->
+					{if:$promo == 'groupon' && isset($groupon)}
+						<div class="pull-left color-orange font-xl text-line-through">
+							<span class="font-xs text-line-through">￥</span>{$sell_price}
+						</div>
+					{/if}
+
+					{if:$promo == ''}
+						<div class="pull-left color-orange font-xl" name="priceLi">
+							<span class="font-xs">￥</span>{if:$group_price}{$group_price}{else:}{$sell_price}{/if}	
+						</div>
+					{/if}
+
+					<a class="pull-right show font-xs" href="javascript:;" onclick="favorite_add_ajax({$id}, this)">收藏商品</a>
+				</div>
+			</div>
+			
+		</section>
+		<!--商品相册 结束-->
+
+		<div class="mb-15 pb-5">
+			<div class="p-10 pb-5 font-sm">
+				{$name}
+				<!-- dyg_lzq 20160318 增加海外商品识别 -->
+				{if: $is_cbe}
+					<span class="label label-primary label-thin">
+						阳光全球购
+					</span>
+				{/if}				
+			</div>
+			{if: $description}
+				<div class="pl-10 pr-10 pb-5 font-xs text-muted">{$description}</div>
+			{/if}
+			<!-- 团购 -->
+			{if:$promo == 'groupon' && isset($groupon)}
+				{include:_products_groupon}
+			{/if}
+
+			<!--抢购-->
+			{if:$promo == 'time' && isset($time)}
+				{include:_products_time}
+			{/if}
+		</div>
+	</div>
+
+	<!-- 是否存在团购或限时抢购 -->
+	{set: $_promotions = Api::run('getRegimentOrTimeBuy', $this->user['group_id'], $id, $seller_id); }
+	{if: $promo == '' && ($_promotions['regiment'] || $_promotions['timebuy'])}
+	<div class="bg-white mb-15 p-10 font-sm">
+		{if: $_promotions['regiment']}
+			<!--团购列表-->
+			<div class="clearfix">
+				<div class="pull-left clearfix text-danger"><i class="iconfont font-df lh-df icon-timefill"></i> 正在团购：</div>
+				<div>
+					{foreach: items = $_promotions['regiment']}
+						<p><a class="text-danger" href="{url:/site/products/id/$id/promo/groupon/active_id/$item['id']}">{$item['title']}</a></p>
+					{/foreach}
+				</div>
+			</div>
+		{/if}
+		{if: $_promotions['timebuy']}
+			<!--限时抢购列表-->
+			<div class="clearfix">
+				<div class="pull-left clearfix text-danger"><i class="iconfont font-df lh-df icon-timefill"></i>正在抢购：</div>
+				<div>
+					{foreach: items = $_promotions['timebuy']}
+						<p><a class="text-danger" href="{url:/site/products/id/$id/promo/time/active_id/$item['id']}">{$item['name']}</a></p>
+					{/foreach}
+				</div>
+			</div>
+		{/if}
+	</div>
+	{/if}
+
+	{if:isset($seller)}
+		<!-- 商家资料 -->
+		<div class="bg-white mb-15">
+
+		</div>
+		<li class="p-10 bd-btm-1s">
+			<a href="{url:/site/home/id/$seller_id}">
+				<div class="pull-left">
+					<span class="pull-left">商家名称</span>
+				</div>
+				<div class="pull-right">
+					{$seller['true_name']}
+					<i class="iconfont icon-fanhui2"></i>
+				</div>
+			</a>
+		</li>
+		<li class="p-10 bd-btm-1s">
+			<a href="javascript:void(0);">
+				<div class="pull-left">
+					<span class="pull-left">所在地</span>
+				</div>
+				<div class="pull-right">
+					{echo:join(' ',area::name($seller['province'],$seller['city'],$seller['area']))}
+				</div>
+			</a>
+		</li>
+		<li class="p-10 bd-btm-1s">
+			<a href="tel:{$seller['phone']}">
+				<div class="pull-left">
+					<span class="pull-left">联系电话</span>
+				</div>
+				<div class="pull-right">
+					{$seller['phone']}
+				</div>
+			</a>
+		</li>
+	{/if}
+
+
+	<div class="product-info-list">
+		<ul class="nav nav-tabs table-tabs text-center font-sm bg-white pt-10 pb-10" role="tablist">
+			<li role="presentation" class="active w-50persent"><a href="#detail" role="tab" data-toggle="tab">商品详情</a></li>
+			<li role="presentation" class="w-50persent"><a href="#comment" role="tab" data-toggle="tab">商品评价 <span class="color-orange">{$comments}</span></a></li>
+		</ul>
+	
+		<!-- Tab panes -->
+		<div class="tab-content bg-white">
+			<!-- 商品详情 -->
+			<div role="tabpanel" class="tab-pane thumbnail active" id="detail">
+				{if:isset($content) && $content}
+					{set: echo str_replace(' src=', ' class="lazy" data-original=', $content);}
+				{/if}
+			</div>
+			
+			<!-- 商品评价 -->
+			<div role="tabpanel" class="tab-pane" id="comment">
+				<!-- 顾客评论 start -->
+				<ul id='commentBox' class="list-unstyled font-sm mb-15">
+				</ul>
+				<!-- 更多评价 -->
+				<div class="text-center pb-15">
+					<a class="btn btn-warning btn-xs" href="{url:/site/comments_list/id/$id}">查看全部评价</a>
+				</div>
+
+				<!--评论JS模板-->
+				<script type='text/html' id='commentRowTemplate'>
+					<li>
+						<div class="clearfix mb-6">
+							<div class="pull-left grade-star g-star<%=point%>"></div>
+							<span class="pull-right text-muted"><%=username%>&nbsp;&nbsp;&nbsp;&nbsp;<%=comment_time%></span>
+						</div>
+						<p>
+							<%if(contents){%>
+								<%=contents%>
+							<% }else{%>
+								<span class="text-muted">无评价内容!</span>
+							<% } %>
+						</p>
+						<%if(recontents){%>
+							<p class="color-orange"><strong>回复：</strong><%=recontents%></p>
+						<%}%>
+					</li>
+				</script>
+				<!-- 顾客评论 end -->
+			</div>
+		</div>
+	</div>
+	<!--商品信息 结束-->
+
+</section>
+
+<!--底部固定模块 开始-->
+<div class="footer-fixed-nav product-bottom container-fluid">
+	<div class="row height100 text-center">
+		<!-- 客服 -->
+		<div class="col-xs-2 bd-top-1s bd-color-gray">
+			<a href="{url:/}" class="show">
+				<i class="iconfont icon-pinglun color-orange"></i><span>客服</span>
+			</a>
+		</div>
+		<!-- 购物车 -->
+		<div class="col-xs-2 bd-top-1s bd-color-gray">
+			<a href="{url:simple/cart}" class="show">
+				<i class="iconfont icon-gouwuche1"></i><i class="cart-num" name="mycart_count">0</i>
+				<span>购物车</span>
+			</a>
+		</div>
+		{if:$store_nums}
+			{if:$promo == 'groupon' || $promo == 'time'}
+				<!-- 立即购买 -->
+				<div class="col-xs-8 height100">
+					<button class='btn btn-danger add2cart' data-type="buy">立即购买</button>
+				</div>
+			{/if}
+			{if:$promo == ''}
+				<!-- 加入购物车 -->
+				<div class="col-xs-4 height100">
+					<button class="btn btn-warning add2cart" data-type="cart">加入购物车</button>
+				</div>
+				<!-- 立即购买 -->
+				<div class="col-xs-4 height100">
+					<button class='btn btn-danger add2cart' data-type="buy">立即购买</button>
+				</div>
+			{/if}
+		{else:}
+			<div class="col-xs-4 height100">
+				<button class='btn btn-default' disabled="disabled">暂已售罄</button>
+			</div>
+			<div class="col-xs-4 height100">
+				<a class="btn btn-warning" href="{url:/simple/arrival/goods_id/$id}">到货通知</a>
+			</div>
+		{/if}
+	</div>
+</div>
+<!--底部固定模块 结束-->
+
+
+<!--商品选择模块 开始-->
+<div id="chosenBox">
+	<span class="chosenBox-closeBtn">
+		<i class="iconfont icon-31guanbi font-xl text-muted"></i>
+	</span>
+	<div class="chosenBox-header bd-btm-1s bd-color-gray pb-10">
+		<div class="clearfix">
+			<div class="good-pic pull-left thumbnail mb-0"><img src="{url:/pic/thumb/img/$img/w/200/h/200}" alt="{$name}"/></div>
+			<div class="good-card pull-left">
+				<div class="good-title ov-h mb-6">
+					<h5 class="font-sm lh-df">{$name}</h5>
+				</div>
+				{if:$promo == ''}
+					<div class="color-orange">
+						{if:$group_price}
+							<span class="font-sm">￥</span><span name="priceLi" id="data_groupPrice">{$group_price}</span> <span class="font-sm text-muted" {if: !isset($group_real_price)} style="display:none"{/if} id="data_groupRealPrice">（返后价 <i>{echo: isset($group_real_price) ? $group_real_price : 0}</i>）</span>
+						{else:}
+							<span class="font-sm">￥</span><span name="priceLi" id="data_sellPrice">{$sell_price}</span> <span class="font-sm text-muted" {if: !isset($group_real_price)} style="display:none"{/if} id="data_groupRealPrice">（返后价 <i>{echo: isset($group_real_price) ? $group_real_price : 0}</i>）</span>
+						{/if}
+					</div>
+				{/if}
+			</div>
+		</div>
+	</div>
+	<div class="chosenBox-content goods_price">
+		{if:$store_nums > 0}
+			{if:$spec_array}
+				{foreach:items=JSON::decode($spec_array)}
+					<div class="pt-10 pb-5 bd-btm-1s bd-color-gray font-sm" name="specCols">
+						<p class="mb-6 text-muted">{$item['name']}：</p>
+						<ul class="chosenBox-list list-inline">
+							{foreach:items=$item['value'] item=$spec_value key=$specValueKey}
+							{set:list($item['tip'],$item['value'])=each($spec_value);}
+							<li>
+								{if:$item['type'] == 1}
+									<!--文字规格 开始-->
+									<button class="bg-white font-sm" specId="{$item['id']}" id="{$item['id']}_{$specValueKey}" title="{echo:htmlspecialchars($item['tip'])}">{$item['value']}</button>
+									<!--文字规格 结束-->
+								{else:}
+									<!--图片规格 开始-->
+									<div class="item">
+										<button specId="{$item['id']}" id="{$item['id']}_{$specValueKey}" title="{echo:htmlspecialchars($item['tip'])}" style="background:url({webroot:$item['value']}) center no-repeat;background-size:contain;height:30px;display:inline-block;"></button>
+									</div>
+									<!--图片规格 结束-->
+								{/if}
+								<script>$("#{$item['id']}_{$specValueKey}").data('specData',{echo:JSON::encode($item)});</script>		
+							</li>
+							{/foreach}
+						</ul>
+					</div>
+				{/foreach}
+			{/if}
+		{/if}
+
+		<div class="mb-10 pt-5 pb-5 bd-btm-1s bd-color-gray clearfix">
+			<div>
+				<div class="pull-left lh-xl font-sm">购买数量</div>
+				<div class="pull-right lh-xl">
+					<span class="edit-reduce" id="buyReduceButton">-</span>
+					<input class="edit-input" id="buyNums" value="1" />
+					<span class="edit-add" id="buyAddButton">+</span>
+				</div>
+			</div>
+		</div>
+		<div id="joinCarButton" class="btn btn-block btn-sm btn-warning chosenBox-nextBtn" data-type="0">下一步</div>
+	</div>
+</div>
+<!--商品选择模块 结束-->
+
+
+<script type="text/javascript">
+//dyg_jzw 20150801
+{if: isset($group_price_arr)}
+	//商品规格组合
+	var tmp_jsp = '{echo:addslashes(json_encode($group_price_arr))}';
+	var product_spec_arr = $.parseJSON(tmp_jsp);
+
+	tmp_jsp = '{echo:addslashes($spec_array)}';
+
+	//商品的规格
+	var goods_spec_array = $.parseJSON(tmp_jsp);
+
+	var goods_spec_val_array = new Array();
+
+	//规格转换, 用于查找规格值/规格提示 对应的index序号
+	$.each(goods_spec_array, function(spec_index, spec_obj)
+	{
+		$.each(spec_obj.value, function(value_index, spec_value)
+		{
+			$.each(spec_value, function(tip, spec_item)
+			{
+				if (tip.length > 0) 
+				{
+					goods_spec_val_array[spec_obj.id + "@" + tip] = value_index;
+				} 
+				else 
+				{
+					goods_spec_val_array[spec_obj.id + "@" + spec_item] = value_index;
+				}
+			});
+		});
+	});
+{/if}
+/*
+ * 初始化规格选择(隐藏无库存规格 & 创建规格map)
+ * dyg_jzw 20150801
+ */
+//有库存的商品组合
+var spec_store_arr = new Array();
+//有库存商品组合的map
+var spec_store_map = new Array();
+
+var productInstance;
+
+//创建可能组合的MAP
+function create_spec_map(key, arr)
+{
+		for (var index = 0; index < arr.length; index++) 
+		{
+			if (key != '')
+			{
+				key += ','; 
+			}
+			key = key + arr[index];
+			spec_store_map[key] = 1;
+
+			
+			for (var tmp_index = index + 1; tmp_index < arr.length; tmp_index++) 
+			{
+				create_spec_map('', arr.slice(tmp_index));
+				create_spec_map(key, arr.slice(tmp_index));
+			}
+		}
+}
+
+
+//DOM加载结束后
+$(function(){
+	//初始化商品规格
+	if (typeof(product_spec_arr) != 'undefined') 
+	{
+
+		for(var index1 = 0, _si = 0; index1 < product_spec_arr.length; index1++)
+		{
+			product_spec_arr[index1].spec_array = $.parseJSON(product_spec_arr[index1].spec_array);
+			//查找库存>0的组合
+			if(product_spec_arr[index1].store_nums > 0)
+			{
+				spec_store_arr[_si] = product_spec_arr[index1];
+				_si++;
+			}
+		}
+
+		//对库存大于0的组合生成组合map
+		if(spec_store_arr.length)
+		{
+			var _tmp_arr = new Array();
+			var _tmp_key = '';
+
+			for (var _tmp1 = 0; _tmp1 < spec_store_arr.length; _tmp1++) 
+			{
+				_tmp_arr = new Array();
+				_tmp_key = '';
+				for (var _tmp2 = 0; _tmp2 < spec_store_arr[_tmp1].spec_array.length; _tmp2++) 
+				{
+					// _tmp_arr.push(spec_store_arr[_tmp1].spec_array[_tmp2].id + '@' + (spec_store_arr[_tmp1].spec_array[_tmp2].value));
+					// _tmp_key += ',' + spec_store_arr[_tmp1].spec_array[_tmp2].id + '@' + (spec_store_arr[_tmp1].spec_array[_tmp2].value);
+					
+					//查找对应的规格index序号
+					var _value_index = 0;
+					if(spec_store_arr[_tmp1].spec_array[_tmp2].tip.length > 0)
+					{
+						_value_index = goods_spec_val_array[spec_store_arr[_tmp1].spec_array[_tmp2].id + "@" + spec_store_arr[_tmp1].spec_array[_tmp2].tip];
+					}
+					else
+					{
+						_value_index = goods_spec_val_array[spec_store_arr[_tmp1].spec_array[_tmp2].id + "@" + spec_store_arr[_tmp1].spec_array[_tmp2].value];
+					}
+					_tmp_arr.push(spec_store_arr[_tmp1].spec_array[_tmp2].id + '_' + _value_index);
+					_tmp_key += ',' + spec_store_arr[_tmp1].spec_array[_tmp2].id + '_' + _value_index;
+				}
+
+				//生成规格map
+				create_spec_map('', _tmp_arr);
+
+				//对于全选组合的map 赋值为库存和价格
+				spec_store_map[_tmp_key.substr(1)] = {
+														product_id: spec_store_arr[_tmp1].id,
+														store: spec_store_arr[_tmp1].store_nums, 
+														group_price: spec_store_arr[_tmp1].group_price,
+														group_real_price: spec_store_arr[_tmp1].real_price, //dyg_jzw 20161219 增加高返价格
+														sell_price: spec_store_arr[_tmp1].sell_price,
+														products_no: spec_store_arr[_tmp1].products_no,
+														market_price: spec_store_arr[_tmp1].market_price,
+														weight: spec_store_arr[_tmp1].weight
+													};				
+			}
+
+			//如果单一规格没有出现在map中, 则进行隐藏
+			for(var _s_index in goods_spec_array)
+			{
+				if (parseInt(_s_index) > 0)
+				{
+					var _spec_val_arr = goods_spec_array[_s_index].value;
+
+					for (var i = 0; i < _spec_val_arr.length; i++) 
+					{
+						var key = _s_index + '_' + i;
+						if (typeof(spec_store_map[key])=='undefined')
+						{
+							$("#"+key).parent().hide();
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//初始化商品详情对象
+	productInstance = new productClass("{$id}","{$this->user['user_id']}","{$promo}","{$active_id}");
+
+	//详情滑动门按钮绑定
+	$('.product-info-list ul.nav-tabs>li').click(function()
+	{
+		//滑动按钮高亮
+		$(this).siblings().removeClass('active');
+		$(this).addClass('active');
+
+		var tabid = $(this).find('a').attr("href").substr(1);
+
+		//滑动DIV显示
+		$('#' + tabid + '.tab-pane').siblings().removeClass('active');
+		$('#' + tabid + '.tab-pane').addClass('active');
+
+		//滑动按钮绑定事件
+		switch($(this).index())
+		{
+			case 1:
+			{
+				productInstance.comment_ajax();
+			}
+			break;
+		}
+	});
+});
+</script>
+
+<script type="text/javascript">
+	//关闭遮罩层
+	function closeChosenBox(){
+		$('#mask').remove();
+		$('body').removeClass('no-scroll');
+		$('#chosenBox').removeClass('on');
+	}
+
+	$('.add2cart').on('click', function(){
+		//设定下一步类型
+		var type = ($(this).attr('data-type') == 'buy')? 1 : 2;
+		$('#joinCarButton').attr('data-type', type);
+
+		//开启遮罩层
+		$('<div id="mask"></div>').appendTo($('body')).bind('click', closeChosenBox);;
+		$('body').scrollTop(0).addClass('no-scroll');
+		$('#mask').show();
+
+		//开启选择框
+		$('#chosenBox').addClass('on');
+	});
+
+	//绑定关闭遮罩层
+	$('.chosenBox-closeBtn').on('click', closeChosenBox);
+</script>
+
+<script>
+	$(function() {
+		$("img.lazy").lazyload();
+	});
+</script>

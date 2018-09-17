@@ -1,0 +1,100 @@
+{js:my97date}
+<div class="headbar">
+	<div class="position"><span>统计</span><span>></span><span>基础数据统计</span><span>></span><span>销售报表统计</span></div>
+	<div>
+		<div class="searchbar">
+			<form name="total_selled" id="total_selled" action="{url:/market/total_list}" method="get">
+				<input type='hidden' name='controller' value='market' />
+				<input type='hidden' name='action' value='total_list' />
+				<input type="hidden" name="export" value="0" id="is_export">
+				<select class="auto" name="time_type">
+					<option value="1" {if:IReq::get('time_type')==1 || !isset($_GET['time_type'])}selected{/if}>支付时间</option>
+					<option value="2" {if:IReq::get('time_type')==2}selected{/if}>发货时间</option>
+				</select>
+				从 <input type="text" name='startDate' value='{$this->startDate}' class="Wdate" pattern='date' alt='' onclick="WdatePicker()" empty /> 到 <input type="text" name='endDate' value='{$this->endDate}'  pattern='date' class="Wdate" onclick="WdatePicker()" empty />
+				&nbsp;&nbsp;
+				支付状态
+				<select class="auto" name="pay_status">
+					<option value="1" {if:IReq::get('pay_status')==1}selected{/if}>已支付</option>
+				</select>
+				&nbsp;&nbsp;
+				<button class="btn" onclick="exportReport(0)"><span class="sch">搜 索</span></button>
+				<button class="btn" onclick="exportReport(1)"><span>导出明细</span></button>
+				&nbsp;注意不会导出退款订单			
+			</div>
+			<div class="searchbar">
+				更多条件：支付方式
+				<select class="auto" name="pay_type">
+					<option value="0">全部</option>
+					{query:name=payment where=id g 0 and status eq 0}
+						<option value="{$item['id']}"{if:IReq::get('pay_type')==$item['id']}selected{/if}
+						>{$item['name']}
+						</option>
+					{/foreach}
+				</select>
+				&nbsp;&nbsp;
+				配送状态
+				<select class="auto" name="distribution_status">
+					<option value="0" {if:IReq::get('distribution_status')==0 || !isset($_GET['distribution_status'])}selected{/if}>全部</option>
+					<option value="1" {if:IReq::get('distribution_status')==1}selected{/if}>已发送</option>
+					<option value="2" {if:IReq::get('distribution_status')==2}selected{/if}>部分发送</option>
+					<option value="3" {if:IReq::get('distribution_status')==3}selected{/if}>未发送</option>
+				</select>
+				&nbsp;&nbsp;用户ID
+				<input type='text' name='user_id' class="small" />
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="content">
+	<table class="list_table">
+		<thead>
+			<tr>
+				<th align="center" width="10%">商品编码</th>
+				<th align="center" width="*">名称</th>
+				<th align="center"  width="10%">平均单价</th>
+				<th align="center" width="6%">数量合计</th>
+				<th align="center" width="10%">支付方式</th>
+				<th align="center" width="8%">数量</th>
+				<th align="center" width="8%">金额总计</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			{foreach:items = $this->result item=$item}
+				{set: $_tmp=0}
+				{foreach: items = $item['pay_type'] item=$_pitem}
+					{if: $_tmp == 0}
+						<tr>
+							<td align="center" rowspan="{echo: count($item['pay_type'])}">{$item['goodsno']}</td>
+							<td align="center" rowspan="{echo: count($item['pay_type'])}">{$item['name']}</td>
+							<td align="center" rowspan="{echo: count($item['pay_type'])}">{if:$item['goods_nums']}{echo: round($item['total']/$item['goods_nums'], 2)}{else:}0{/if}</td>
+							<td align="center" rowspan="{echo: count($item['pay_type'])}">{$item['goods_nums']}</td>
+					{/if}
+					{if: $_tmp > 0}
+						<tr>
+					{/if}
+					<td align="center">{$_pitem['name']}</td>
+					<td align="center">{echo: $_pitem['total_num']}</td> 
+					{if: $_tmp > 0}
+						</tr>
+					{/if}
+					{if: $_tmp == 0}
+							<td align="center" rowspan="{echo: count($item['pay_type'])}">{echo: round($item['total'], 2)}</td>
+						</tr>
+					{/if}
+					{set: $_tmp=$_tmp+1}
+				{/foreach}
+			{/foreach}
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+function exportReport(is_export)
+{
+	$('#is_export').val(is_export);
+	$('#total_selled').submit();
+}
+</script>

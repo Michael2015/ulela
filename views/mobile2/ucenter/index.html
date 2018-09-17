@@ -1,0 +1,154 @@
+<div class="u-info mb-15">
+	<div class="bg-white bd-btm-1s bd-color-gray">
+		<div class="p-10 pt-5 pb-5">
+			<table class="table table-condensed vm no-border mb-0">
+				<tr>
+					<td class="no-border user-avatar">
+						<img src="{webroot:$this->user['head_ico']}" alt="{$this->user['username']}" onerror="this.src='{skin:images/avatar-bg.png}'" width="60" height="60" />
+					</td>
+					<td class="no-border">
+						<p class="font-lg">{$this->user['username']}</p>
+						<p class="text-muted font-sm">{$user['group_name']}</p>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="u-content bg-white p-10">
+		<div class="row text-center font-sm text-muted">
+			<a class="col-xs-4 show bd-right-1s bd-color-gray" href="{url:/ucenter/order}">
+				<p>
+					<i class="iconfont icon-vipcard text-danger"></i>
+				</p>
+				<p>待付款 <span class="color-orange">{echo:statistics::countUserWaitPay($this->user['user_id'])}</span></p>
+			</a>
+			<a class="col-xs-4 show bd-right-1s bd-color-gray" href="{url:/ucenter/order}">
+				<p>
+					<i class="iconfont icon-tianmaoshangmentuihuo text-primary"></i>
+				</p>
+				<p>待收货 <span class="color-orange">{echo:statistics::countUserWaitCommit($this->user['user_id'])}</span></p>
+			</a>
+			<a class="col-xs-4 show" href="{url:/ucenter/evaluation}">
+				<p>
+					<i class="iconfont icon-xiugaimima1 text-warning"></i>
+				</p>
+				<p>待评价 <span class="color-orange">{echo:statistics::countUserWaitComment($this->user['user_id'])}</span></p>
+			</a>
+		</div>
+	</div>
+
+</div>
+
+<div class="user-menu bg-white font-sm mb-15">
+	<ul class="list-unstyled">
+		<li>
+			<a href="{url:/ucenter/order}" class="show">
+				<i class="iconfont icon-quanbudingdan text-warning"></i> <span class="menu-name">我的订单</span>
+				<span class="text-muted pull-right">共 {$statistics['num']} 笔</span>
+			</a>
+		</li>
+		<li>
+			<a href="{url:/ucenter/experience}" class="show">
+				<i class="iconfont icon-rankfill text-info"></i> <span class="menu-name">我的经验值</span>
+				<span class="text-muted pull-right">{$user['exp']}</span>
+			</a>
+		</li>
+		<li>
+			<a href="{url:/ucenter/integral}" class="show">
+				<i class="iconfont icon-presentfill text-danger"></i> <span class="menu-name">我的积分</span>
+				<span class="text-muted pull-right">{$user['point']}</span>
+			</a>
+		</li>
+		<li>
+			<a href="{url:/ucenter/redpacket}" class="show">
+				<i class="iconfont icon-ticket text-primary"></i> <span class="menu-name">我的优惠券</span>
+				<span class="text-muted pull-right">{$propData['prop_num']}</span>
+			</a>
+		</li>
+	</ul>
+</div>
+
+<div class="user-menu bg-white font-sm mb-15">
+	<ul class="list-unstyled">
+		<li>
+			<a href="{url:/ucenter/account_log}" class="show">
+				<i class="iconfont icon-tixian1 text-warning"></i> <span class="menu-name">账户余额</span>
+				<span class="text-muted pull-right">{$user['balance']} 元</span>
+			</a>
+		</li>
+		<li>
+			<a href="{url:/ucenter/online_recharge}" class="show">
+				<i class="iconfont icon-chongzhi1 text-success"></i> <span class="menu-name">在线充值</span>
+			</a>
+		</li>
+		<li>
+			<a href="{url:/ucenter/withdraw}" class="show">
+				<i class="iconfont icon-iconfontchongzhi1 text-danger"></i> <span class="menu-name">申请提现</span>
+			</a>
+		</li>
+	</ul>
+</div>
+
+<div class="user-menu bg-white font-sm mb-15">
+	<ul class="list-unstyled">
+		<li>
+			<a href="{url:/ucenter/refunds}" class="show">
+				<i class="iconfont icon-tuikuan2 text-muted"></i> <span class="menu-name">我的退款</span>
+			</a>
+		</li>
+		<li>
+			<a href="{url:/ucenter/evaluation}" class="show">
+				<i class="iconfont icon-commentfill text-primary"></i> <span class="menu-name">商品评价</span>
+			</a>
+		</li>
+		<li>
+			<a href="{url:/ucenter/favorite}" class="show">
+				<i class="iconfont icon-favorfill text-warning"></i> <span class="menu-name">我的收藏</span>
+			</a>
+		</li>
+		<!-- <li>
+			<a href="{url:/ucenter/consult}" class="show">
+				<i class="iconfont icon-communityfill text-info"></i> <span class="menu-name">商品咨询</span>
+			</a>
+		</li> -->
+	</ul>
+</div>
+
+<div class="user-menu bg-white font-sm mb-15">
+	<ul class="list-unstyled">
+		<li>
+			<a href="{url:/ucenter/info}" class="show">
+				<i class="iconfont icon-zhanghu text-warning"></i> <span class="menu-name">资料设置</span>
+			</a>
+		</li>
+		<li>
+			<a href="{url:/ucenter/address}" class="show">
+				<i class="iconfont icon-address1 text-danger"></i> <span class="menu-name">地址管理</span>
+			</a>
+		</li>
+		<li>
+			<a href="{url:/ucenter/password}" class="show">
+				<i class="iconfont icon-xiugaimima text-info"></i> <span class="menu-name">修改密码</span>
+			</a>
+		</li>
+	</ul>
+</div>
+
+<div class="user-menu bg-white font-sm mb-15">
+	<ul class="list-unstyled">
+		<li>
+			<a href="{url:/ucenter/myteam}" class="show">
+				<i class="iconfont icon-group text-warning"></i> <span class="menu-name">我的团队</span>
+			</a>
+		</li>
+		<li>
+			<a href="{url:/ucenter/jointeam}" class="show">
+				<i class="iconfont icon-share text-danger"></i> <span class="menu-name">邀请组队</span>
+			</a>
+		</li>
+	</ul>
+</div>
+
+<div class="p-10 pt-0">
+	<a href="{url:/simple/logout}" class="btn btn-block btn-danger">退出登录</a>
+</div>

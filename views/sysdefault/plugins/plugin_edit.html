@@ -1,0 +1,101 @@
+<div class="headbar">
+	<div class="position"><span>工具</span><span>></span><span>插件管理</span><span>></span><span>配置插件</span></div>
+</div>
+
+<div class="content_box">
+	<div class="content">
+		<form action="{url:/plugins/plugin_update}" method="post">
+			<input type='hidden' name='class_name' value='' />
+			<table class="form_table" cellpadding="0" cellspacing="0">
+				<colgroup>
+					<col width="200px" />
+					<col />
+				</colgroup>
+
+				<tr>
+					<th>插件名称：</th>
+					<td>{$this->pluginRow['name']}</td>
+				</tr>
+
+				<tr>
+					<th>插件简述：</th>
+					<td>{$this->pluginRow['description']}</td>
+				</tr>
+
+				{if:$this->pluginRow['explain']}
+				<tr>
+					<th>使用说明：</th>
+					<td>{$this->pluginRow['explain']}</td>
+				</tr>
+				{/if}
+
+				<tr>
+					<th>插件排序：</th><td><input class="small" name="sort" type="text" value="" pattern="required" alt="排序不能为空！" /></td>
+				</tr>
+
+				<tr>
+					<th>插件状态：</th>
+					<td>
+						<label class='attr'><input name="is_open" type="radio" value="1" checked="checked" />开启</label>
+						<label class='attr'><input name="is_open" type="radio" value="0" />关闭</label>
+					</td>
+				</tr>
+				<tr>
+					<th></th>
+					<td>
+						<button class="submit" type='submit'><span>确 定</span></button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<!--数据录入模板-->
+<script type='text/html' id='paramTemplate'>
+<%for(var item in templateData){%>
+<%var key = item;%>
+<%var item = templateData[item];%>
+<%var valueItems = item['value'];%>
+<tr>
+	<th><%=item["name"]%>：</th>
+	<td>
+		<%if(item['type'] == "radio"){%>
+			<%for(var tempKey in valueItems){%>
+			<%tempVal = valueItems[tempKey]%>
+				<label class="attr"><input type="radio" name="<%=key%>" value="<%=tempVal%>" /><%=tempKey%></label>
+			<%}%>
+		<%}else if(item['type'] == "checkbox"){%>
+			<%for(var tempKey in valueItems){%>
+			<%tempVal = valueItems[tempKey]%>
+				<label class="attr"><input type="checkbox" name="<%=key%>[]" value="<%=tempVal%>" /><%=tempKey%></label>
+			<%}%>
+		<%}else if(item['type'] == "select"){%>
+			<select class="auto" name="<%=key%>" pattern="<%=item['pattern']%>">
+			<%for(var tempKey in valueItems){%>
+			<%tempVal = valueItems[tempKey]%>
+			<option value="<%=tempVal%>"><%=tempKey%></option>
+			<%}%>
+			</select>
+		<%}else if(item['type'] == "text"){%>
+			<input type="text" name="<%=key%>" value="<%=item['value']%>" class="normal" pattern="<%=item['pattern']%>" />
+		<%}%>
+	</td>
+</tr>
+<%}%>
+</script>
+
+<script language="javascript">
+//DOM加载完毕
+$(function()
+{
+	//加载插件配置
+	var paramHtml = template.render('paramTemplate',{'templateData':{echo:JSON::encode($this->pluginRow['config_name'])}});
+	$('.form_table tr:eq(1)').after(paramHtml);
+
+	//数据加载
+	var formInstance = new Form();
+	formInstance.init({echo:JSON::encode($this->pluginRow['config_param'])});
+	formInstance.init({echo:JSON::encode($this->pluginRow)});
+});
+</script>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	{js:jquery}
+	{js:validate}
+	{js:dialog}
+	{js:form}
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+	<form action="{url:/plugins/ip_router_update}" method="post" name="wechat">
+		<input name='id' type='hidden' />
+		<table class="table">
+			<colgroup>
+				<col width="180px" />
+				<col />
+			</colgroup>
+			<tr>
+				<td colspan="2">
+					<span class='help-block'>根据门店地址获取坐标：<a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">百度地图坐标拾取系统</a></span>
+				</td>
+			</tr>
+
+			<tr>
+				<th>商户ID：</th>
+				<td>
+					<input name='seller_id' type='text' class='form-control' pattern='required' />
+					<span class='help-block'>数字ID 多个以","（半角逗号）隔开</span>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>经度：</th>
+				<td>
+					<input name='loc_x' type='text' class='form-control' pattern='required' />
+					<span class='help-block'>百度地图经度坐标（-180~180）</span>
+				</td>
+			</tr>
+
+			<tr>
+				<th>纬度：</th>
+				<td>
+					<input name='loc_y' type='text' class='form-control' pattern='required' />
+					<span class='help-block'>百度地图纬度坐标（-90~90）</span>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>半径权重：</th>
+				<td>
+					<input name='weight' type='text' class='form-control' />
+					<span class='help-block'>支持14位小数，0.1≈11公里</span>
+				</td>
+			</tr>
+
+
+			<tr>
+				<td></td>
+				<td>
+					<input type="submit" class="btn btn-success" value="保 存" />
+					<input type="button" class="btn btn-danger" value="返 回" onclick="window.location.href='{url:/plugins/ip_router_list}';" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script type="text/javascript">
+jQuery(function()
+{
+	var formObj = new Form();
+	formObj.init({echo:JSON::encode($ipRouterData)});
+});
+</script>
+</body>
+</html>

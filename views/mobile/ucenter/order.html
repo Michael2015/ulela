@@ -1,0 +1,59 @@
+<div class="bg-white p-10">
+	<div class="info-head"><span>订单列表</span></div>
+
+    {set:$queryOrderList = Api::run('getOrderList',$this->user['user_id'])}
+    {set:$items = $queryOrderList->find()}
+	
+    {if: $items}
+		<ul class="list-group order-list pt-10">
+			{foreach:items = $items}
+				<li class="list-group-item pl-10 pr-10 pt-5 pb-5">
+					<a class="show" href="{url:/ucenter/order_detail/id/$item['id']}">
+						<div class="mb-6">
+							<p class="font-sm"><strong>订单号：</strong>{$item['order_no']}
+							 [{echo:Order_Class::orderStatusText(Order_Class::getOrderStatus($item))}]</p>
+						</div>
+
+						<!--订单商品预览-->
+						<div class="clearfix mb-6 ov-h">
+							<div class="order-thumbnail pull-left">
+								{set:$order_id=$item['id']}
+								{foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$order_id)) item=$good key=$index}
+								{set:$good_info = JSON::decode($good['goods_array'])}
+								{if: $index > 2}
+								<div class="pull-left font-xl pl-5 pr-5 pt-10 text-muted">
+									<i class="iconfont icon-more"></i>
+								</div>
+								<?php break; ?>
+								{/if}
+								<div class="pull-left pr-5">
+									<div class="thumbnail bd-color-eee">
+										<img data-original="{url:/pic/thumb/img/$good['img']/w/66/h/66}" width="50" height="50" class="img-responsive m-0 lazy" alt="{$good_info['name']}">
+									</div>
+								</div>
+								{/foreach}
+
+							</div>
+						</div>
+						<div class="clearfix font-sm text-muted text-right">
+							下单时间：{$item['create_time']}
+						</div>
+						<div class="p-10 pr-5 order-arrow">
+							<i class="iconfont icon-xiaojiantou pull-right"></i>
+						</div>
+					</a>
+				</li>
+			{/foreach}
+			<li>
+				{$queryOrderList->getPageBar()}
+			</li>
+		</ul>
+	{else:}
+
+		<div class="msg bg-white">
+			<p><i class="iconfont icon-31wentifankui"></i></p>
+			<p><span>“</span>暂无订单，赶紧去下单吧<span>”</span></p>
+		</div>
+	{/if}
+
+</div>

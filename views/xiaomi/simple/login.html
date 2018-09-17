@@ -1,0 +1,47 @@
+<div class="body-contain bg-gray clearfix login-background">
+    <div class="w1230 margin-0-auto">
+        <div class="login-form">
+            <!-- 广告框 -->
+            <div class="pull-left">
+                {echo:Ad::show("PC登陆页背景图点击链接")}
+            </div>
+
+            <!-- 登陆框 -->
+            <div class="login-container p-30 bg-white m-b-60 m-t-60 pull-right">
+                <h3 class="m-t-0 m-b-20">会员登录</h3>
+                <form action='{url:/simple/login_act}' method='post' class="info-form">
+                    <div class="form-item m-t-10 clearfix">
+                        <div class="form-item-left user pull-left"></div>
+                        <div class="info-input pull-left">
+                            <input type="text" class="info-text small-input" initmsg="验证通过" name="login_info" id="login_info" value="{echo:ICookie::get('loginName');}" pattern='required' alt='填写手机号或邮箱' placeholder="手机号码／邮箱" />
+                        </div>
+                    </div>
+
+                    <div class="form-item m-t-10 clearfix">
+                        <div class="form-item-left pass pull-left"></div>
+                        <div class="info-input pull-left">
+                            <input type="password" class="info-text small-input" name="password" pattern='^\S{6,32}$' alt='请填写登录密码' placeholder="填写登录密码"  />
+                        </div>
+                    </div>
+                    <div class="m-t-10 clearfix">
+                        <input class="checkbox" type="checkbox" id="remember" name="remember" value="1"><label for="remember">记住登录名</label>
+                    </div>
+                    <div class="m-t-20 clearfix">
+                        <button type="submit" class='btn btn-warning btn-block p-l-0 p-r-0' >立即登录</button>
+                    </div>
+
+                    <div class="m-t-10 clearfix">
+                        <div class="pull-left">
+                            <a class="f-12 text-muted" href="{url:simple/reg}" >还没有注册？</a>
+                        </div>
+                        <div class="pull-right">
+                            <a class="f-12 text-muted" href="{url:simple/find_password}">忘记密码</a>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,151 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li><a href="{url:/ucenter/account_log}">交易记录</a></li>
+            <li class="active"><a href="{url:/ucenter/withdraw}">提现申请</a></li>
+        </ul>
+
+        <div class="clearfix">
+            <div class="media tips-media">
+                <div class="media-left">
+                    <img src="{skin:xiaomi/images/pay-records.png}" alt=""> 
+                </div>
+                <div class="media-body">
+                    <p>
+                        账户可用余额： 
+                        <span class="color-red f-w-b">￥{$this->memberRow['balance']}</span>
+                    </p>
+                    <p>
+                        待返还金额： 
+                        <span  class="color-orange f-w-b">￥{$this->memberRow['balance_freeze']}</span>
+                        <a href="{url:/ucenter/freeze_log}" class="f-12 m-l-15">查看详情</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+        <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white">
+            <h5 class="m-b-20">申请提现</h5>
+            <form action='{url:/ucenter/withdraw_act}' method='post' name='withdraw' onsubmit="return checkTips();">
+                <ul class="info-form form-content">
+                    <li class="clearfix">
+                        <div class="info-label pull-left text-right"><span class="color-orange">*</span> 收款人姓名</div>
+                        <div class="info-input pull-left">
+                            <div class="form-item clearfix">
+                                <div class="form-item-right">
+                                    <input class="info-text" type="text" name='name' pattern='required' alt='填写收款人姓名' placeholder="收款人的真实姓名">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="info-label pull-left text-right"><span class="color-orange">*</span> 提现金额</div>
+                        <div class="info-input pull-left">
+                            <div class="form-item clearfix">
+                                <div class="form-item-right">
+                                    <input class="info-text" type="text" name='amount' pattern='float' alt='填写提现金额' placeholder="提现的金额数值">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="info-label pull-left text-right"><span class="color-orange">*</span> 提现支付宝</div>
+                        <div class="info-input pull-left">
+                            <div class="form-item clearfix">
+                                <div class="form-item-right">
+                                    <input class="info-text" type="text" name='note' pattern='required' placeholder="提现的目标支付宝账号" alt="填写支付宝账号">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+
+                    <li class="clearfix">
+                        <div class="info-label pull-left text-right"></div>
+                        <div class="info-input pull-left">
+                            <button type="submit" class='btn btn-warning' >提交提现申请</button>
+                            <button type="reset" class='btn btn-gray m-l-15'>取消</button>
+                            <p class="color-red f-12 m-t-10 m-b-0">注意：提交提现申请后，系统将暂扣申请提现的金额。</p>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white">
+            <h5 class="m-b-20">提现历史</h5>
+            {set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+            {set:$user_id = $this->user['user_id']}
+            {set:$queryWithdrawList = Api::run('getWithdrawList',$user_id)}
+            {set:$items = $queryWithdrawList->find()}
+            {if:$items}
+            <table class="table table-bordered text-center table-striped f-12 m-b-20">
+                <tbody>
+                <tr class="active text-muted">
+                    <td>会员备注</td>
+                    <td>管理员备注</td>
+                    <td>金额</td>
+                    <td>申请时间</td>
+                    <td>状态</td>
+                    <td>操作</td>
+                </tr>
+                {foreach:items = $items}
+                <tr>
+                    <td class="text-left">
+                        {$item['note']}
+                    </td>
+                    <td>
+                        {$item['re_note']}
+                    </td>
+                    <td >
+                        {$item['amount']} 元
+                    </td>
+                    <td >
+                        {$item['time']}
+                    </td>
+                    <td >
+                        {echo:AccountLog::getWithdrawStatus($item['status'])}
+                    </td>
+                    <td >
+                        {if:$item['status']==0}
+                        <a href="javascript:delModel({link:'{url:/ucenter/withdraw_del/id/$item[id]}'});" class='color-orange'>取消</a>
+                        {/if}
+                    </td>
+                </tr>
+                {/foreach}
+
+                </tbody>
+            </table>
+            <div class="pagebar">
+                {$queryWithdrawList->getPageBar()}
+            </div>
+
+            {else:}
+            <div class="m-t-40 m-b-20">
+                <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+                <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+            </div>
+            {/if}
+
+        </div>
+    </div>
+
+
+
+</div>

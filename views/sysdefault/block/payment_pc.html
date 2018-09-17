@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>订单支付收银台 - {echo:$this->_siteConfig->name}</title>
+	<link type="image/x-icon" href="/favicon.ico" rel="icon">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{webroot:/views/xiaomi/skin/default/xiaomi/css/common.css?v=20161228}" />
+	{js:jquery}
+	<script type='text/javascript' src="http://cdn.bootcss.com/layer/3.0.1/layer.min.js"></script>
+	<style type="text/css">
+		.m-t-15 {
+			margin-top: 15px;
+		}
+		.payment_type li {
+			display: block;
+			float: left;
+		}
+		.payment_type li label{
+			width: 148px;
+		    border: 1px solid #e5e5e5;
+		    text-align: center;
+		    vertical-align: middle;
+		    padding: 8px 0;
+		    display: block;
+		    cursor: pointer;
+		}
+		.payment_type li label.active {
+			border-color: #2A8CC5;
+		}
+		.payment_type li input {
+			display: none;
+		}
+	</style>
+</head>
+
+<body class="bg-gray">
+<div class="w800 margin-0-auto">
+	<!--logo-->
+	<div class="logo" style="width:auto">
+		<a href="{url:}" class="show pull-left">
+			<img src="{if:$this->_siteConfig->logo}{webroot:$this->_siteConfig->logo}{else:}{webroot:/views/xiaomi/skin/default/xiaomi/images/logo.png}{/if}" alt="{echo:$this->_siteConfig->name}" class="png">
+		</a>
+		<h5 class="f-20 m-t-15">&nbsp;&nbsp;收银台</h5>
+	</div>
+	<!--logo-->
+
+	<div class="panel panel-default">
+		<div class="panel-body f-12">
+			<div>
+				<h4 class="f-16">订单提交成功，请及时完成支付，以便订单尽快处理！
+					<a href="{url:ucenter/index}" class="pull-right f-12 text-muted">返回个人中心</a>
+				</h4>
+				<h6 class="text-muted m-b-20">请您在提交订单后<span class="text-danger">48小时</span>内完成支付，否则订单会自动取消。</h6>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<p class="col-xs-8">
+							<span class="text-muted">订单编号：</span>
+							{$this->orderRow['order_no']}&nbsp;&nbsp;&nbsp;<a class="color-orange" href="{url:/ucenter/order_detail/id/$this->orderRow['id']}" target="_blank">查看订单</a> 
+						</p>
+						<p class="col-xs-4" style="line-height:1">
+							<span class="text-muted ">&nbsp;&nbsp;&nbsp;应付金额：</span><strong class="color-red f-18">{$this->orderRow['order_amount']}</strong> 元
+						</p>
+						<div class="col-xs-8">
+							<span class="text-muted pull-left">收货信息：</span>
+							{set: $_areaname = $this->area}
+							<p class="text-ov-h m-b-0">
+								{$this->orderRow['accept_name']}, {$this->orderRow['mobile']}, {$_areaname[$this->orderRow['province']]}{$_areaname[$this->orderRow['city']]}{$_areaname[$this->orderRow['area']]}{$this->orderRow['address']}
+							</p>
+						</div>
+						<div class="col-xs-4">
+							<span class="text-muted">&nbsp;&nbsp;&nbsp;配送方式：</span>{$this->delivery}
+						</div>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<form action="{url:block/payment_act}" method="post" target="_blank">
+				<input type="hidden" name="id" value="{$this->orderRow['id']}">
+				<div>
+					<p>选择支付方式</p>
+					<ul class="list-inline payment_type m-b-20 clearfix">
+						{foreach:items = $this->paymentList}
+						<li>
+							<input type="radio" value="{$item['id']}" name="payment" id="payment_{$item['id']}">
+							<label for="payment_{$item['id']}"><img src="{webroot:plugins/$item['logo']}" height="30"></label>
+						</li>
+						{/foreach}
+					</ul>
+					<div class="text-center m-b-20">
+						<input type="submit" class="btn btn-lg btn-danger" onclick="return dopay();" value="&nbsp;&nbsp;&nbsp;立即支付&nbsp;&nbsp;&nbsp;">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="800 margin-0-auto clearfix">
+		<div class="copyright f-12 text-center" style="border-color:#ececec">
+			<div class="text-muted">
+				<p>
+					Powered by <a href="http://www.dyg.cn" class="text-muted">东阳光大健康电商</a>
+					&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+					Copyright © 2013-2016 <a class="text-muted" href="http://www.miibeian.gov.cn/" target="_blank">粤ICP备15070469号-2</a> 
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('.payment_type li label').click(function(){
+			$('.payment_type li label.active').removeClass('active');
+			$(this).addClass('active');
+			$(this).prev().click();
+		});
+		$('.payment_type li:first label').click();
+
+		{if: $this->custom['payment']}
+			//习惯的支付方式
+			$('.payment_type label[for="payment_{$this->custom['payment']}"]').click();
+		{/if}
+	});
+
+    function dopay()
+    {
+    	layer.confirm('支付是否成功？', {icon: 3, title:"提示", btn: ['已支付', '更改支付方式']},function(index){
+    		window.location.href='{url:/ucenter/order_detail/id/$this->orderRow['id']}';
+    		layer.close(index);
+    	}, function(index){
+    		layer.close(index);
+    	});
+    }
+</script>
+</body>
+
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>管理后台</title>
+<link rel="stylesheet" href="{skin:css/admin.css}" />
+{js:jquery}
+{js:dialog}
+{js:form}
+{js:validate}
+{js:artTemplate}
+<script type='text/javascript' src="{theme:javascript/admin.js}"></script>
+<script type='text/javascript' src="{theme:javascript/common.js}"></script>
+</head>
+
+<body style="width:700px;height:320px;overflow-y:hidden;">
+	<div class="pop_win">
+		<ul class="red_box">
+			<li>1、请在需要同步商品的店铺前面打钩，然后点击保存</li>
+		</ul>
+		<form action='{url:/goods/sync_goods}' method='post'>
+			<input type="hidden" name="module" value="goods_sync" />
+			<input type="hidden" name="goods_id" value="{$this->goodsid_set}" />
+			<table class="form_table" width="90%" cellspacing="0" cellpadding="0" border="0">
+				<tbody>
+				{foreach:items=$this->seller_list key=$k item=$v}
+				<tr>
+					<td width="20px"><input name="seller_id[]" type="checkbox" value="{$v['id']}" checked></td>
+					<td>{$v['seller_name']}</td>
+				</tr>
+				{/foreach}
+				</tbody>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

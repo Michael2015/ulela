@@ -1,0 +1,207 @@
+{set: $order_id = $this->order_info['id'];}
+<div class="bg-white p-15 pb-10 mb-10 font-sm">
+	<p class="mb-5">下单日期：{$this->order_info['create_time']}</p>
+	<p class="mb-5 text-muted">
+		<?php
+	        switch($orderStatus)
+	        {
+	            case 2: //等待付款
+	                $status_class = "text-danger";
+	                break;
+	            case 3: //已发货
+	            case 11:
+	                $status_class = "text-success";
+	                break;
+	            case 4: //等待发货
+	                $status_class = "text-primary";
+	                break;
+	            default: 
+	                $status_class = "text-muted";
+	        }
+	    ?>
+		<span class="pull-right {$status_class}">{echo:Order_Class::orderStatusText($orderStatus)}</span>
+		订单编号：{$this->order_info['order_no']}
+	</p>
+    <p class="mb-5">
+		{if:$orderStatus == 2}
+            <a class="btn btn-xs btn-danger" type="button" href="{url:/block/payment/id/$order_id}">立即付款</a>
+            &nbsp;
+        {/if}
+
+        {if:in_array($orderStatus,array(1,2))}
+            <a class="btn btn-xs btn-gray" href="javascript:;" onclick="if(confirm('确定取消订单吗？')){window.location.href='{url:/ucenter/order_status/order_id/$order_id/op/cancel}';}">取消订单</a>
+            &nbsp;
+        {/if}
+
+        {if:in_array($orderStatus,array(11,3))}
+            <a class="btn btn-xs btn-primary" type="button" href="{url:/ucenter/order_status/order_id/$order_id/op/confirm}">确认收货</a>
+            &nbsp;
+        {/if}
+
+        {if:Order_Class::isRefundmentApply($this->order_info)}
+            <a class="btn btn-xs btn-danger" href="{url:/ucenter/refunds_edit/order_id/$order_id}">申请退款</a>
+        {/if}
+    </p>
+</div>
+
+
+<div class="bg-white p-15 pt-10 pb-10 mb-10 font-sm">
+	<p class="mb-5 clearfix">
+		<span class="pull-left">
+			<i class="iconfont icon-gerenzhongxin21 text-warning font-df"></i>
+			{$this->order_info['accept_name']}
+		</span>
+		<span class="pull-right">
+			<i class="iconfont icon-mobilefill text-warning font-df"></i>
+			{$this->order_info['mobile']}
+		</span>
+	</p>
+	<p class="mb-5">
+		<i class="iconfont icon-locationfill text-warning font-df"></i>
+		{$this->order_info['province_str']} {$this->order_info['city_str']} {$this->order_info['area_str']}{$this->order_info['address']}
+	</p>
+	<p>
+		{if: isset($this->order_info['freight']) && $this->order_info['freight']['delivery_code']}
+			<span class="pull-right">
+				<button class="btn btn-xs btn-warning" onclick="kuaidi100('{echo: urlencode($this->order_info['freight']['freight_name'])}','{$this->order_info['freight']['delivery_code']}')">跟踪物流</button>
+			</span>
+		{/if}
+		<i class="iconfont icon-tianmaoshangmentuihuo text-warning font-df"></i>
+		<span class="text-muted">配送：</span>{$this->order_info['delivery']}
+		<br>
+		{if:$this->order_info['takeself']}
+            <span class="text-muted">自提地址：
+                {$this->order_info['takeself']['province_str']}
+                {$this->order_info['takeself']['city_str']}
+                {$this->order_info['takeself']['area_str']}
+                {$this->order_info['takeself']['address']}
+
+				，{$this->order_info['takeself']['phone']}
+                {if: $this->order_info['takeself']['phone'] != $this->order_info['takeself']['mobile']} 
+					，{$this->order_info['takeself']['mobile']}
+				{/if}
+            </span>
+        {else:}
+            {if: isset($this->order_info['freight']) && $this->order_info['freight']['delivery_code']}
+				<span class="text-muted">快递编号：</span>{$this->order_info['freight']['delivery_code']}
+            {/if}
+        {/if}
+	</p>
+</div>
+
+<div class="bg-white p-15 pb-5 mb-10 font-sm">
+	{set:$order_id=$this->order_info['id']}
+	<ul class="list-unstyled">
+	{foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$order_id)) item=$good}
+	{set:$good_info = JSON::decode($good['goods_array'])}
+		<li class="mb-10 pb-10 bd-btm-1s bd-color-gray">
+			<div class="media">
+				<a class="media-left pr-5" href="{url:/site/products/id/$good['goods_id']}">
+				    <img src="{url:/pic/thumb/img/$good['img']/w/60/h/60}" width="60" height="60">
+				</a>
+				<div class="media-body">
+					<p><a href="{url:/site/products/id/$good['goods_id']}">{$good_info['name']}</a></p>
+				    {if:$good_info['value']!=''}<p class="text-muted">{$good_info['value']}</p>{/if}
+				    <p class="mt-5 font-df text-danger">
+				    	￥{$good['goods_price']} <span class="text-muted font-sm">&times;{$good['goods_nums']}</span>
+
+				    	{if: $this->order_info['status'] == 5 }
+                            {set: $_comment_row = Api::run('getOrderComment', $this->order_info['order_no'], $good['goods_id']); }
+                            {if: isset($_comment_row['status'])}
+                                {if: $_comment_row['status']}
+                                    <span class="text-muted pull-right font-sm">(已评价)</span>
+                                {else:}
+                                <a href="{url:/site/comments/id/$_comment_row['id']}" class="color-orange pull-right font-sm"><span class="label label-thin label-primary">待评价</span></a>
+                                {/if}
+                            {/if}
+                        {/if}
+				    </p>
+				</div>
+			</div>
+		</li>
+	{/foreach}
+	</ul>
+</div>
+
+<div class="bg-white p-15 mb-10 font-sm">
+	<ul class="list-unstyled text-right">
+		<li class="mb-10 pb-10 bd-btm-1s bd-color-gray">
+			<span class="pull-left text-muted">支付方式</span>
+			{$this->order_info['payment']}
+		</li>
+		{if:$this->order_info['invoice']==1}
+			<li class="mb-10 pb-10 bd-btm-1s bd-color-gray">
+				<span class="pull-left text-muted">发票抬头</span>
+				{$this->order_info['invoice_title']}
+			</li>
+		{/if}
+
+		<li class="mb-10 pb-10 bd-btm-1s bd-color-gray">
+			<span class="pull-left text-muted">商品总金额</span>
+			￥{$this->order_info['payable_amount']}
+		</li>
+
+		<li class="mb-10 pb-10 bd-btm-1s bd-color-gray">
+			<span class="pull-left text-muted">运费</span>
+			+ ￥{$this->order_info['real_freight']}
+		</li>
+
+		{if:$this->order_info['insured'] > 0}
+			<li class="mb-10 pb-10 bd-btm-1s bd-color-gray">
+				<span class="pull-left text-muted">保价</span>
+				+  ￥{$this->order_info['insured']}
+			</li>
+		{/if}
+
+		{if:$this->order_info['taxes'] > 0}
+			<li class="mb-10 pb-10 bd-btm-1s bd-color-gray">
+				<span class="pull-left text-muted">税金</span>
+				+ ￥{$this->order_info['taxes']}
+			</li>
+		{/if}
+
+		{if:$this->order_info['pay_fee'] > 0}
+			<li class="mb-10 pb-10 bd-btm-1s bd-color-gray">
+				<span class="pull-left text-muted">支付手续费</span>
+				+ ￥{$this->order_info['pay_fee']}
+			</li>
+		{/if}
+
+		{if:$this->order_info['discount'] != 0}
+			<li class="mb-10 pb-10 bd-btm-1s bd-color-gray">
+				<span class="pull-left text-muted">订单折扣或涨价</span>
+				￥{$this->order_info['discount']}
+			</li>
+		{/if}
+
+		{if:$this->order_info['promotions'] > 0}
+			<li class="mb-10 pb-10 bd-btm-1s bd-color-gray">
+				<span class="pull-left text-muted">促销优惠金额</span>
+				- ￥{$this->order_info['promotions']}
+			</li>
+		{/if}
+		<li class="text-danger">
+			<span class="pull-left text-muted">订单金额</span>
+			<span class="font-lg">￥{$this->order_info['order_amount']}</span>
+		</li>
+	</ul>
+</div>
+<script type="text/javascript">
+
+	//快递跟踪
+	function kuaidi100(com, nu)
+	{
+		//打开快递100跳转api查询
+		var url = "https://m.kuaidi100.com/index_all.html?type=" + com + "&postid=" + nu;
+		layer.open({
+			type: 2, //iframe层
+			content: url, 
+			id: "kuaidi100",
+			title: "物流跟踪",
+			area: ['auto', '450px']
+		});
+
+		history.replaceState(null, null, url);
+		
+	}
+</script>

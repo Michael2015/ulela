@@ -1,0 +1,105 @@
+<div class="bg-white p-10">
+	<ul class="nav nav-tabs table-tabs mb-10 pb-10 font-sm">
+		<li class="active"><a href="#point-record" data-toggle="tab">积分记录</a></li>
+		<li><a href="#point-change" data-toggle="tab">积分兑换</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane active" id="point-record">
+			<div class="p-10 bd-btm-1s bd-color-gray text-center">
+				<h2 class="text-warning font-xxl">
+					<strong>{$this->memberRow['point']}</strong>
+				</h2>
+				<p class="text-muted">积分</p>
+			</div>
+
+			<!--积分消耗列表 开始-->
+			{set:$queryPointLog = Api::run('getUcenterPointLog',$this->user['user_id'],$this->c_datetime)}
+			{if:$pointLogList = $queryPointLog->find()}
+			<table class="table table-striped text-center font-sm mb-0">
+				<tr>
+	    			<th class="text-center">日期</th>
+	    			<th class="text-center">记录</th>
+	    			<th>&nbsp;</th>
+	    		</tr>
+				{foreach:items = $pointLogList}
+					<tr>
+						<td class="text-muted">{$item['datetime']}</td>
+						<td class="text-warning">{$item['value']}</td>
+						<td>
+							<div class="info-tips">
+								<i class="iconfont icon-infofill text-muted" data-tips='{$item['intro']}'></i>
+							</div>
+						</td>
+					</tr>
+				{/foreach}
+			</table>
+			{$queryPointLog->getPageBar()}
+			<!--积分消耗列表 结束-->
+
+			{else:}
+				<div class="msg bg-white">
+					<p><i class="iconfont icon-31wentifankui"></i></p>
+					<p>暂无积分记录</p>
+				</div>
+			{/if}
+		</div>
+		<div class="tab-pane" id="point-change">
+			<form action='{url:/ucenter/trade_ticket}' method='post'>
+				{set: $ticketList = Api::run('getTicketList',array('#nowtime#',ITime::getDateTime()),20);}
+				{if: $ticketList}
+					<ul class="list-unstyled font-sm mb-15">
+						{foreach:items = $ticketList}
+							<li class="mb-10">
+								<div class="radio font-xs">
+									<label class="img-responsive">
+										<p class="font-sm text-danger mb-5"><input type="radio" name='ticket_id' value="{$item['id']}"><strong>{$item['point']} 积分兑换：</strong></p>
+										<div class="bd-btm-1s pb-10">
+											<div>
+												<div class="pull-left pr-10">
+													<h2 class="font-xxl text-warning mt-5"><span class="font-df">￥</span>{$item['value']}</h2>
+												</div>
+												<div class="mb-10">
+													<p class="font-df">{$item['name']}</p>
+													<p class="text-muted">
+													{if: $item['at_least_money'] > 0}
+														订单满{$item['at_least_money']}元(不含运费)
+													{else:}
+														使用无限制
+													{/if}
+													</p>
+												</div>
+											</div>
+											<div class="text-muted">
+												<p>有效日期：{$item['start_time']} ~ {$item['end_time']}</p>
+												{if:$item['readme']}<p>使用说明：{$item['readme']}</p>{/if}
+											</div>
+										</div>
+									</label>
+								</div>
+							</li>
+						{/foreach}
+					</ul>
+					<div class="mb-10">
+						<button class="btn btn-block btn-warning" type="submit">兑换优惠券</button>
+					</div>
+				{else:}
+					<div class="msg bg-white">
+						<p><i class="iconfont icon-31wentifankui"></i></p>
+						<p>暂无优惠券可兑换</p>
+					</div>
+				{/if}
+				
+			</form>
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.info-tips .iconfont').on('click', function(){
+			layer.tips($(this).attr('data-tips'), this, {tips: 1});
+		});
+	});
+</script>

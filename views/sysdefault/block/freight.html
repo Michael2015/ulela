@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>物流跟踪查询</title>
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+</head>
+
+<body>
+	<div>
+		<table class="table table-condensed">
+			<tr>
+				<th width="170" class="text-center">时间</th>
+				<th class="text-center">记录</th>
+			</tr>
+			{foreach:items = $this->data}
+			<tr>
+				<td class="text-muted">{$item['time']}</td>
+				<td>{$item['station']}</td>
+			</tr>
+			{/foreach}
+		</table>
+	</div>
+</body>
+</html>

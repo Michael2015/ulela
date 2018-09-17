@@ -1,0 +1,32 @@
+<div class="bg-white p-10 pb-0">
+    <ul class="nav nav-tabs table-tabs pb-10 font-sm">
+        <li class="active"><a href="javascript:;">我的团队</a></li>
+        <li><a href="{url:/ucenter/freeze_log}">销售记录</a></li>
+    </ul>
+</div>
+
+<div class="bg-white">
+{if: $this->team_users_arr}
+    <table class="table table-striped mb-0 mt-15 font-sm text-center">
+        <tr>
+            <th class="text-center">用户名</th>
+            <th class="text-center">当前等级</th>
+            <th class="text-center">累计消费</th>
+        </tr>
+        {foreach: items = $this->team_users_arr}
+            <tr>
+                <td>{$item['username']}</td>
+                {set:$group_name = $item['info']['group_id']?$this->user_group_arr[$item['info']['group_id']]:'无'}
+                <td>{$group_name}</td>
+                <td class="text-danger">{$item['info']['total_consume']}</td>
+            </tr>    
+        {/foreach}
+    </table>
+{else:}
+    <div class="msg bg-white">
+        <p><i class="iconfont icon-31wentifankui"></i></p>
+        <p>暂无队员</p>
+    </div>
+{/if}
+</div>
+

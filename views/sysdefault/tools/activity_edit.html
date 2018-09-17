@@ -1,0 +1,49 @@
+<div class="headbar">
+	<div class="position"><span>工具</span><span>></span><span>活动管理</span><span>></span><span>{if:isset($this->activityRow['id'])}编辑{else:}添加{/if}活动</span></div>
+</div>
+<div class="content_box">
+	<div class="content form_content">
+		<form action='{url:/tools/activity_edit_act}' method='post' name='activity'>
+			<input type='hidden' name='id' value="" />
+			<table class="form_table">
+				<colgroup>
+					<col width="150px" />
+					<col />
+				</colgroup>
+				<tr>
+					<th>标题：</th>
+					<td><input type='text' name='title' class='normal' value='' pattern='required' alt='标题不能为空' /></td>
+				</tr>
+				<tr>
+					<th>是否发布：</th>
+					<td>
+						<label class='attr'><input type='radio' name='visibility' value='1' checked=checked />是</label>
+						<label class='attr'><input type='radio' name='visibility' value='0' />否</label>
+					</td>
+				</tr>
+				<tr>
+					<th valign="top">内容(PC)：</th><td><textarea id="content" name='content' style='width:700px;height:300px' pattern='required' alt='内容不能为空'>{echo: $this->activityRow['content']}</textarea></td>
+				</tr>
+				<tr>
+					<th valign="top">内容(mobile)：</th><td><textarea id="content" name='content_mobile' style='width:700px;height:300px' empty>{echo: $this->activityRow['content_mobile']}</textarea>手机版为空则使用PC版内容</td>
+				</tr>
+				<tr>
+					<th>关键词(SEO)：</th><td><input type='text' class='normal' name='keywords' value='' /></td>
+				</tr>
+				<tr>
+					<th>描述简要(SEO)：</th><td><input type='text' class='normal' name='description' value='' /></td>
+				</tr>
+				<tr>
+					<th></th><td><button class='submit' type='submit'><span>确 定</span></button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script type='text/javascript'>
+jQuery(function(){
+	var FromObj = new Form('activity');
+	FromObj.init({echo:JSON::encode($this->activityRow)});
+});
+</script>

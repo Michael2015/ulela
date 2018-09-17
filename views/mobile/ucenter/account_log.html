@@ -1,0 +1,38 @@
+<div class="bg-white p-10">
+	<div class="info-head"><span>账户余额</span></div>
+	<div class="well well-sm">
+		您当前的可用余额：<strong class="color-light-red">￥{$this->memberRow['balance']}</strong>
+		<a href="{url:/ucenter/withdraw}" class="font-sm">申请提现</a>
+		<br>
+		待返还金额：<strong class="color-light-red">￥{$this->memberRow['balance_freeze']}</strong>
+		<a href="{url:/ucenter/freeze_log}" class="font-sm">查看明细</a>
+	</div>
+	{set:$queryAccountLogList = Api::run('getUcenterAccoutLog',$this->user['user_id'])}
+	{set: $items = $queryAccountLogList->find()}
+	{if: $items}
+	<ul class="mb-10 list-unstyled">
+		{foreach:items = $items}
+		<li class="common-list">
+			<table class="table table-striped table-condensed mb-0 font-sm">
+				<tr>
+					<td width="16%" class="text-muted">时间</td>
+					<td>{$item['time']}</td>
+					<td width="16%" class="text-muted">金额</td>
+					<td class="color-light-red">{$item['amount']}</td>
+				</tr>
+				<tr>
+					<td class="text-muted">事件</td>
+					<td colspan="3">{$item['note']}</td>
+				</tr>
+			</table>
+		</li>
+		{/foreach}
+	</ul>
+	{$queryAccountLogList->getPageBar()}
+	{else:}
+	<div class="msg bg-white">
+		<p><i class="iconfont icon-31wentifankui"></i></p>
+		<p><span>“</span>当前暂无数据<span>”</span></p>
+	</div>
+	{/if}
+</div>

@@ -1,0 +1,47 @@
+<div class="bg-white p-10">
+	<ul class="nav nav-tabs nav-2-tabs mb-10">
+        <li class="active"><a href="javascript:;">未评价</a></li>
+        <li><a href="{url:/ucenter/isevaluation}">已评价</a></li>
+    </ul>
+
+    {set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+	{set:$user_id = $this->user['user_id']}
+	{set:$queryEvaluationList = Api::run('getUcenterEvaluation',$user_id)}
+	{set:$items = $queryEvaluationList->find()}
+
+	{if: $items}
+		<ul class="list-unstyled">
+			{foreach:items = $items}
+				<li class="common-list">
+					<table class="table table-striped table-condensed mb-0 font-sm">
+				    	<tr>
+				    		<td width="25%" class="text-muted">订单号</td>
+				    		<td>{$item['order_no']}</td>
+				    	</tr>
+				    	<tr>
+				    		<td class="text-muted">商品名称</td>
+				    		<td><a href="{url:/site/products/id/$item['goods_id']}">{$item['name']}</a></td>
+				    	</tr>
+				    	<tr>
+				    		<td class="text-muted">购买时间</td>
+				    		<td>{$item['time']}</td>
+				    	</tr>
+				    	<tr>
+				    		<td class="text-muted">评价</td>
+				    		<td><a class="btn btn-no-shadow btn-xs" href="{url:/site/comments/id/$item[id]}">发表评价</a></td>
+				    	</tr>
+				    </table>
+				</li>
+			{/foreach}
+			<li>
+				{$queryEvaluationList->getPageBar()}
+			</li>
+		</ul>
+	    
+    {else:}
+    	<div class="msg bg-white">
+			<p><i class="iconfont icon-31wentifankui"></i></p>
+			<p><span>“</span>已完成的订单才可以评价<span>”</span></p>
+		</div>
+	{/if}
+</div>

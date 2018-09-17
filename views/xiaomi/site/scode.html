@@ -1,0 +1,245 @@
+<style type="text/css">
+    .info-text.focus {
+        border-color: #ffac13;
+    }
+</style>
+<div class="body-contain bg-gray ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+            <li class="active">防伪查询</li>
+        </ol>
+        <!--position-->
+
+        <div class="u-section-left bg-white pull-left m-b-60" style="width:265px;">
+            <div class="p-15">
+                <h4 class="m-b-20">如何获取防伪码</h4>
+                <div class="f-14 text-muted ">
+                    <p class="m-b-20">您可在产品外包装上找到防伪贴纸，刮开涂层或揭开表层，获得16位防伪码。</p>
+                    <p>如以下样例：</p>
+                    <p><img width="60%" src="{skin:xiaomi/images/scode_simple.jpg}"></p>
+                    <p>如包装盒没有该标签，或标签与上述不同，您购买的产品有可能不是官方出品。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="u-section-right bg-white pull-left m-b-60" style="width:950px;">
+            <div class="p-30">
+                <h3 class="p-b-20 m-t-10">使用防伪码查询产品真伪</h3>
+                <form id="scodeForm" action="" method="post" onsubmit="return checkForm();">
+                    <ul class="info-form form-content m-b-40 p-t-20">
+                        <li class="clearfix js_scode">
+                            <div class="info-label pull-left text-right">按顺序输入16位防伪码</div>
+                            <div class="info-input pull-left tiny-input" style="width:auto">
+                                <input class="info-text pull-left m-r-10 text-center" type="text" name="scode1" placeholder="上左">
+                                <input class="info-text pull-left m-r-10 text-center" type="text" name="scode2" placeholder="上右">
+                                <input class="info-text pull-left m-r-10 text-center" type="text" name="scode3" placeholder="下左">
+                                <input class="info-text pull-left m-r-10 text-center" type="text" name="scode4" placeholder="下右">
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="info-label pull-left text-right">验证码</div>
+                            <div class="info-input pull-left small-input">
+                                <div class="form-item clearfix">
+                                    <div class="form-item-right">
+                                        <input class="info-text pull-left" type="text" name='captcha' placeholder="填写右侧图片的字符" alt="请填写验证码">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pull-left">
+                                <img src='{url:/site/getCaptcha}' id='captchaImg' /><span class="text-muted">看不清？</span> <a href="javascript:;" onclick="changeCaptcha();">换一张</a>
+                            </div>
+                        </li>
+
+                        <li class="clearfix m-t-20">
+                            <div class="info-label pull-left text-right"></div>
+                            <div class="info-input pull-left">
+                                <button type="submit" class="btn btn-warning">查 询 真 伪</button>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+                <div id="check_result_content">
+                </div>
+                <script type='text/html' id='check_result_temple'>
+                    <h4 class="text-center">
+                        查询结果：
+                        <%if(stat == 1){%>
+                            <span class="text-success">【正品】</span>
+                        <%}else if(stat == 3){%>
+                            <span class="color-red">【已查询过】</span>
+                        <% }else{%>
+                            <span class="color-red">【查询错误】</span>
+                        <%}%>
+                    </h4>
+
+                    <div class="text-center">
+                        <p class="text-muted">您查询的防伪码为 <%=scode%></p>
+
+                        <p class="f-16 m-b-20">
+                            <%if(stat == 1){%>
+                                <span class="text-success">恭喜，您查询的是东阳光大健康商城出品的<%=product_name%>，查询系正品。请放心使用！</span>
+                            <%}else if(stat == 3){%>
+                                <span class="color-red"><%=message%></span>
+                            <% }else{%>
+                                <span class="color-red">不存在的防伪码，请确认是否输入有误，否则该产品有可能不是官方出品！</span>
+                            <%}%>
+                        </p>
+                    </div>
+
+                    <%if(stat == 1){%>
+                        <div class="text-center">
+                            <a href="<%=product_buy_url%>" class="btn btn-danger margin-0-auto">再次购买</a>
+                        </div>
+
+                        <div class="p-30">
+                            <table class="table f-12">
+                                <tr>
+                                    <th width="100">产品名称</th>
+                                    <td><%=product_name%></td>
+                                </tr>
+                                <tr>
+                                    <th>产品特点</th>
+                                    <td><%=product_point%></td>
+                                </tr>
+                                <tr>
+                                <td colspan="2">
+                                    <%=#product_content%>
+                                </td>
+                                </tr>
+                            </table>
+                        </div>
+                    <% }else{%>
+                    <div class="text-center"><a href="{url:/site/scode}" class="btn btn-warning margin-0-auto">返 回</a></div>
+                    <%}%>
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //检查输入
+    function checkForm() {
+        var scode1 = $("input[name='scode1']").val();
+        var scode2 = $("input[name='scode2']").val();
+        var scode3 = $("input[name='scode3']").val();
+        var scode4 = $("input[name='scode4']").val();
+
+        var captcha = $("input[name='captcha']").val();
+
+        if (scode1.length + scode2.length + scode3.length + scode4.length != 16) {
+            alert("请输入正确的防伪码");
+            return false;
+        }
+        if(captcha.length == 0) {
+            alert("请输入验证码");
+            return false;
+        }
+
+        //loading显示
+        window.loadding('努力查询中，请勿刷新');
+
+        //ajax提交
+        $.ajax({
+            type: 'POST',
+            url: '{url:/site/scode_act}',
+            data: "scode="+scode1+scode2+scode3+scode4+"&captcha="+captcha,
+            dataType: 'json',
+            success: function(data) {
+                window.unloadding();
+
+                if(data.success) {
+                    //隐藏输入框
+                    $("#scodeForm").hide();
+                    //填充内容
+                    var resultHtml = template.render('check_result_temple',
+                                                    {
+                                                        "stat": data.stat,
+                                                        "scode": data.scode,
+                                                        "product_name":  (data.product == "") ? "" : data.product.name,
+                                                        "product_content": (data.product == "") ? "" : data.product.content,
+                                                        "product_point": (data.product == "") ? "" : data.product.point,
+                                                        "product_buy_url": (data.product == "") ? "" : data.product.buy_url,
+                                                        "message": data.message,
+                                                    });
+
+                    $('#check_result_content').append(resultHtml);
+
+                } else {
+                    changeCaptcha();
+                    alert(data.message);
+                }
+            },
+            error: function(err) {
+                window.unloadding();
+                changeCaptcha();
+                alert("网络获取失败，请稍后重试");
+            }
+        });
+
+        return false;
+    }
+
+
+    var ScodeInput = (function(){
+
+        //私有方法
+        //绑定事件
+        var _bind = function(that){
+            that.input_texts.focus(function(){
+                $(this).toggleClass('focus');
+            });
+
+            that.input_texts.blur(function(){
+                $(this).removeClass('focus');
+            });
+
+            that.scode_inputs.on('keydown', function(event){
+                //只允许输入数字
+                var keyCode = event.which;
+                if (!((keyCode >= 96 && keyCode <= 105 ) || (keyCode >= 48 && keyCode <= 57) || keyCode == 8)) {
+                    alert("只允许输入数字");
+                    return false;
+                }
+
+                if($(this).val().length > 3 ){
+                    if (event.which != 8) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+
+            that.scode_inputs.on('keyup', function(){
+                if($(this).val().length > 3 ){
+                    if($(this).next().length > 0){ //存在下一个输入框
+                        $(this).next().focus();
+                    }
+                }
+            });
+
+        }
+
+        //构造函数
+        var ScodeInputFun = function(config){
+            this.handlers = [];
+        }
+
+        ScodeInputFun.prototype.init = function(config){
+            this.input_texts = $(config.input_texts);
+            this.scode_inputs = $(config.scode_inputs);
+            _bind(this);
+            return this;
+        }
+
+        //返回构造函数
+        return ScodeInputFun;
+    })();
+
+    $(function(){
+        var scode_input = new ScodeInput().init({input_texts: '.js_scode .info-text', scode_inputs: '.js_scode .info-text'});
+    })
+</script>

@@ -1,0 +1,40 @@
+<div class="headbar">
+	<div class="position"><span>系统</span><span>></span><span>配送管理</span><span>></span><span>物流公司修改</span></div>
+</div>
+<div class="content_box">
+	<div class="content form_content">
+		<form action='{url:/system/freight_update}' method='post'>
+			<input type="hidden" name="id" value="" />
+			<table class="form_table">
+				<col width="150px" />
+				<col />
+				<tr>
+					<th>物流公司代号：</th>
+					<td>
+						<input type="text" class="small" name="freight_type" pattern="required" />
+						<label class="attr">快递鸟物流查询快递接口 <a href="http://www.kdniao.com/file/ExpressCode.xls" target="_blank">下载物流公司代码</a> </label>
+					</td>
+				</tr>
+				<tr>
+					<th>物流公司全称：</th>
+					<td><input type="text" name="freight_name" class="normal" value="" pattern="required" /></td>
+				</tr>
+				<tr>
+					<th>物流公司网址：</th>
+					<td><input class="normal" type="text" name="url" value="" empty pattern="url" alt="网址错误"/></td>
+				</tr>
+				<tr>
+					<th>排序：</th>
+					<td><input class="small" type="text" name="sort" value="" /></td>
+				</tr>
+				<tr>
+					<td></td><td><button class="submit" type="submit"><span>保 存</span></button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<script type='text/javascript'>
+	var formObj = new Form();
+	formObj.init({echo:JSON::encode($this->data)});
+</script>

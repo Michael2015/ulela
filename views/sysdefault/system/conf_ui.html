@@ -1,0 +1,86 @@
+<ul class="red_box" style="margin-top:0px">
+	<li>更多精美电脑模板和手机模板请访问：<a href="http://www.aircheng.com/theme" target="_blank">iWebShop模版库</a></li>
+</ul>
+
+<form action="{url:/system/applyTheme}" method="post">
+<input type="hidden" name="type" value="{echo:IReq::get('type')}" />
+<div class="content">
+	{foreach:items = $themeList key = $theme}
+	<table class='list_table th_right'>
+		<colgroup>
+			<col width='175px' />
+			<col width='60px' />
+			<col />
+		</colgroup>
+
+		<tbody>
+			<tr>
+				<th rowspan='7'>
+					<div class="thumbnail">
+						<img src="{echo:$item['thumb']}" width='160px' height='180px' />
+						{if:themeroute::isThemeUsed($theme)}
+						<div class="sel"><span>正在使用</span></div>
+						{/if}
+					</div>
+				</th>
+				<th>名称：</th><td>{$item['name']}</td>
+			</tr>
+			<tr><th>目录：</th><td>{echo:IWeb::$app->getWebViewPath()}{$theme}</td></tr>
+			<tr><th>版本：</th><td>{$item['version']}</td></tr>
+			<tr><th>时间：</th><td>{$item['time']}</td></tr>
+			<tr><th>简介：</th><td>{$item['info']}</td></tr>
+			<tr>
+				<th>广告：</th>
+				<td>
+					{if:isset($item['ad'])}
+					{foreach:items=$item['ad'] item=$adRow}
+					<a href="{url:/tools/ad_position_edit/name/$adRow}">【{$adRow}】</a>
+					{/foreach}
+					{/if}
+				</td>
+			</tr>
+			<tr>
+				<th>皮肤：</th>
+				<td><a href='{url:/system/conf_skin/theme/$theme}' class='orange' title='选择主题模板的皮肤颜色'>查看皮肤详情</a></td>
+			</tr>
+		</tbody>
+	</table>
+	<br />
+	{/foreach}
+</div>
+
+<div class="pages_bar bold" style="margin-top:0px;padding-top:0px;">
+	{foreach:items = IClient::supportClient() item = $client}
+	{$client}{$themeTypeName}模板：
+	<select name="{$client}" title='当客户用{$client}端访问{$themeTypeName}时候，此主题模板会进行呈现'>
+		{foreach:items = $themeList key = $theme item = $themeData}
+			{foreach:items = $themeData['skin'] key = $skin item = $skinData}
+			<option value='{"{$theme}":"{$skin}"}' data="{$client}{$theme}{$skin}">{$themeData['name']}【{$skinData['name']}】</option>
+			{/foreach}
+		{/foreach}
+	</select>
+	&nbsp;&nbsp;&nbsp;
+	{/foreach}
+	<button type="submit" class="submit"><span>保存主题设置</span></button>
+</div>
+</form>
+
+<script type="text/javascript">
+//主题模板数据初始化
+jQuery(function()
+{
+	var theme = {echo:JSON::encode(IWeb::$app->config['theme'])};
+	if(theme)
+	{
+		for(var k in theme)
+		{
+			var childObj = theme[k];
+			for(var i in childObj)
+			{
+				var checkKey = k+i+childObj[i];
+				$("option[data='"+checkKey+"']").prop("selected",true);
+			}
+		}
+	}
+});
+</script>

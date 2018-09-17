@@ -1,0 +1,51 @@
+<div class="ov-h">
+    {set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+    {set:$user_id = $this->user['user_id']}
+    {set:$queryConsultList = Api::run('getUcenterConsult',$user_id)}
+    {set:$items = $queryConsultList->find()}
+    
+    {if: $items}
+        <ul class="list-unstyled font-sm">
+            {foreach:items = $items}
+                <li class="mt-15 bg-white">
+                    <table class="table table-striped mb-0">
+                        <tbody>
+                        <tr>
+                            <td width="70" class="text-muted">咨询商品</td>
+                            <td>{$item['name']}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">内容</td>
+                            <td>{$item['question']}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">咨询时间</td>
+                            <td>{echo:substr($item['time'],0,10)}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">回复</td>
+                            <td>
+                                {if:$item['status']==1}
+                                    <p class="text-muted">管理员在[2015-08-29]回复您:</p>
+                                    <p class="color-orange">{$item['answer']}</p>
+                                {else:}
+                                    未回复
+                                {/if}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </li>
+            {/foreach}
+            <li>
+                {$queryConsultList->getPageBar()}
+            </li>
+        </ul>
+    {else:}
+        <div class="msg bg-white">
+            <p><i class="iconfont icon-31wentifankui"></i></p>
+            <p>当前暂无数据</p>
+        </div>
+    {/if}
+
+</div>

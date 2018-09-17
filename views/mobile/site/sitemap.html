@@ -1,0 +1,29 @@
+<!--分类信息 开始-->
+<div class="classify-all clearfix">
+	<ul class="first-menu">
+		{foreach:items=Api::run('getCategoryListTop')  item=$first }
+		<li>
+			<div class="header-bar" ><a href="{url:/site/pro_list/cat/$first[id]}">{$first['name']}</a></div>
+			<ul class="second-menu">
+				{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first['id']))  item=$second}
+				<li class="clearfix">
+					<a class="pull-left secound-title" href="{url:/site/pro_list/cat/$second[id]}">{$second['name']}</a>
+					<ul class="third-menu pull-left list-inline">
+						{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$second['id']))  item=$third}
+						<li class="font-sm"><a href="{url:/site/pro_list/cat/$third[id]}">{$third['name']}</a></li>
+						{/foreach}
+					</ul>
+				</li>
+				{/foreach}
+			</ul>
+		</li>
+		{/foreach}
+	</ul>
+</div>
+<!--分类信息 结束-->
+<SCRIPT TYPE="text/javascript">
+	$(function()
+{		
+	$("#kros_d").css({ color: "#ff0011" });
+})
+</SCRIPT>

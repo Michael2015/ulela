@@ -1,0 +1,103 @@
+{js:my97date}
+{set:$where = Util::search(IReq::get('search'));}
+<article class="module width_full">
+	<header>
+		<h3 class="tabs_involved">退款列表</h3>
+		<ul class="tabs">
+			<li><input type="button" class="alt_btn" onclick="filterResult();" value="检索" /></li>
+		</ul>
+	</header>
+
+	<table class="tablesorter" cellspacing="0">
+		<colgroup>
+			<col width="160px" />
+			<col width="180px" />
+			<col />
+			<col width="100px" />
+			<col width="120px" />
+		</colgroup>
+
+		<thead>
+			<tr>
+				<th>订单号</th>
+				<th>申请时间</th>
+				<th>退款商品名称</th>
+				<th>状态</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			{set:$seller_id = $this->seller['seller_id']}
+			{set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+			{query: name=refundment_doc as rd where=rd.if_del eq 0 and rd.seller_id eq $seller_id and $where order=id desc page=$page id=$refundDB}
+			<tr>
+				<td>{$item['order_no']}</td>
+				<td>{$item['time']}</td>
+				<td>
+					{query:name=order_goods where=id in ($item[order_goods_id]) item=$itemGoods}
+					{set:$goods = JSON::decode($itemGoods['goods_array'])}
+					<p><a href="{url:/site/products/id/$itemGoods['goods_id']}" target="_blank">{$goods['name']} X {$itemGoods['goods_nums']}</a></p>
+					{/query}
+				</td>
+				<td>{echo:Order_Class::refundmentText($item['pay_status'])}</th>
+				<td><a href="{url:/seller/refundment_show/id/$item[id]}"><img class="operator" src="{skin:images/main/icn_settings.png}" title="查看" /></a></td>
+			</tr>
+			{/query}
+		</tbody>
+	</table>
+	{$refundDB->getPageBar()}
+</article>
+
+<script type="text/html" id="filterTemplate">
+<form action="{url:/}" method="get" name="filterForm">
+	<input type='hidden' name='controller' value='seller' />
+	<input type='hidden' name='action' value='refundment_list' />
+	<div class="module_content">
+		<fieldset>
+			<label>开始时间：</label>
+			<input type="text" name="search[rd.time>=]" onfocus="WdatePicker()" />
+		</fieldset>
+		<fieldset>
+			<label>截止时间：</label>
+			<input type="text" name="search[rd.time<=]" onfocus="WdatePicker()" />
+		</fieldset>
+		<fieldset>
+			<label>回复状态：</label>
+			<select name="search[rd.pay_status=]">
+				<option value="">不限</option>
+				<option value="0">申请退款</option>
+				<option value="1">退款失败</option>
+				<option value="2">退款成功</option>
+			</select>
+		</fieldset>
+    </div>
+</form>
+</script>
+
+<script type="text/javascript">
+//检索商品
+function filterResult()
+{
+	var filterTemplate = template.render('filterTemplate');
+	art.dialog(
+	{
+		"init":function()
+		{
+			var filterPost = {echo:JSON::encode(IReq::get('search'))};
+			var formObj = new Form('filterForm');
+			for(var index in filterPost)
+			{
+				formObj.setValue("search["+index+"]",filterPost[index]);
+			}
+		},
+		"title":"检索条件",
+		"content":filterTemplate,
+		"okVal":"立即检索",
+		"ok":function(iframeWin, topWin)
+		{
+			iframeWin.document.forms[0].submit();
+		}
+	});
+}
+</script>

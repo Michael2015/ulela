@@ -1,0 +1,18 @@
+
+<div class="headbar">
+	<div class="position"><span>系统</span><span>></span><span>第三方平台</span><span>></span><span>取消兴业银行微信扫码订单</span></div>
+	<div class="operating">
+		<div class="search f_l">
+			<form name="addorder" action="{url:/}" method="get">
+				<input type='hidden' name='controller' value='system' />
+				<input type='hidden' name='action' value='cancel_e_order' />
+				取消订单号：
+				<input class="normal" name="order_no" type="text" value="">
+				<button class="btn" type="submit"><span class="sch">确 认</span></button>
+			</form>
+		</div>
+	</div>
+	<p>
+		<?php echo $this->msg; ?>
+	</p>
+</div>

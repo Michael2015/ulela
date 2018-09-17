@@ -1,0 +1,33 @@
+{set:$id = IFilter::act(IReq::get('id'),'int')}
+{query: name=marketing_sms where=id eq $id}{/query}
+{if:!isset($item)}
+{set:IError::show(403,'信息不存在')}
+{/if}
+
+<div class="headbar">
+	<div class="position"><span>会员</span><span>></span><span>信息处理</span><span>></span><span>营销短信</span></div>
+	<div class="operating">
+		<a onclick="window.location.href='{url:/message/marketing_sms_del/check/$item[id]}'" href="javascript:void(0);"><button class="operating_btn" type="button"><span class="delete">删除</span></button></a>
+		<a href="javascript:void(0)" onclick="history.go(-1)"><button class="operating_btn" type="button"><span class="return">返回</span></button></a>
+	</div>
+</div>
+<div class="content_box">
+	<div class="content form_content">
+		<table class="form_table">
+			<col width="150px" />
+			<col />
+			<tr>
+				<th>营销短信：</th><td>{$item['content']}</td>
+			</tr>
+			<tr>
+				<th>发送成功数：</th><td>{$item['send_nums']}</td>
+			</tr>
+			<tr>
+				<th>发布时间：</th><td>{$item['time']}</td>
+			</tr>
+			<tr>
+				<th></th><td><button class="submit" type="button" onclick="window.location.href='{url:/message/marketing_sms_list}';"><span>返 回</span></button></td>
+			</tr>
+		</table>
+	</div>
+</div>

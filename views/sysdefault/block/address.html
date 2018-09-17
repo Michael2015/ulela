@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>修改收货地址</title>
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	{js:form}
+	{js:jquery}
+	<!-- {js:dialog} -->
+	{js:artTemplate}
+	{js:validate}
+	{js:areaSelect}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style type="text/css">
+		body {
+			font-size: 12px;
+			background-color: #fff;
+		}
+		.valid-msg{display:none}
+		.invalid-msg {font-size: 12px;font-weight: 300;}
+		label.control-label{margin-bottom:0; padding-top: 6px;text-align: right;}
+		select.form-control { margin-bottom:4px;}
+		.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+		.form-horizontal .form-group {
+		    margin-right: -5px;
+		    margin-left: -5px;
+		}
+	</style>
+</head>
+
+<body>
+<div class="container-fluid" style="padding-top:15px">
+	<form action="{url:/simple/address_add}" method="post" name="addressForm" class="form-horizontal">
+	<input type="hidden" name="id" />
+
+	<div class="form-group">
+		<label class="col-xs-3 text-danger control-label">姓名</label>
+		<div class="col-xs-8">
+			<input class="form-control input-sm" type="text" name="accept_name" pattern='required' alt='姓名不能为空' />
+		</div>
+	</div>
+
+	{if: $this->is_cbe}
+	<div class="form-group">
+		<label class="col-xs-3 text-danger control-label">身份证号</label>
+		<div class="col-xs-8">
+			<input class="form-control input-sm" type="text" name="accept_id" pattern='required' alt='身份证号不能为空' />
+		</div>
+	</div>	
+	{/if}
+
+	<div class="form-group">
+		<label class="col-xs-3 text-danger control-label">地区</label>
+		<div class="col-xs-8">
+			<select class="form-control input-sm" name="province" child="city,area"></select>
+			<select class="form-control input-sm" name="city" child="area"></select>
+			<select class="form-control input-sm" name="area" pattern="required" alt="请选择收货地区"></select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-xs-3 text-danger control-label">地址</label>
+		<div class="col-xs-8">
+			<input class="form-control input-sm" name='address' type="text" alt='地址不能为空' pattern='required' />
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-xs-3 text-danger control-label">手机</label>
+		<div class="col-xs-8">
+			<input class="form-control input-sm" name='mobile' type="text" pattern='mobi' alt='格式不正确' />
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-xs-3 control-label">固话</label>
+		<div class="col-xs-8">
+			<input class="form-control input-sm" type="text" pattern='phone' name='telphone' empty alt='格式不正确' />
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-xs-3 control-label">邮编</label>
+		<div class="col-xs-8">
+			<input class="form-control input-sm" name='zip' empty type="text" pattern='zip' alt='格式不正确' />
+		</div>
+	</div>
+
+	</form>
+</div>
+</body>
+
+<script type='text/javascript'>
+jQuery(function()
+{
+	var areaInstance = new areaSelect('province');
+	areaInstance.init({echo:JSON::encode($this->addressRow)});
+
+	{if:$this->addressRow}
+
+		var formObj = new Form('addressForm');
+		formObj.init({echo:JSON::encode($this->addressRow)});
+	{/if}
+})
+
+
+</script>
+</html>

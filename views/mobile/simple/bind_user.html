@@ -1,0 +1,70 @@
+<div class="pending-detial">
+	<div class="wrap_box">
+		{set:$type = IReq::get('bind_type')}
+		{if:$type == 'exists'}
+		<h3>登录已有账号进行绑定</h3>
+		<p class="tips">您可以直接把第三方登录的用户信息与您已注册过的账号进行绑定</p>
+		<div class="box">
+			<form action='{url:/simple/bind_exists_user}' method='post'>
+				<table class="form_table f_l">
+					{if:$this->getError()}
+					<tr><th></th><td><div class="prompt"><img src="{skin:images/front/error_s.gif}" width="16" height="15" />{echo:$this->getError()}</div></td></tr>
+					{/if}
+
+					<tr><th class="t_r">手机号/邮箱：</th><td><input class="gray" type="text" name='login_info' value='{$this->login_info}' pattern="required" alt="请输入正确的手机号或者邮箱地址" /></td></tr>
+					<tr><th class="t_r">密码：</th><td><input class="gray" name='password' type="password" pattern="^\S{6,32}$" alt="请输入正确的密码6-32个字符" /></td></tr>
+
+					<div class="row clearfix">
+					<div class="col-md-6  column" style="margin-bottom:10px;margin-top:10px"><input type="submit" class="btn  btn-block" value='登陆绑定' /></div> 
+					<div class="col-md-6  column" style="margin-bottom:10px"><input type='button' class="btn  btn-block"  value='没有账号' onclick="window.location.href='{url:/simple/bind_user}';" /></div></div>
+				</table>
+			</form>
+		</div>
+		{else:}
+		<h3 >完善基本的账号信息</h3>
+		<p class="tips">完善了基本信息后，您可以直接把第三方登录的用户信息与您的注册账号进行绑定</p>
+		<div class="box">
+			<form action='{url:/simple/bind_not_exists_user}' method='post'>
+				<table class="form_table">
+					{if:$this->getError()}
+					<tr><th></th><td><div class="prompt"><img src="{skin:images/front/error_s.gif}" width="16" height="15" />{echo:$this->getError()}</div></td></tr>
+					{/if}
+
+					<tr><th class="t_r">手机号：</th><td><input class="gray" name='username' value="" type="text" pattern="mobi" alt="请输入正确的手机号" /></td></tr>
+					<tr><th class="t_r">邮箱：</th><td><input class="gray" name='email' type="text" pattern="email" value="{$this->email}" alt="请输入正确邮箱地址" /></td></tr>
+					<div class="row clearfix">
+
+					<tr><th class="t_r">设置密码：</th><td><input class="gray" name='password' type="password" bind='repassword' pattern="^\S{6,32}$" alt="请输入正确的密码6-32个字符" /></td></tr>
+
+					<tr><th class="t_r">确认密码：</th><td><input class="gray" name='repassword' type="password" bind='password' pattern="^\S{6,32}$" alt="重复上面所填写的密码" /></td></tr>
+					
+					<div class="col-xs-7">
+						<div class="input-group input-style">
+							<div class="input-group-addon"><span>验证码</span></div>
+							<input type='text' class='form-control' initmsg="输入正确" name='captcha' pattern='^\w{5,10}$' alt='填写右边的验证码' placeholder="点图片更换"/>
+						</div>
+					</div>
+
+					<div class="col-xs-5">
+						<a href="javascript:changeCaptcha();">
+							<img src='{url:/simple/getCaptcha}' id='captchaImg' />
+						</a>
+					</div>
+					
+					<div class="col-md-6  column" style="margin-bottom:10px;margin-top:10px">
+					<input type="submit" class="btn  btn-block" value='绑定' />	</div> 
+					<div class="col-md-6  column" style="margin-bottom:10px"><input type='button' class="btn  btn-block" value='我有账号' onclick="window.location.href='{url:/simple/bind_user/bind_type/exists}';" /></div>
+					</div>
+				</table>
+			</form>
+		</div>
+		{/if}
+	</div>
+</div>
+
+<script text="text/javascript">
+	jQuery()
+	{
+		$(".form_table input").focus(function(){$(this).addClass('current');}).blur(function(){$(this).removeClass('current');})
+	}
+</script>

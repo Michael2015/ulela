@@ -1,0 +1,87 @@
+<section class="container-full">
+ <div class="label" style="margin:0">
+    <a class="label1" href="javascript:void(0)"><i class="on"></i>今日团购</a>
+</div>
+<div >
+		<div class="row clearfix">
+			<div class="col-md-12 col-xs-12 column">
+				<div class="row">
+				{set:$countNumItems = array();}
+				{foreach:items=$this->regiment_list}
+				{set:$countNumItems[] = $item['id'];}
+					<div class="col-md-6 col-xs-6">
+						<div class="thumbnail">
+							<a href="{url:/site/products/promo/groupon/id/$item['goods_id']/active_id/$item[id]}"><img title="{$item['name']}" src="{webroot:$item['img']}" /></a>
+							</div>
+
+
+							<div style="margin-bottom:15px" class="caption">
+								<h5>
+									<a class="maxwords" style="color:#777;height:30px" href="{url:/site/products/promo/groupon/id/$item['goods_id']/active_id/$item['id']}">{$item['title']}</a>
+								</h5>
+			<h5 class="price">￥{$item['regiment_price']}<span class="right del" style="line-height:20px">￥{$item['sell_price']} </span></h5>
+			<h6 >折扣{echo:Util::discount($item['sell_price'],$item['regiment_price'])}
+			<span class="right">节省￥{echo:$item['sell_price']-$item['regiment_price'];}</span></h6>
+
+
+			{set:$free_time=strtotime($item['end_time'])-ITime::getNow();}
+			<h6 style="font-size:10px" >倒计时:
+			<span class='right'><span id="cd_hour_{$item['id']}" >{echo:floor($free_time/3600);}</span>小时
+			<span id="cd_minute_{$item['id']}">
+			{echo:floor( ($free_time%3600)/60 );}</span>
+			分钟
+			<span id="cd_second_{$item['id']}">{echo:$free_time%60}</span>秒</h6>
+
+			<h6 >
+			销量:{$item['sum_count']}
+			<span class="right">仅剩:{echo:$item['store_nums']-$item['sum_count']}</span>
+			</span>
+			</h6>
+			<h6 >
+			 限购量：<span class="right">{$item['limit_min_count']} ~ {$item['limit_max_count']}</span></h6>
+								<a title="立即购买" class="addtocart" href="{url:/site/products/promo/groupon/id/$item['goods_id']/active_id/$item['id']}"><i class="fa fa-shopping-cart"></i><span>&nbsp;立即购买</span></a>
+							</div>
+						
+					</div>
+				    {/foreach}
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</section>
+
+
+<script language="javascript">
+$(function()
+{
+	//倒计时
+	var cd_timer = new countdown();
+	{foreach:items = $countNumItems}
+		cd_timer.add({$item});
+	{/foreach}
+});
+
+//电子邮件订阅
+function orderinfo()
+{
+	var email = $('[name="orderinfo"]').val();
+	if(email == '')
+	{
+		alert('请填写正确的email地址');
+	}
+	else
+	{
+		$.getJSON('{url:/site/email_registry}',{email:email},function(content){
+			if(content.isError == false)
+			{
+				alert('订阅成功');
+				$('[name="orderinfo"]').val('');
+			}
+			else
+				alert(content.message);
+		});
+	}
+}
+</script>

@@ -1,0 +1,64 @@
+{set:$favoriteObj = Api::run('getFavorite',$this->user['user_id'],IReq::get('cat_id')); 
+$favoriteList = $favoriteObj->find();}
+
+<div class="ov-h">
+	{if:$favoriteList}
+		<ul class="list-unstyled font-sm">
+		{foreach:items=$favoriteList}
+			<li class="mt-10 bg-white bd-btm-1s bd-color-gray">
+				<div class="bg-light-gray p-10 pb-5 pt-5">
+					<div class="pl-10 pull-right">
+						<i class="iconfont icon-writefill text-warning" onclick="edit_summary({$item['id']});"></i>
+					</div>
+					<span class="text-muted">备注：</span>
+					<span id="summary_show_{$item['id']}">{$item['summary']}</span>
+				</div>
+				<div class="media p-10 m-0">
+					<a class="media-left" href="{url:/site/products/id/$item['goods_id']}">
+						<img src="{webroot:}{echo:Thumb::get($item['img'],50,50)}" width="50" height="50" alt="{$item['name']}" title="{$item['name']}" />
+					</a>
+					<div class="media-body">
+						<p class="mb-5"><a href="{url:/site/products/id/$item[goods_id]}">{$item['name']}</a></p>
+						<p class="text-danger">
+							<span class="text-muted pull-right"><i class="iconfont icon-deletefill text-muted" onclick="delModel({link:'{url:/ucenter/favorite_del/id/$item[id]}}',msg:'是否取消收藏？'});"></i></span>
+							￥{$item['sell_price']}
+						</p>
+					</div>
+				</div>
+			</li>
+		{/foreach}
+		</ul>
+	{else:}
+	<div class="msg bg-white">
+		<p><i class="iconfont icon-31wentifankui"></i></p>
+		<p>暂无收藏商品</p>
+	</div>
+	{/if}
+</div>
+
+<script type="text/javascript">
+//修改备注信息
+function edit_summary(idVal)
+{
+	var summary = $.trim($("#summary_show_"+idVal).text());
+	layer.prompt({
+		value: summary,
+		title: '填写收藏备注'
+	}, function(value, index, elem){
+		layer.close(index);
+		summary = $.trim(value);
+		if(summary.length > 0) {
+			$.getJSON('{url:/ucenter/edit_summary}',{id:idVal,summary:summary},function(content) {
+				if(content.isError == true)
+				{
+					alert(content.message);
+				}
+				else{
+					$("#summary_show_"+idVal).text(summary);
+					tips("保存备注成功");
+				}
+			});
+		}
+	});
+}
+</script>

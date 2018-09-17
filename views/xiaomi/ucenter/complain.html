@@ -1,0 +1,130 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li class="active">我的建议</li>
+        </ul>
+
+        {set:$querySuggestionList = Api::run('getUcenterSuggestion', $this->user['user_id'])}
+        {set:$items = $querySuggestionList->find()}
+        {if:$items}
+        <table class="table table-bordered text-center f-12 m-b-20">
+            <tbody>
+            <tr class="active text-muted">
+                <td>建议主题</td>
+                <td>添加时间</td>
+                <td>状态</td>
+                <td>操作</td>
+            </tr>
+            {foreach:items = $items}
+            <tr>
+                <td>
+                    {$item['title']}
+                </td>
+                <td class="text-muted">
+                    {$item['time']}
+                </td>
+                <td>
+                    {if:$item['re_content']!=''}
+                    <span>已回复</span>
+                    {else:}
+                    <span class="text-muted">未回复</span>
+                    {/if}
+                </td>
+                <td>
+                    <a class="color-orange" href="javascript:void(0)" onclick='show_msg(this, {echo:JSON::encode($item)})'>查看</a>
+                </td>
+            </tr>
+            {/foreach}
+
+            <tr id='show_msg' class="text-left" style="display:none;">
+                <td colspan="4" class="f-12 text-muted">
+                    <a class="text-danger pull-right" href="javascript:void(0);" onclick='$(this).parent().parent().hide()'>
+						<span class="glyphicon glyphicon-remove"></span> 关闭
+					</a>
+                    <p>
+                        <span class="f-w-b">建议主题：</span> <span id='title'></span>
+                    </p>
+                    <p>
+                        <span class="f-w-b">建议内容：</span> <span id='content'></span>
+                    </p>
+                    <div id="re_info">
+                        <hr>
+                        <h6 class="f-w-b">【{$this->_siteConfig->name}】回复：(<span id='re_time'></span>)</h6>
+                        <p id='re_content'></p>
+                    </div>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+        <div class="pagebar">
+            {$querySuggestionList->getPageBar()}
+        </div>
+
+        {else:}
+        <div class="m-t-40 m-b-20">
+            <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+            <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+        </div>
+        {/if}
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white">
+            <h5 class="m-b-20">提交建议</h5>
+            <form action='{url:/ucenter/complain_edit}' method='post'>
+                <ul class="info-form form-content">
+                    <li class="clearfix">
+                        <div class="info-label pull-left text-right"><span class="color-orange">*</span> 建议标题</div>
+                        <div class="info-input pull-left">
+                            <div class="form-item clearfix">
+                                <div class="form-item-right">
+                                    <input class="info-text" name="title" type="text" pattern='required' alt='标题不能为空'>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="clearfix">
+                        <div class="info-label pull-left text-right">建议内容</div>
+                        <div class="info-input pull-left">
+                            <div>
+                                <textarea name='content' alt=''></textarea>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li class="clearfix">
+                        <div class="info-label pull-left text-right"></div>
+                        <div class="info-input pull-left">
+                            <button type="submit" class='btn  btn-warning' >我要建议</button>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function show_msg(_self,obj)
+    {
+        $('#show_msg').insertAfter($(_self).parent().parent());
+        $('#show_msg').show();
+
+        //设置数据
+        obj.re_content ? $('#show_msg #re_info').show() : $('#show_msg #re_info').hide();
+        for(var i in obj)
+        {
+            $('#show_msg #'+i).text(obj[i]);
+        }
+    }
+</script>

@@ -1,0 +1,65 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li><a href="{url:/ucenter/myteam}">我的团队</a></li>
+            <li><a href="{url:/ucenter/freeze_log}">销售记录</a></li>
+            <li class="active"><a href="{url:/ucenter/my_consume}">消费统计</a></li>
+        </ul>
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="m-b-40">
+            <h5 class="m-b-20" style=" display: inline;">消费统计</h5>
+            <select onchange = "window.location = this.value">
+                {foreach:items = $this->month}
+                <option value="{url:/ucenter/my_consume/condition/$key}" {if:$this->condition == $key}selected{/if}>{$item}</option>
+                {/foreach}
+                <option value="{url:/ucenter/my_consume/condition/-6}" {if:$this->condition == -6}selected{/if}>前6个月</option>
+                <option value="{url:/ucenter/my_consume/condition/-12}" {if:$this->condition== -12}selected{/if}>前12~7月</option>
+            </select>
+            <table class="table table-bordered table-striped text-center f-12">
+                <tbody>
+                <tr class="active text-muted">
+                    <td>日期</td>
+                    <td colspan = "{echo:count($this->catArray)}">消费级别</td>
+                    <td>合计(不含邮费)</td>
+                </tr>
+                {if: $this->newArray}
+                <tr class="text-muted">
+                    <td></td>
+                    {foreach: items = $this->catArray}
+                    <td>{$item}</td>
+                    {/foreach}
+                    <td></td>
+                </tr>
+                {foreach: items = $this->newArray key=$k item=$v}
+                <tr class="text-muted">
+                    <td>{$k}</td>
+                    {foreach: items = $this->catArray key=$k2 item=$v2}
+                    {set:$str= '<td></td>'}
+                    {foreach: items = $v['cat'] key=$k3 item=$v3}
+                    {if:$v2 == $k3}
+                    {set:$str= "<td>$v3</td>"}
+                    {/if}
+                    {/foreach}
+                    {echo:$str}
+                    {/foreach}
+                    <td>{$v['amount']}</td>
+                </tr>
+                {/foreach}
+                {else:}
+                <tr>
+                    <td colspan = "{echo:count($this->catArray)+4}">暂时没有数据</td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

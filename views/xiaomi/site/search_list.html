@@ -1,0 +1,151 @@
+<link rel="stylesheet" href="{skin:xiaomi/css/product.css?v=20160929}" />
+
+{set:$defaultWhere = array('search' => $this->word , 'category_extend' => $this->cat_id )}
+{set:$goodsObj = search_goods::find($defaultWhere,20);$resultData = $goodsObj->find();}
+
+<div class="body-contain bg-gray ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+
+            <li class="active"><a href="javascript:void(0);">搜索"{$this->word}"</a></li>
+        </ol>
+        <!--position-->
+
+        <!--筛选条件-->
+        {set:$searchSide=Api::run('getGoodsCategoryExtend', $this->word) }
+        {include:_goods_list_filter}
+        <!--筛选条件-->
+    </div>
+    
+    <div class="w1230 margin-0-auto">           
+
+        <div class="cat-goods-list search-good-list">
+            {if:$resultData}
+            <ul class="list-unstyled product-list ov-hidden">
+                {foreach:items=$resultData}
+                {set: $keyword_arr = explode("#|#",$item['keywords']); }
+                {set: $keyword_title = array_shift($keyword_arr); }
+                {set: $keyword_desc = array_shift($keyword_arr); }
+                <li class="product-item item-hover pos-relative">
+                    <div class="item-image">
+                        <a href="{url:/site/products/id/$item['id']}" target="_blank">
+                            <img src="{webroot:}{echo:Thumb::get($item['img'],200,200)}" alt="{$item['name']}">
+                        </a>
+                    </div>
+                    <div class="item-title margin-0-auto ov-hidden">
+                        <h4 class="text-center">
+                            <a href="{url:/site/products/id/$item['id']}" target="_blank" title="{$item['name']}">{$keyword_title}</a>
+                        </h4>
+                        <p class="text-center text-muted">{$keyword_desc}</p>
+                    </div>
+                    <h4 class="text-center item-price">{echo: floatval($item['sell_price'])}元</h4>
+
+                    <!--评价数 与 购物车显示-->
+                    <div class="item-cart pos-absolute f-14">
+                        <div class="pull-left text-muted f-12">
+                            <strong class="color-orange f-14">{$item['comments']}</strong> 人评价
+                        </div>
+                        <div class="pull-right">
+                            <!-- 好评率 -->
+                            {set: $_point_info = Api::run('getGoodsPointInfo', $item['id'])}
+                            {if: $_point_info['comment_total']}
+                                {set: $_good_persent = ceil($_point_info['point_grade']['good'] / $_point_info['comment_total'] * 100);}
+                            {else:}
+                                {set: $_good_persent = 100;}
+                            {/if}
+                            好评 <span class="text-warning f-14">{$_good_persent}%</span>
+                        </div>
+                    </div>
+
+                    {set: $commend_ids = Api::run('getCommendIdByGoods',$item['id']);}
+                    {if: $commend_ids}
+                        {foreach:items=$commend_ids item=$_commend}
+                            {if: $_commend['commend_id'] == 1 }
+                                <div class="item-tag bg-blue pos-absolute f-12 text-center">新品上市</div>
+                                {set: break;}
+                            {elseif: $_commend['commend_id'] == 2}
+                                <div class="item-tag bg-orange pos-absolute f-12 text-center">特价商品</div>
+                                {set: break;}
+                            {elseif: $_commend['commend_id'] == 3}
+                                <div class="item-tag bg-red pos-absolute f-12 text-center">热卖推荐</div>
+                                {set: break;}
+                            {elseif: $_commend['commend_id'] == 4}
+                                <div class="item-tag bg-green pos-absolute f-12 text-center">商家推荐</div>
+                                {set: break;}
+                            {/if}
+                        {/foreach}
+                    {/if}                                                       
+                </li>
+                {/foreach}
+            </ul>
+            <div class="pagebar">
+                {$goodsObj->getPageBar()}
+            </div>
+            {else:}
+            <div class="m-t-40 m-b-20">
+                <p class="text-center"><img src="{skin:xiaomi/images/no-result.jpg}" alt=""></p>
+                <p class="text-center f-18 text-muted">对不起，没有找到相关商品 :-)</p>
+            </div>
+            {/if}
+        </div>
+    </div>
+
+    <!--热卖推荐-->
+    <div class="w1230 margin-0-auto">
+        <div class="hot-sell list-page">
+            <div class="section-header clearfix">
+                <h3 class="header-title pull-left">热卖推荐</h3>
+                <div class="switch pull-right">
+                    <a class="pull-left" id="switch-left" href="javascript:;"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                    <a class="pull-right" id="switch-right" href="javascript:;"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                </div>
+            </div>
+            <div class="section-body clearfix">
+                <ul class="list-unstyled hot-sell-list" id="hot-sell-list">
+                    {set: $tmp_index = 0}
+                    {foreach:items=Api::run('getCommendHot',10)}
+                        {set: $keyword_arr = explode("#|#",$item['keywords']); }
+                        {set: $keyword_title = array_shift($keyword_arr); }
+                        {set: $keyword_desc = array_shift($keyword_arr); }
+                        {if: $tmp_index % 5 == 0}
+                            {if: $tmp_index==0}
+                                <li class="hot-sell-line" style="display:block">
+                            {else:}
+                                </li>
+                                <li class="hot-sell-line">
+                            {/if}
+                        {/if}
+                            <div class="product-item hot-sell-item item-hover">
+                                <div class="item-image">
+                                    <a href="{url:/site/products/id/$item['id']}" target="_blank">
+                                        <img src="{webroot:}{echo:Thumb::get($item['img'],220,220)}" alt="{$item['name']}">
+                                    </a>
+                                </div>
+                                <h4 class="text-center"><a href="{url:/site/products/id/$item['id']}" target="_blank" title="{$item['name']}">{$keyword_title}</a></h4>
+                                <p class="text-center text-muted">{$keyword_desc}</p>
+                                <h4 class="text-center item-price">{set: echo floatval($item['sell_price']);}元</h4>
+                            </div>
+                        {set: $tmp_index++; }
+                    {/foreach}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+jQuery(function()
+{
+    hot_list_switch.init();
+
+    $('.product-item').hover(function(){
+        $(this).find('.item-cart').fadeIn(300);
+    },function(){
+        $(this).find('.item-cart').hide();
+    });
+});
+</script>

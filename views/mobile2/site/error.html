@@ -1,0 +1,14 @@
+{set:$msg = IReq::get('msg') ? IReq::get('msg') : '发生未知错误'}
+
+
+<div class="msg msg-err pb-15">
+	<p><i class="iconfont icon-warnfill text-warning"></i></p>
+	<p>{echo:htmlspecialchars($msg,ENT_QUOTES)}</p>
+	<div class="font-sm">
+		<span class="text-muted">返回：</span>
+		{if:$this->user['user_id']}
+		<a href="{url:/ucenter/index}" class="text-muted">个人中心</a>&nbsp;&nbsp;&nbsp;&nbsp;
+		{/if}
+		<a href="{url:/site/index}" class="text-muted">首页</a>
+	</div>
+</div>

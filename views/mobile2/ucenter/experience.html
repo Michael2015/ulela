@@ -1,0 +1,73 @@
+<div class="bg-white p-10 mb-15 text-center">
+	<h2 class="text-warning font-xxl">
+		<strong>{$this->memberRow['exp']}</strong>
+	</h2>
+	<p class="text-muted">经验值</p>
+	<?php 
+		$_next_group = false;
+		foreach($this->level_up as $_gid => $_lexp)
+		{
+			if($_next_group)
+			{
+				$_next_group = $_gid;
+				break;
+			}
+
+			if($_gid == $this->memberRow['group_id'])
+			{
+				$_next_group = true;
+			}
+		}  
+	?>
+	{set: $need_exp = $this->level_up[$_next_group] - $this->memberRow['exp']; }
+    {if: $need_exp > 0 }
+		<?php if(is_numeric($_next_group)): ?>
+			<p class="text-muted font-xs mt-5">距离下一等级【{echo: $this->user_group_arr[$_next_group];}】<br>还差{echo: $need_exp; }点经验值</p>
+		<?php endif; ?>
+	{else:}
+		<p class="text-danger">恭喜您已满足升级条件，请重新登录更新等级！</p>
+	{/if}
+</div>
+
+<div class="bg-white mb-15">
+	<!--经验值列表 开始-->
+	{set:$user_id = $this->user['user_id']}
+	{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+    {set:$queryExpLog = Api::run('getExpList',$user_id)}
+    {if:$queryExpList = $queryExpLog->find()}
+    	<table class="table table-striped text-center font-sm mb-0">
+    		<tr>
+    			<th class="text-center">日期</th>
+    			<th class="text-center">记录</th>
+    			<th>&nbsp;</th>
+    		</tr>
+			{foreach:items = $queryExpList}
+				<tr>
+					<td class="text-muted">{$item['datetime']}</td>
+					<td class="text-warning">{$item['value']}</td>
+					<td>
+						<div class="info-tips">
+							<i class="iconfont icon-infofill text-muted" data-tips='{$item['intro']}'></i>
+						</div>
+					</td>
+				</tr>
+			{/foreach}
+		</table>
+		{$queryExpLog->getPageBar()}
+		<!--经验值列表 结束-->
+	{else:}
+		<div class="msg bg-white">
+			<p><i class="iconfont icon-31wentifankui"></i></p>
+			<p>当前暂无数据</p>
+		</div>
+	{/if}
+
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.info-tips .iconfont').on('click', function(){
+			layer.tips($(this).attr('data-tips'), this, {tips: 1});
+		});
+	});
+</script>

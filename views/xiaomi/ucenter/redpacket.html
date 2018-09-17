@@ -1,0 +1,119 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    {set:$queryPropList = Api::run('getPropList',$propId,isset($_GET['status'])?$_GET['status']:null)}
+    {set:$items = $queryPropList->find()}
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li class="active">我的优惠券</li>
+        </ul>
+
+        <div class="media tips-media">
+            <div class="media-left">
+                <img src="{skin:xiaomi/images/packet.png}" alt="">
+            </div>
+            <div class="media-body">
+                <p>全部优惠券： <span class="color-orange f-w-b">{echo: count($items)}</span> 张</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white">
+            <ul class="nav nav-tabs ucenter-tabs">
+                <li class="{if:!isset($_GET['status'])}active{/if}"><a href="{url:/ucenter/redpacket}">所有</a></li>
+                <li class="{if:isset($_GET['status']) && $_GET['status']==1}active{/if}"><a href="{url:/ucenter/redpacket/status/1}">可使用</a></li>
+                <li class="{if:isset($_GET['status']) && $_GET['status']==2}active{/if}"><a href="{url:/ucenter/redpacket/status/2}">已使用</a></li>
+                <li class="{if:isset($_GET['status']) && $_GET['status']==3}active{/if}"><a href="{url:/ucenter/redpacket/status/3}">已失效</a></li>
+            </ul>
+            {if:$items}
+            <div class="bg-gray p-15 f-12">
+                <div class="ticket-content clearfix">
+                    {foreach:items = $items}
+                    <div class="ticket-item bg-white pos-relative">
+                        <!-- 状态 -->
+                        <div class="ticket-status {if:$item['is_userd']==1}used{elseif:$item['is_close']==1}ban{elseif:$item['is_close']==2}lock{elseif:(strtotime('now')-strtotime($item['end_time']))>0}expire{else:}useful{/if}"></div>
+                        <div class="ticket-main p-10">
+                            <p class="text-center m-b-5">
+                                <span class="f-14">{$item['name']}</span>
+                            </p>
+                            <div class="text-center f-20 text-warning m-b-5">
+                                <strong>￥{$item['value']}</strong>
+                            </div>
+                            {if: $item['at_least_money'] > 0 }
+                            <p class="text-center text-muted m-b-5 f-12">订单满{$item['at_least_money']}元（不含运费）</p>
+                            {else:}
+                            <p class="text-center text-muted m-b-5 f-12">使用无限制</p>
+                            {/if}
+                            <p class="text-center text-muted m-b-5">{$item['start_time']} ~ {$item['end_time']}</p>
+                        </div>
+                        <div class="info-line">
+                            <div class="line-left bd-1s"></div>
+                            <div class="line-right bd-1s"></div>
+                        </div>
+                        <div class="p-10">
+                            <p class="m-b-5">
+                                使用说明：
+                                {if:$item['is_wechat_ticket'] == 1}
+                                <span style="float: right;cursor:pointer;" class="is_wechat_ticket">
+                                        <font color="red" onclick="return syncWechat({$item['id']});">同步到微信</font><br>
+                                </span>
+                                {else:}
+                                {if:$item['is_close']==0 and $item['is_userd']==0}
+                                <span style="float: right;cursor:pointer;">
+                                        <font color="red" onclick="window.open('{url:/site/pro_list/prop_id/$item['id']}')">立即使用</font><br>
+                                </span>
+                                {/if}
+                                {/if}
+                            </p>
+                            <p class="text-muted">
+                                {if:$item['readme']}
+                                {$item['readme']}
+                                {else:}
+                                暂无使用描述
+                                {/if}
+                            </p>
+                        </div>
+                    </div>
+                    {/foreach}
+                </div>
+            </div>
+            <div class="pagebar">
+                {$queryPropList->getPageBar()}
+            </div>
+
+            {else:}
+            <div class="m-t-40 m-b-20">
+                <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+                <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+            </div>
+            {/if}
+
+        </div>
+    </div>
+</div>
+<script>
+    function  syncWechat(ticket_id)
+    {
+        if(ticket_id)
+        {
+            $.getJSON('{url:/ucenter/getQrCode}',{ticket_id:ticket_id},function(data){
+               if(data.error == 1)
+               {
+                  alert("该优惠券不能正常使用");
+               }
+               else
+               {
+                   layer.open({
+                       title: '扫一扫二维码同步到微信',
+                       content: "<img src='" + data.qrcode_url + "' width='200' height='200'>"
+                   });
+               }
+            });
+        }
+    }
+</script>

@@ -1,0 +1,81 @@
+{js:artTemplate}
+{js:areaSelect}
+{set:$ship=$this->data}
+
+<article class="module width_full">
+	<header>
+		<h3 class="tabs_involved">商家发货信息</h3>
+	</header>
+
+	<form name="ModelForm" action="{url:/seller/ship_info_update}" method="post">
+		<input type="hidden" name="sid" value="{$ship['id']}"/>
+		<div class="module_content">
+			<fieldset>
+				<label>发货点名称</label>
+				<input name="ship_name" class="normal" type="text" pattern="required" value="{$ship['ship_name']}" alt="发货点名称"//><label class="tip">*发货地点名称</label>
+			</fieldset>
+
+			<fieldset>
+				<label>发货人姓名</label>
+				<input name="ship_user_name" class="normal" type="text" pattern="required" value="{$ship['ship_user_name']}"  alt="发货人姓名"/><label class="tip">*发货人名称</label>
+			</fieldset>
+
+			<fieldset>
+				<label>性别</label>
+				<label><input type="radio" name="sex" value="1" checked/>先生</label>
+				<label><input type="radio" name="sex" value="0" {if:$ship['sex']==0}checked='checked'{/if}/>女士</label>
+			</fieldset>
+
+			<fieldset>
+				<label>地区</label>
+				<select name="province" child="city,area" class="auto"></select>
+				<select name="city" child="area" class="auto"></select>
+				<select name="area" parent="city" class="auto"></select>
+			</fieldset>
+
+			<fieldset>
+				<label>地址</label>
+				<input name="address" class="large" type="text" pattern="required" value="{$ship['address']}"  alt="具体地址错误"/><label class="tip">*具体地址</label>
+			</fieldset>
+
+			<fieldset>
+				<label>邮编</label>
+				<input class="normal" name="postcode" type="text" pattern="zip" value="{$ship['postcode']}" empty alt="邮编错误"/>
+			</fieldset>
+
+			<fieldset>
+				<label>手机</label>
+				<input name="mobile" class="normal" type="text" pattern='mobi' value="{$ship['mobile']}" />
+			</fieldset>
+
+			<fieldset>
+				<label>固定电话</label>
+				<input name="telphone" class="normal" type="text" pattern="phone" empty alt="电话号码错误" value="{$ship['telphone']}" />
+			</fieldset>
+
+			<fieldset>
+				<label>默认收获地址</label>
+				<input type="checkbox" name="is_default" value="1" {if:$ship['is_default']==1}checked='checked'{/if}/>&nbsp;设置为默认地址
+			</fieldset>
+		</div>
+
+		<footer>
+			<div class="submit_link">
+				<input type="submit" class="alt_btn" value="确 定" />
+				<input type="reset" value="重 置" />
+			</div>
+		</footer>
+	</form>
+</article>
+
+<script type='text/javascript'>
+//DOM加载完毕
+$(function(){
+	var selectInstance = new areaSelect('province');
+	{if:isset($ship) && $ship}
+		selectInstance.init({echo:JSON::encode($ship)});
+	{else:}
+		selectInstance.init();
+	{/if}
+});
+</script>

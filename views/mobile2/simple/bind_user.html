@@ -1,0 +1,95 @@
+<div class="bg-white p-10">
+	{set:$type = IReq::get('bind_type')}
+	{if:$type == 'exists'}
+	<h3 class="font-lg text-center mb-5">登录已有账号进行绑定</h3>
+	<p class="text-muted font-sm mb-15">您可以直接把第三方登录的用户信息与您已注册过的账号进行绑定</p>
+	<form action='{url:/simple/bind_exists_user}' method='post'>
+		<ul class="list-unstyled">
+			<li class="pb-10">
+				<div class="input-group input-style">
+					<div class="input-group-addon font-sm"><span>手机号/邮箱</span></div>
+                	<input type="text" class="form-control input-sm" initmsg="验证通过" name="login_info" id="login_info" value='{$this->login_info}' pattern='required' alt='填写手机号或邮箱' placeholder="填写手机号或邮箱" />
+				</div>
+            </li>
+            <li class="pb-10">
+				<div class="input-group input-style">
+					<div class="input-group-addon font-sm"><span>密码</span></div>
+					<input type="password" class="form-control input-sm" name="password" pattern='^\S{6,32}$' alt='请输入正确的密码' placeholder="填写登录密码"  />
+				</div>
+            </li>
+
+            <li class="pb-10">
+	        	<button type="submit" class='btn btn-block btn-warning'>登录并绑定</button>
+	        </li>
+
+	        <li class="pb-10">
+	        	<a href="{url:/simple/bind_user/}" class='btn btn-block btn-gray'>没有账号</a>
+	        </li>
+		</ul>
+	</form>
+	{else:}
+	<h3 class="font-lg text-center mb-5">完善基本的账号信息</h3>
+	<p class="text-muted font-sm mb-15">完善了基本信息后，您可以直接把第三方登录的用户信息与您的注册账号进行绑定</p>
+
+	<form action='{url:/simple/bind_not_exists_user}' method='post'>
+		<ul class="list-unstyled">
+			<li class="pb-10">
+				<div class="input-group input-style">
+					<div class="input-group-addon font-sm"><span>手机号</span></div>
+					<input class="form-control input-sm" initmsg="输入正确" type="text" name='username' pattern="mobi" alt="请输入正确的手机号" placeholder="填写您的手机号" />
+				</div>
+			</li>
+
+			<li class="pb-10">
+				<div class="input-group input-style">
+					<div class="input-group-addon font-sm"><span>邮箱</span></div>
+					<input class="form-control input-sm" initmsg="输入正确" type="text" name='email' pattern="email" alt="填写正确的邮箱地址" placeholder="填写您的邮箱地址" />
+				</div>
+			</li>
+			
+			<li class="pb-10">
+				<div class="input-group input-style">
+					<div class="input-group-addon font-sm"><span>密码</span></div>
+					<input class="form-control input-sm"  type="password" name='password' pattern="^\S{6,32}$" alt='填写6-32个字符' placeholder="填写6-32个字符作密码"/>
+				</div>
+			</li>
+
+			<li class="pb-10">
+				<div class="input-group input-style">
+					<div class="input-group-addon font-sm"><span>确认密码</span></div>
+					<input type="password" class="form-control input-sm"  name='repassword' pattern="^\S{6,32}$" bind='password' alt='重复上面的密码' placeholder="重复上面的密码"/>
+				</div>
+			</li>
+
+			<li class="row pb-10">
+				<div class="col-xs-8">
+					<div class="input-group input-style">
+						<div class="input-group-addon font-sm"><span>验证码</span></div>
+						<input type='text' class="form-control input-sm" initmsg="输入正确" name='captcha' pattern='^\w{5,10}$' alt='填写右边的验证码' placeholder="点图片更换"/>
+					</div>
+				</div>
+
+				<div class="col-xs-4">
+					<a href="javascript:changeCaptcha('{url:/simple/getCaptcha}');" class="show thumbnail mb-0">
+						<img src='{url:/simple/getCaptcha}' id='captchaImg' />
+					</a>
+				</div>
+			</li>
+			
+			<li class="pb-10">
+	        	<button type="submit" class='btn btn-block btn-warning'>注册并绑定</button>
+	        </li>
+
+	        <li class="pb-10">
+	        	<a href="{url:/simple/bind_user/bind_type/exists}" class='btn btn-block btn-success'>我有账号</a>
+	        </li>
+		</ul>
+	</form>
+	{/if}
+</div>
+
+<script text="text/javascript">
+{if:$this->getError()}
+	tips('{$this->getError()}');
+{/if}
+</script>

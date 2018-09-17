@@ -1,0 +1,382 @@
+<script type="text/javascript" src="{theme:javascript/products.js}"></script>
+<link rel="stylesheet" href="{skin:css/product-detail.css?v=20160727}" />
+<section>
+	<!--货品ID，当为商品时值为空-->
+	<input type='hidden' id='product_id' alt='货品ID' value='' />
+	
+	<!--商品相册 开始-->
+	<section>
+		<div id="carousel-products" class="carousel slide" data-ride="carousel">
+		  	<!-- Indicators -->
+		  	<ol class="carousel-indicators">
+		  		{foreach:items=$photo key=$slide_index}
+			    <li data-target="#carousel-products" data-slide-to="{$slide_index}"{if: $slide_index==0} class="active"{/if}></li>
+			    {/foreach}
+		  	</ol>
+
+			<!-- Wrapper for slides -->
+			<div class="carousel-inner" role="listbox">
+				{foreach:items=$photo key=$slide_index}
+				<div class="item{if: $slide_index==0} active{/if}">
+					{if: $slide_index==0}
+						<img class="img-responsive lazy" data-original="{url:/pic/thumb/img/$item[img]/w/400/h/400}" width="100%" height="100%" alt="{$name}">
+					{else:}
+						<img class="img-responsive" src="{url:/pic/thumb/img/$item[img]/w/400/h/400}" alt="{$name}">
+					{/if}	
+			    </div>
+			    {/foreach}
+			</div>
+
+			<div class="detail-price clearfix">
+				<!--抢购-->
+				{if:$promo == 'time' && isset($time)}
+					{include:_products_time}
+				{/if}
+
+				<!--团购-->
+				{if:$promo == 'groupon' && isset($groupon)}
+					{include:_products_groupon}
+				{/if}
+
+				{if:$promo == ''}
+					{if:$group_price}
+						<div class="pull-left color-orange" name="priceLi">￥{$group_price}</div>
+					{else:}
+						<div class="pull-left color-orange" name="priceLi">￥{$sell_price}</div>
+					{/if}
+				{/if}
+				<a class="pull-right show font-sm" href="javascript:;" onclick="favorite_add_ajax({$id}, this)"><i class="iconfont icon-weiguanzhu"></i> 收藏</a>
+			</div>
+		</div>
+		
+	</section>
+	<!--商品相册 结束-->
+
+	<div class="mb-10">
+		<div class="p-10 bd-btm-1s bg-white font-lg">{$name}
+		<!-- dyg_lzq 20160318 增加海外商品识别 -->
+		{if: $is_cbe}
+			<span class="cbe-tag font-sm">阳光全球购商品</span>
+		{/if}
+		</div>
+		{if: $description}
+			<div class="pt-5 pr-5 pl-10 pr-10 bd-btm-1s bg-white font-sm text-muted">{$description}</div>
+		{/if}
+	</div>
+
+
+	<ul class="product-info-list bg-white mb-10 bd-top-1s">
+		{if:isset($seller)}
+			<li class="p-10 bd-btm-1s">
+				<a href="{url:/site/home/id/$seller_id}">
+					<div class="pull-left">
+						<span class="pull-left">商家名称</span>
+					</div>
+					<div class="pull-right">
+						{$seller['true_name']}
+						<i class="iconfont icon-fanhui2"></i>
+					</div>
+				</a>
+			</li>
+			<li class="p-10 bd-btm-1s">
+				<a href="javascript:void(0);">
+					<div class="pull-left">
+						<span class="pull-left">所在地</span>
+					</div>
+					<div class="pull-right">
+						{echo:join(' ',area::name($seller['province'],$seller['city'],$seller['area']))}
+					</div>
+				</a>
+			</li>
+			<li class="p-10 bd-btm-1s">
+				<a href="tel:{$seller['phone']}">
+					<div class="pull-left">
+						<span class="pull-left">联系电话</span>
+					</div>
+					<div class="pull-right">
+						{$seller['phone']}
+					</div>
+				</a>
+			</li>
+		{/if}
+		<li class="p-10 bd-btm-1s">
+			<a href="{url:/site/pro_detail/id/$id}">
+				<div class="pull-left">
+					<span class="pull-left">商品详情</span>
+				</div>
+				<div class="pull-right">
+					<i class="iconfont icon-fanhui2"></i>
+				</div>
+			</a>
+		</li>
+		<li class="p-10 bd-btm-1s">
+			<a href="{url:/site/comments_list/id/$id}">
+				<div class="pull-left">
+					<span class="pull-left">评价</span>
+				</div>
+				<div class="pull-right">
+					{$comments} 人已评价
+				</div>
+			</a>
+		</li>
+		<li class="p-10 bd-btm-1s">
+			<a href="javascript:void(0);">
+				<div class="pull-left">
+					<span class="pull-left">库存</span>
+				</div>
+				<div class="pull-right">
+					{if: ($store_nums)}
+						正常
+					{else:}
+						缺货
+					{/if}
+				</div>
+				<label id="data_storeNums" style="display:none">{$store_nums}</label>
+			</a>
+		</li>
+		<li class="p-10 bd-btm-1s">
+			<a href="javascript:void(0);">
+				<div class="pull-left">
+					<span class="pull-left">浏览</span>
+				</div>
+				<div class="pull-right">
+					{$visit} 次
+				</div>
+			</a>
+		</li>
+		<li class="p-10 bd-btm-1s">
+			<a href="javascript:void(0);">
+				<div class="pull-left">
+					<span class="pull-left">重量</span>
+				</div>
+				<div class="pull-right">
+					{$weight}g
+				</div>
+			</a>
+		</li>
+	</ul>
+	<!--商品信息 结束-->
+</section>
+
+<!--底部固定模块 开始-->
+<div class="bottom-fixed-area product-bottom">
+	{if:$store_nums}
+		{if:$promo == 'groupon'}
+			<button class='btn btn-red add2cart' data-type="buy">立即购买</button>
+		{/if}
+		{if:$promo == ''}
+			<button class="btn btn-green add2cart" data-type="buy">立即购买</button>
+			<button class="btn btn-red add2cart" data-type="cart">加入购物车</button>
+		{/if}
+	{else:}
+		<button class="btn btn-default" disabled="disabled">暂已售罄</button>
+	{/if}
+</div>
+<!--底部固定模块 结束-->
+
+
+<!--商品选择模块 开始-->
+<div id="chosenBox">
+	<div class="chosenBox-header">
+		<div class="clearfix">
+			<div class="good-pic pull-left"><img src='/{$img}' alt=""/></div>
+			<div class="good-card pull-left">
+				<div class="good-title ov-h mb-10"><h2 class="font-lg lh-lg">{$name}</h2></div>
+				{if:$promo == ''}
+					<div class="color-orange">
+						{if:$group_price}
+							￥<span name="priceLi" id="data_groupPrice">{$group_price}</span>
+						{else:}
+							￥<span name="priceLi" id="data_sellPrice">{$sell_price}</span>
+						{/if}
+					</div>
+				{/if}
+			</div>
+		</div>
+		<span class="chosenBox-closeBtn"></span>
+	</div>
+	<div class="chosenBox-content goods_price">
+		{if:$store_nums > 0}
+			{if:$spec_array}
+				{foreach:items=JSON::decode($spec_array)}
+					<div class="pt-5 pb-5 bd-btm-1s choosen_{$key}" name="specCols">
+						<p class="mb-6">{$item['name']}:</p>
+						<ul class="chosenBox-list list-inline pl-5 pr-5" id="specList{$item['id']}"  data-id="{$item['id']}">
+							{foreach:items=explode(',',trim($item['value'],',')) item=$spec_value}<li>
+									{if:$item['type'] == 1}
+										<button href="javascript:void(0);" class="button-color font-sm" specName="{$item['name']}" specId="{$item['id']}" specData="{$spec_value}">{$spec_value}</button>
+									{else:}
+										<button href="javascript:void(0);"  class="button-color" specName="{$item['name']}" specId="{$item['id']}" specData="{$spec_value}">
+											<img style="margin-top:-5px" src="{webroot:$spec_value}" width='30px' height='30px' />
+										</button>
+									{/if}
+								</li>{/foreach}
+						</ul>
+					</div>
+				{/foreach}
+			{/if}
+		{/if}
+
+		<div class="mb-6 p-10 bd-btm-1s clearfix">
+			<div>
+				<div class="pull-left lh-xl">购买数量</div>
+				<div class="pull-right lh-xl">
+					<span class="edit-reduce number_plus" id="buyReduceButton">-</span>
+					<input class="edit-input" id="buyNums" value="1" />
+					<span class="edit-add number_add" id="buyAddButton">+</span>
+				</div>
+			</div>
+		</div>
+		<div id="joinCarButton" class="btn btn-block chosenBox-nextBtn" data-type="0">下一步</div>
+	</div>
+</div>
+<!--商品选择模块 结束-->
+
+<!-- loading 模块 开始 -->
+<div class="loading"><div class="loader">加载中...</div></div>
+<!-- loading 模块 结束 -->
+
+
+
+<script type="text/javascript">
+//dyg_jzw 20150801
+{if: isset($group_price_arr)}
+	//商品规格组合
+	var tmp_jsp = '{echo:addslashes(json_encode($group_price_arr))}';
+	var product_spec_arr = $.parseJSON(tmp_jsp);
+
+	tmp_jsp = '{echo:addslashes($spec_array)}';
+	//商品的规格
+	var goods_spec_array = $.parseJSON(tmp_jsp);
+{/if}
+
+/*
+ * 初始化规格选择(隐藏无库存规格 & 创建规格map)
+ * dyg_jzw 20150801
+ */
+//有库存的商品组合
+var spec_store_arr = new Array();
+//有库存商品组合的map
+var spec_store_map = new Array();
+
+var productInstance;
+
+//创建可能组合的MAP
+function create_spec_map(key, arr)
+{
+		for (var index = 0; index < arr.length; index++) 
+		{
+			if (key != '')
+			{
+				key += ','; 
+			}
+			key = key + arr[index];
+			spec_store_map[key] = 1;
+
+			
+			for (var tmp_index = index + 1; tmp_index < arr.length; tmp_index++) 
+			{
+				create_spec_map('', arr.slice(tmp_index));
+				create_spec_map(key, arr.slice(tmp_index));
+			}
+		}
+}
+
+
+//DOM加载结束后
+$(function(){
+	if (typeof(product_spec_arr) != 'undefined') 
+	{
+		for(var index1 = 0; index1 < product_spec_arr.length; index1++)
+		{
+			product_spec_arr[index1].spec_array = $.parseJSON(product_spec_arr[index1].spec_array);
+			//查找库存>0的组合
+			if(product_spec_arr[index1].store_nums > 0)
+			{
+				spec_store_arr.push(product_spec_arr[index1]);
+			}
+		}
+
+		//对库存大于0的组合生成组合map
+		if(spec_store_arr.length)
+		{
+			var _tmp_arr = new Array();
+			var _tmp_key = '';
+
+			for (var _tmp1 = 0; _tmp1 < spec_store_arr.length; _tmp1++) 
+			{
+				_tmp_arr = new Array();
+				_tmp_key = '';
+				for (var _tmp2 = 0; _tmp2 < spec_store_arr[_tmp1].spec_array.length; _tmp2++) 
+				{
+					//_tmp_arr.push(spec_store_arr[_tmp1].spec_array[_tmp2].id + '@' + encodeURIComponent(spec_store_arr[_tmp1].spec_array[_tmp2].value));
+					_tmp_arr.push(spec_store_arr[_tmp1].spec_array[_tmp2].id + '@' + (spec_store_arr[_tmp1].spec_array[_tmp2].value));
+					_tmp_key += ',' + spec_store_arr[_tmp1].spec_array[_tmp2].id + '@' + (spec_store_arr[_tmp1].spec_array[_tmp2].value);
+				}
+
+				//生成规格map
+				create_spec_map('', _tmp_arr);
+
+				//对于全选组合的map 赋值为库存和价格
+				spec_store_map[_tmp_key.substr(1)] = {
+														product_id: spec_store_arr[_tmp1].id,
+														store: spec_store_arr[_tmp1].store_nums, 
+														group_price: spec_store_arr[_tmp1].group_price,
+														sell_price: spec_store_arr[_tmp1].sell_price,
+														products_no: spec_store_arr[_tmp1].products_no,
+														market_price: spec_store_arr[_tmp1].market_price,
+														weight: spec_store_arr[_tmp1].weight
+													};				
+			}
+
+			//如果单一规格没有出现在map中, 则进行隐藏
+			for(var _s_index in goods_spec_array)
+			{
+				if (parseInt(_s_index) > 0)
+				{
+					var _spec_val_arr = goods_spec_array[_s_index].value.split(",");
+
+					for (var i = 0; i < _spec_val_arr.length; i++) 
+					{
+						var key = _s_index + '@' + _spec_val_arr[i];
+						if (typeof(spec_store_map[key])=='undefined')
+						{
+							var _tmp_value = '{"id":"' + goods_spec_array[_s_index].id + '","type":"' + goods_spec_array[_s_index].type + '","value":"' + _spec_val_arr[i] + '","name":"' + goods_spec_array[_s_index].name + '"}';
+							$('button[value=\''+_tmp_value+'\']').parent('li').hide();
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//初始化商品详情对象
+	productInstance = new productClass("{$id}","{$this->user['user_id']}","{$promo}","{$active_id}");
+});
+</script>
+
+<script type="text/javascript">
+	//关闭遮罩层
+	function closeChosenBox(){
+		$('#mask').remove();
+		$('body').removeClass('no-scroll');
+		$('#chosenBox').removeClass('on');
+	}
+
+	$('.add2cart').on('click', function(){
+		//设定下一步类型
+		var type = ($(this).attr('data-type') == 'buy')? 1 : 2;
+		$('#joinCarButton').attr('data-type', type);
+
+		//开启遮罩层
+		$('<div id="mask"></div>').appendTo($('body')).bind('click', closeChosenBox);;
+		$('body').scrollTop(0).addClass('no-scroll');
+		$('#mask').show();
+
+		//开启选择框
+		$('#chosenBox').addClass('on');
+	});
+
+	//绑定关闭遮罩层
+	$('.chosenBox-closeBtn').on('click', closeChosenBox);
+</script>

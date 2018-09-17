@@ -1,0 +1,25 @@
+<div class="body-contain bg-white ov-hidden">
+    <div class="w600 margin-0-auto text-center">
+        <div class="m-t-120 m-b-20">
+            <img src="{skin:xiaomi/images/success.jpg}" alt="">
+        </div>
+
+        <div class="f-12 m-b-120">
+            <p class="f-18 m-b-20">{echo:IReq::get('message') ? IFilter::act(IReq::get('message'),'text') : '操作成功！'}<p>
+            <p class="text-muted">
+            	您现在可以去：
+				{set:$callback = plugin::trigger('getCallback')}
+				{if:$callback}
+				<a class="color-orange" href="{url:$callback}">继续操作</a>
+				&nbsp;&nbsp;|&nbsp;&nbsp;
+				{/if}
+
+				{if:$this->user['user_id']}
+				<a class="color-orange" href="{url:/ucenter/index}">个人中心</a>
+				&nbsp;&nbsp;|&nbsp;&nbsp;
+				{/if}
+            	<a class="color-orange" href="{url:}">返回网站首页</a></p>
+        </div>
+
+    </div>
+</div>

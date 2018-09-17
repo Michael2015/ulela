@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<title>{echo:$this->_siteConfig->name}</title>
+	<link type="image/x-icon" href="/favicon.ico" rel="icon">
+	<link rel="stylesheet" href="{skin:xiaomi/css/bootstrap.min.css}" />
+	<link rel="stylesheet" href="{skin:xiaomi/css/common.css?v=20170220}" />
+
+	<!--[if lte IE 8]>
+	<link rel="stylesheet" href="{skin:xiaomi/css/common_ie8.css?v=20161208}" />
+	<![endif]-->
+
+	<!--[if lt IE 8]>
+	<script src="http://wuyongzhiyong.b0.upaiyun.com/iedie/v1.2/script.min.js"></script>
+	<![endif]-->
+
+	<script src="http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	{js:form}
+	{js:artTemplate}
+	<script type='text/javascript' src="http://cdn.bootcss.com/layer/3.0.1/layer.min.js"></script>
+	<script type='text/javascript' src="{theme:javascript/common.js?v=20160727}"></script>
+	<script type='text/javascript' src='{theme:javascript/site.js?v=20161212}'></script>
+	<script type='text/javascript' src='{theme:javascript/validate.js}'></script>
+	<script type='text/javascript' src='http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+</head>
+<body>
+
+
+<!--site-nav-->
+<div class="site-nav f-12">
+	<div class="w1230 margin-0-auto clearfix">
+		<!--顶部左侧导航-->
+		<div class="item pull-left">
+
+			<ul class="list-inline item-list">
+				<li class="nav">
+					<div class="dropdown" id="nav_dropdown">
+						<a class="dropdown_name"  aria-expanded="true">
+							{echo:Isafe::get('area_info','session')}
+							<span class="caret"></span>
+						</a>
+						<style>
+							#nav_dropdown  .dropdown-menu {
+								width: 400px;
+								padding: 12px 30px 12px;
+							}
+							#nav_dropdown .dropdown-menu .address_hot_title{
+								text-align: left;
+							}
+							#nav_dropdown .bs-example-tabs li a {
+								padding: 8px 16px;
+							}
+							#nav_dropdown .all-cities{
+								display: block;
+								font-size: 0;
+								border-bottom:1px solid #e6e6e6;
+								padding-left:20px;
+								margin-bottom: 15px;
+							}
+							#nav_dropdown .cities {
+								display: inline-block;
+								cursor: pointer;
+								font-size: 13px;
+								width: 20%;
+								height: 14px;
+								white-space:nowrap;
+								line-height: 14px;
+								overflow:hidden;
+								text-overflow:ellipsis;
+							}
+							#nav_dropdown .address_hot{
+								font-size: 0;
+							}
+							#nav_dropdown .address_hot .cities{
+								display: inline-block;
+								width: 20%;
+							}
+							#nav_dropdown .county-list{
+								display: block;
+								padding:10px;
+								margin-bottom: 5px;
+								background-color:#f1f1f1;
+							}
+							#nav_dropdown .county-list a{
+								color: black;
+								margin-right: 10px;
+							}
+							#nav_dropdown .cities:hover{
+								color: red;
+							}
+							#nav_dropdown .cities a
+							{
+								color: #333;
+							}
+							#nav_dropdown .dropdown-menu li a:hover
+							{
+								background: transparent!important;
+								color: #e22a40!important;
+							}
+							#nav_dropdown .dropdown-menu>li
+							{
+								text-align: left;
+								font-size: 14px;
+								margin: 10px 0;
+							}
+							#myTabs li a
+							{
+								color: #000;
+							}
+							#myTabs li a:hover
+							{
+								border: 1px solid transparent;
+							}
+
+						</style>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="user-ucenter">
+							<p class="f-14 address_hot_title">热门城市：</p>
+							<li role="presentation" class="address_hot">
+
+							</li>
+							<script type="text/html" id="areaHotCityName">
+								<%for(var i in city){%>
+								<span class="cities m-0 " data-id="<%= city[i].area_id %>">
+										<a href="javascript:void(0)" ><%= city[i].area_name %></a>
+									</span>
+								<%}%>
+							</script>
+							<li role="presentation">
+								<div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
+									<ul id="myTabs" class="nav nav-tabs" role="tablist">
+										<li role="presentation" class="active">
+											<a href="#" class="tab-item" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">ABCDE</a>
+										</li>
+										<li role="presentation" >
+											<a href="#" class="tab-item" role="tab"  data-toggle="tab" aria-controls="profile" aria-expanded="true">FGHJ</a>
+										</li>
+										<li role="presentation" >
+											<a href="#" class="tab-item" role="tab"  data-toggle="tab" aria-controls="profile" aria-expanded="true">KLMNP</a>
+										</li>
+										<li role="presentation" >
+											<a href="#" class="tab-item" role="tab"  data-toggle="tab" aria-controls="profile" aria-expanded="true">QRSTW</a>
+										</li>
+										<li role="presentation" >
+											<a href="#" class="tab-item" role="tab"  data-toggle="tab" aria-controls="profile" aria-expanded="true">XYZ</a>
+										</li>
+									</ul>
+									<div id="myTabContent" class="tab-content p-t-10"></div>
+									<script type="text/html" id="areaCityName">
+										<div role="tabpanel" class="tab-pane m-0">
+											<%for(var j in key){%>
+											<h2 class="cities_title f-18 color-red m-0 pos-absolute"><%= key[j].toUpperCase()%></h2>
+											<div class="all-cities clearfix">
+												<%for(var i in city){%>
+												<%if(city[i].first_char ==key[j]){%>
+												<span class="cities m-t-5" data-id="<%= city[i].area_id%>"><%= city[i].area_name%></span>
+												<%}%>
+												<%}%>
+											</div>
+											<%}%>
+										</div>
+									</script>
+									<script type="text/html" id="areaCountyName">
+										<div class="county-list">
+											<%for(var i in county){%>
+											<span class="county-item">
+                                                    <a href="javascript:;" class="f-12" data-id="<%= county[i].area_id%>">
+                                                       <%= county[i].area_name%>
+                                                    </a>
+												</span>
+											<%}%>
+										</div>
+									</script>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li class="nav"><span class="split">|</span></li>
+				<li class="nav"><a href="{url:}">返回首页</a></li>
+				<li class="nav"><span class="split">|</span></li>
+				<li class="nav"><a href="http://www.hec.cn">东阳光集团</a></li>
+				<li class="nav"><span class="split">|</span></li>
+				<li class="nav"><a href="http://e.dyg.cn">东阳光大健康电商</a></li>
+				<li class="nav"><span class="split">|</span></li>
+				<li class="nav"><a href="{url:/site/help/id/44}">关于我们</a></li>
+				<li class="nav"><span class="split">|</span></li>
+				<li class="nav"><a href="javascript:;" onclick="layer.tips(createQrcodeUrl('{echo: IUrl::getHost().IUrl::creatUrl()}'), this, {tips: 3, time: 10000});">访问移动版</a></li>
+				<li class="nav"><span class="split">|</span></li>
+				<li class="nav"><span class="color-orange">New</span> <a href="{url:site/scode}" class="color-orange">防伪查询</a></li>
+			</ul>
+		</div>
+		<!--顶部左侧导航-->
+
+		<!--顶部右侧导航-->
+		<div class="item pull-right">
+			<ul class="list-inline item-list">
+				{if:$this->user}
+				<li class="nav">
+					<div class="dropdown">
+						<a class="dropdown-toggle" data-target="#" href="javascript:;" id="user-ucenter" data-toggle="dropdown">
+							{echo:$this->user['username']}
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="user-ucenter">
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="{url:/ucenter}">个人中心</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="{url:/ucenter/order}">我的订单</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="{url:/ucenter/experience}">我的经验值</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="{url:/ucenter/info}">个人资料</a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="{url:/ucenter/address}">地址管理</a></li>
+						</ul>
+					</div>
+				</li>
+				<li class="nav"><span class="split">|</span></li>
+				<li class="nav"><a href="{url:ucenter}">个人中心</a></li>
+				<li class="nav"><span class="split">|</span></li>
+				<li class="nav"><a href="{url:ucenter/order}">我的订单</a></li>
+				<li class="nav"><span class="split">|</span></li>
+				<li class="nav"><a href="{url:/simple/logout}">退出</a></li>
+				{else:}
+				<li class="nav"><a href="{url:/simple/reg}">免费注册</a></li>
+				<li class="nav"><span class="split">|</span></li>
+				<li class="nav"><a href="{url:/simple/login}">登录</a></li>
+				<li class="nav"><span class="split">|</span></li>
+				<li class="nav"><a href="{url:ucenter}">个人中心</a></li>
+				<li class="nav"><span class="split">|</span></li>
+				<li class="nav"><a href="{url:ucenter/order}">我的订单</a></li>
+				{/if}
+				<li class="nav-cart" name="mycart">
+					<a class="cart-link" href="{url:simple/cart}">
+						<span class="glyphicon glyphicon-shopping-cart"></span>
+						<span>购物车 ( <strong name="mycart_count">0</strong> )</span>
+					</a>
+					<div class="cart-content ov-hidden" id="div_mycart" style="display: none;"></div>
+
+					<!--购物车模板 开始-->
+					<script type='text/html' id='cartTemplete'>
+						<div class="cart-panel">
+							<%if(goodsCount){%>
+							<ul class="goods-list list-unstyled">
+								<%for(var item in goodsData){%>
+								<%var data = goodsData[item]%>
+								<li class="goods-info clearfix" id="site_cart_dd_<%=item%>">
+									<div class="media">
+										<a class="media-left" href="{url:/site/products/id/<%=data['goods_id']%>}" target="_blank">
+											<img alt="<%=data['name']%>" src="{webroot:<%=data['img']%>}">
+										</a>
+										<div class="media-body">
+											<h6 class="media-heading f-12 c-white">
+												<a target="_blank" href="{url:/site/products/id/<%=data['goods_id']%>}" title="<%=data['name']%>">
+													<%=data['name']%>
+												</a>
+											</h6>
+											<div class="goods-price f-12">
+												<div class="pull-left text-muted">
+															<span class="color-red">
+																<em>￥</em><%=data['sell_price']%>
+															</span>
+													&times;
+													<span><%=data['count']%></span>
+												</div>
+												<div class="pull-right">
+													<a href="javascript:void(0)" onclick="removeCart('<%=data['id']%>','<%=data['type']%>');$('#site_cart_dd_<%=item%>').slideUp('normal');">
+														删除
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<%}%>
+							</ul>
+							<div class="cart-total ov-hidden">
+								<div class="pull-left">
+									<p class="text-muted m-b-0 f-12">共 <span name="mycart_count"><%=goodsCount%></span> 件商品</p>
+									<p class="m-b-0 color-red"><span class="f-18" name="mycart_sum"><%=goodsSum%></span><em>元</em></p>
+								</div>
+								<div class="pull-right">
+									<a href="{url:/simple/cart}" class="btn btn-warning cart-btn">去购物车结算</a>
+								</div>
+							</div>
+							<%}else{%>
+							<div class="goods-list">
+								<p class="text-center">购物车还没有商品，赶紧选购吧！</p>
+							</div>
+							<%}%>
+						</div>
+					</script>
+					<!--购物车模板 结束-->
+				</li>
+			</ul>
+		</div>
+		<!--顶部右侧导航-->
+	</div>
+	<!--w1230 clearfix-->
+</div>
+<!--site-nav-->
+
+<!--top header-->
+<div class="top-header">
+	<!--w1230 clearfix-->
+	<div class="w1230 pos-relative margin-0-auto clearfix">
+		<!--logo-->
+		<div class="logo pull-left">
+			<a href="{url:}" class="show">
+				<img src="{if:$this->_siteConfig->logo}{webroot:$this->_siteConfig->logo}{else:}{skin:xiaomi/images/logo.png}{/if}" alt="{echo:$this->_siteConfig->name}" class="png">
+			</a>
+		</div>
+		<!--logo-->
+
+		<!--main menu-->
+		<div class="header-menu f-16 pull-left">
+			<ul class="list-inline nav-cat-pos">
+				{if:IReq::get('controller') == 'site' && IReq::get('action') == 'index' || IReq::get('controller') == ''}
+				<li><a href="/">首 页</a>
+					{else:}
+				<li class="category pos-relative">
+					<a class="allsort" href="{url:/site/sitemap}">全部分类 <span class="caret"></span></a>
+					<!--cat-menu-->
+					<div class="category-content pos-absolute">
+						<!--cat-list-->
+						<ul class="cat-list list-unstyled" id="div_allsort">
+							{foreach:items=Api::run('getCategoryListTop')  item=$first }
+							<li class="list-item">
+								<a href="{url:/site/pro_list/cat/$first['id']}" class="title">
+									{$first['name']}
+									<span class="glyphicon glyphicon-chevron-right"></span>
+								</a>
+
+								<div class="cat-pop">
+									<!--cat-layer-->
+									<div class="cat-layer clearfix">
+										<ul class="cat-col list-unstyled">
+											{foreach:items=Api::run('getCategoryByParentid',$first['id'])  item=$second}
+											<li class="cat-item">
+												<div class="level-title">
+													<a href="{url:/site/pro_list/cat/$second['id']}">{$second['name']}</a>
+													<span class="glyphicon glyphicon-chevron-right"></span>
+												</div>
+												<p class="level-list clearfix">
+													{foreach:items=Api::run('getCategoryByParentid',$second['id'])  item=$third}
+													<a href="{url:/site/pro_list/cat/$third['id']}">{$third['name']}</a>
+													{/foreach}
+												</p>
+											</li>
+											{/foreach}
+										</ul>
+									</div>
+									<!--cat-layer-->
+								</div>
+							</li>
+							{/foreach}
+						</ul>
+						<!--cat-list-->
+					</div>
+					<!--cat-menu-->
+					{/if}
+				</li>
+				{foreach:items=Api::run('getGuideList')}
+				<li><a href="{url:$item[link]}">{$item['name']}</a></li>
+				{/foreach}
+			</ul>
+		</div>
+		<!--main menu-->
+
+		<!--search-->
+		<div class="search-div pull-right">
+			<form action="{url:/}" method="get" name="search">
+				<input type='hidden' name='controller' value='site' />
+				<input type='hidden' name='action' value='search_list' />
+				<div class="search-input">
+					<input class="form-control" type="text" name="word" autocomplete="off">
+					<div class="hot-keyword">
+						<ul class="list-inline">
+							{foreach:items=Api::run('getKeywordList', 2) }
+							{set:$tmpWord = urlencode($item['word']);}
+							<li>
+								<a href="{url:/site/search_list/word/$tmpWord}">
+									<span class="label label-default">{$item['word']}</span>
+								</a>
+							</li>
+							{/foreach}
+						</ul>
+					</div>
+				</div>
+				<div class="search-btn">
+					<button class="form-control" type="submit" name="submit">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+				</div>
+			</form>
+		</div>
+		<!--search-->
+
+	</div>
+	<!--w1230 clearfix-->
+</div>
+<!--top header-->
+{viewcontent}
+
+<!-- service-->
+<div class="w1230 margin-0-auto clearfix">
+	<div class="service ov-hidden">
+		<ul class="list-unstyled">
+			<li class="pull-left">
+				<div class="media">
+					<div class="media-left">
+						<span class="glyphicon glyphicon-ok text-muted"></span>
+					</div>
+					<div class="media-body">
+						<div class="media-heading"><h4 class="m-0 f-14">正品优选</h4></div>
+						<p class="m-0 f-12 text-muted">共享集团供应链</p>
+					</div>
+				</div>
+			</li>
+			<li class="pull-left">
+				<div class="media">
+					<div class="media-left">
+						<span class="glyphicon glyphicon-signal text-muted"></span>
+					</div>
+					<div class="media-body">
+						<div class="media-heading"><h4 class="m-0 f-14">上市公司</h4></div>
+						<p class="m-0 f-12 text-muted">诚信服务 品质保证</p>
+					</div>
+				</div>
+			</li>
+			<li class="pull-left">
+				<div class="media">
+					<div class="media-left">
+						<span class="glyphicon glyphicon-home text-muted"></span>
+					</div>
+					<div class="media-body">
+						<div class="media-heading"><h4 class="m-0 f-14">连锁门店</h4></div>
+						<p class="m-0 f-12 text-muted">门店体验 网上下单</p>
+					</div>
+				</div>
+			</li>
+			<li class="pull-left">
+				<div class="media">
+					<div class="media-left">
+						<span class="glyphicon glyphicon-flash text-muted"></span>
+					</div>
+					<div class="media-body">
+						<div class="media-heading"><h4 class="m-0 f-14">及时处理</h4></div>
+						<p class="m-0 f-12 text-muted">16点前下单 当天发货</p>
+					</div>
+				</div>
+			</li>
+			<li class="pull-left no-border">
+				<div class="media">
+					<div class="media-left">
+						<span class="glyphicon glyphicon-random text-muted"></span>
+					</div>
+					<div class="media-body">
+						<div class="media-heading"><h4 class="m-0 f-14">最优时效</h4></div>
+						<p class="m-0 f-12 text-muted">专业物流 及时送达</p>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<!-- service-->
+
+<!-- help-->
+<div class="w1230 margin-0-auto clearfix">
+
+	<div class="help ov-hidden">
+		{foreach:items=Api::run('getHelpCategoryFoot') item=$helpCat}
+		<dl class="help-list pull-left">
+			<dt class="f-14">{$helpCat['name']}</dt>
+			{foreach:items=Api::run('getHelpListByCatidAll',$helpCat['id'])}
+			<dd class="f-12"><a class="text-muted" href="{url:/site/help/id/$item['id']}" target="_blank">{$item['name']}</a></dd>
+			{/foreach}
+		</dl>
+		{/foreach}
+		<div class="contact">
+			<p>
+				<span class="glyphicon glyphicon-phone-alt text-muted f-18"></span>
+				<strong class="f-16 color-orange">4000-552-888</strong>
+			</p>
+			<p>
+				<a class="f-16" href="javascript:;" onclick="open_new_window('https://dyg.kf5.com/kchat/17312?from=PC%e5%95%86%e5%9f%8e')">
+					<span class="glyphicon glyphicon-comment text-muted f-18"></span>
+					在线客服
+				</a>
+			</p>
+			<p>
+				<span class="glyphicon glyphicon-envelope text-muted f-18"></span>
+				<span class="f-16">shop@dyg-hec.com</span>
+			</p>
+			<p class="m-0">
+				<img src="{skin:xiaomi/images/qrcode.png}" width="90">
+			</p>
+		</div>
+	</div>
+</div>
+<!-- help-->
+
+<div class="w1230 margin-0-auto clearfix">
+	<div class="copyright f-12 text-center">
+		<div class="text-muted">
+			<p>
+				<a href="http://e.dyg.cn" class="text-muted">关于我们</a>
+				&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+				<a href="/site/help/id/4" class="text-muted">购买流程</a>
+				&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+				<a href="/site/help/id/53" class="text-muted">如何付款</a>
+				&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+				<a href="/site/help/id/48" class="text-muted">联系我们</a>
+				&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+				<a href="http://e.dyg.cn/open" class="text-muted">招商合作</a>
+			</p>
+			<p>
+				Powered by <a href="http://www.dyg.cn" class="text-muted">东阳光大健康电商</a>
+				&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+				Copyright &copy; 2013-2016 <a class="text-muted" href="http://www.miibeian.gov.cn/" target="_blank">粤ICP备15070469号-2</a>
+			</p>
+		</div>
+		<div style="display:none">
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253803396'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1253803396' type='text/javascript'%3E%3C/script%3E"));</script>
+		</div>
+	</div>
+</div>
+
+<!-- back to top -->
+<div class="back2top" id="back2top" style="display:none">
+	<div class="item">
+		<a href="javascript:;" title="返回顶部" onclick="back2top()"><span class="glyphicon glyphicon-eject"></span></a>
+	</div>
+	<div class="item">
+		<a href="javascript:;" title="联系客服" onclick="open_new_window('https://dyg.kf5.com/kchat/17312?from=PC%e5%95%86%e5%9f%8e')"><span class="glyphicon glyphicon-comment"></span></a>
+	</div>
+</div>
+<script type='text/javascript'>
+    $(function()
+    {
+        //搜索框填充默认数据
+        $('input:text[name="word"]').val("{$this->word}");
+
+        //全部分类菜单显示
+        {if:IReq::get('controller') == 'site' && IReq::get('action') == 'index' || IReq::get('controller') == ''}
+        {else:}
+        $('.nav-cat-pos .category').hover(
+            function(){
+                $(this).addClass("active");
+            },
+            function(){
+                $(this).removeClass("active");
+            }
+        );
+
+        {/if}
+
+        $(".nav-cat-pos .list-item").hover(function(){
+            $(this).addClass("active");
+            $(this).children(".cat-pop").show();
+        },function(){
+            $(this).removeClass("active");
+            $(this).children(".cat-pop").hide();
+        });
+
+        //是否显示返回顶部
+        $(window).scroll(function(){
+            if ($(window).scrollTop()>200){
+                $("#back2top").fadeIn(1000);
+            }
+            else
+            {
+                $("#back2top").fadeOut(1000);
+            }
+        });
+
+        var flag = false;
+        var keyArr = ['abcde','fghj','klmnp','qrstw','xyz'];
+        $('#nav_dropdown .dropdown_name').mouseover(function(){
+            if(!flag){
+                getAreaObj.getAreaCityName(keyArr);
+                flag = true;
+            }
+            $(this).siblings('.dropdown-menu').show();
+        });
+        $('#nav_dropdown>ul').mouseleave(function(){
+            $("#nav_dropdown>ul").hide();
+        });
+        $('#myTabs .tab-item').click(function (e) {
+            e.preventDefault();
+            $('#myTabContent').children('.tab-pane').hide().eq($(this).parents('li').index()).show();
+        })
+        $(document).on('click', '.all-cities .cities,.address_hot .cities', function(e) {
+            e.preventDefault();
+            var area_id = $(this).attr('data-id');
+            var $this = $(this);
+            getAreaObj.getAreaCountyName(area_id,$this);
+        });
+        $(document).on('click','.county-list .county-item a',function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-id');
+            getAreaObj.getLink(id);
+        })
+    });
+
+    var getAreaObj = {
+        //获取地级市
+        getAreaCityName:function(keyArr) {
+            $.getJSON("{url:/block/address_json}",{char:keyArr},function (json) {
+                if (json.success){
+                    template.config("cache",false);
+                    var commentHotCityHtml = template.render('areaHotCityName',{city:getAreaObj.replaceStr(json.hot)});
+                    $('.address_hot').append(commentHotCityHtml);
+                    for(var item in json.normal)
+                    {
+                        var commentHtml = template.render('areaCityName',{city:getAreaObj.replaceStr(json.normal[item]),key:item});
+                        $('#myTabContent').append(commentHtml);
+                    }
+                    $('#myTabContent').children('.tab-pane').eq(0).show();
+                    $('#myTabContent .tab-pane .all-cities:last-child').css('borderBottom','none');
+                }
+            })
+        },
+        //删除"自治区、自治州、区、市、地区"
+        replaceStr:function(obj) {
+            for(var key in obj){
+                if(obj[key].area_name.lastIndexOf('自治区')>=0){
+                    obj[key].area_name = obj[key].area_name.slice(0,obj[key].area_name.lastIndexOf('自治区'));
+                }
+                else if(obj[key].area_name.lastIndexOf('自治州')>=0){
+                    obj[key].area_name = obj[key].area_name.slice(0,obj[key].area_name.lastIndexOf('自治州'));
+                }
+                else if(obj[key].area_name.lastIndexOf('地区')>=0){
+                    obj[key].area_name = obj[key].area_name.slice(0,obj[key].area_name.lastIndexOf('地区'));
+                }
+                else if(obj[key].area_name.lastIndexOf('区')>=0){
+                    obj[key].area_name = obj[key].area_name.slice(0,obj[key].area_name.lastIndexOf('区'));
+                }
+                else if(obj[key].area_name.lastIndexOf('市')>=0){
+                    obj[key].area_name = obj[key].area_name.slice(0,obj[key].area_name.lastIndexOf('市'));
+                }
+            }
+            return obj;
+        },
+        //获取区县
+        getAreaCountyName:function (id,$this) {
+            $.getJSON("{url:/block/address_json2}",{city_id:id},function (json) {
+                if(json.success){
+                    var commentHtml = template.render('areaCountyName',{county:json.normal});
+                    $('.all-cities,.address_hot').find('.county-list').remove();
+                    var index =Math.ceil(($this.index()+1)/5)*5;
+                    var ParentsIndex = $this.parent().index($this.parent());
+                    var length = $($this.parent()).eq(ParentsIndex).children('.cities').length;
+                    if(index>length){ //最后一行(没有凑齐5个)
+                        $($this.parent()).eq(ParentsIndex).children('.cities').last().after(commentHtml);
+                    }
+                    else{
+                        $($this.parent()).eq(ParentsIndex).children('.cities').eq(index-1).after(commentHtml);
+                    }
+                }
+            })
+        },
+        //点击区县跳转
+        getLink:function (id) {
+            $.getJSON("{url:/block/get_sellerid_json}",{area_id:id},function (json) {
+                if(json.success){
+                    //刷新页面
+                }
+            })
+        }
+    }
+    //热卖推荐的轮播
+    var hot_list_switch = {
+        li_index : 0,
+        li_count : 0,
+        clock : null,
+        init : function() {
+            this.li_count = $('#hot-sell-list > li').size();
+            if (this.li_count > 0){
+                $('#switch-right').addClass('active');
+            }
+            this.clock = window.setInterval("hot_list_switch.next()", 8000);
+            $('.hot-sell-line').hover(function(){
+                window.clearInterval(hot_list_switch.clock);
+            }, function(){
+                hot_list_switch.clock = window.setInterval("hot_list_switch.next()", 8000);
+            });
+            $('#switch-left').click(function(){
+                if ($(this).hasClass('active')) {
+                    hot_list_switch.prev();
+                }
+            });
+            $('#switch-right').click(function(){
+                if ($(this).hasClass('active')) {
+                    hot_list_switch.next();
+                }
+            });
+        },
+        next : function() {
+            this.li_index++;
+            this.updateSwitch();
+        },
+        prev : function() {
+            if (this.li_index > 0)
+            {
+                this.li_index--;
+                this.updateSwitch();
+            }
+        },
+        updateSwitch : function(){
+            $('#hot-sell-list > li').hide();
+            $('#hot-sell-list li:eq(' + (this.li_index % this.li_count ) + ')').fadeIn('normal');
+            if(this.li_index % this.li_count == 0) {
+                $('#switch-right').addClass('active');
+                $('#switch-left').removeClass('active');
+            }else {
+                $('#switch-left').addClass('active');
+            }
+            if((this.li_index + 1) % this.li_count == 0) {
+                $('#switch-right').removeClass('active');
+                $('#switch-left').addClass('active');
+            }
+        }
+    };
+
+
+
+
+</script>
+</body>
+</html>
+
+
+<!--1.默认地址，js获取地址-->
+<!--2.鼠标移动到地址上,弹出地址选框,并向后台获取所有地址,通过模板引擎渲染到页面上.-->
+<!--3.点击省(直辖市)后,再次获取区县,点击区县后提交给后台.成功后刷新页面-->

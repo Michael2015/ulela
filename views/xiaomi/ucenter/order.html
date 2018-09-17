@@ -1,0 +1,136 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+    <div class="p-30">
+        {set:$queryOrderList = Api::run('getOrderList',$this->user['user_id'],isset($_GET['status'])?$_GET['status']:'')}
+        {set:$queryOrderList->pagelength=5}
+        {set:$result = $queryOrderList->find()}
+        <!-- start 统计未评价条数 -->
+        {set:$queryOrderList2 = Api::run('getOrderList',$this->user['user_id'],4)}
+        {set:$rows = $queryOrderList2->find()}
+        {set:$count = $queryOrderList2->paging->rows}
+        <!-- end 统计未评价条数 -->
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li class="{if:!isset($_GET['status'])}active{/if}"><a href="{url:/ucenter/order}">所有订单</a></li>
+            <li class="{if:isset($_GET['status']) && $_GET['status']==1}active{/if}"><a href="{url:/ucenter/order/status/1}">待付款</a></li>
+            <li class="{if:isset($_GET['status']) && $_GET['status']==2}active{/if}"><a href="{url:/ucenter/order/status/2}">待发货</a></li>
+            <li class="{if:isset($_GET['status']) && $_GET['status']==3}active{/if}"><a href="{url:/ucenter/order/status/3}">待收货</a></li>
+            <li class="{if:isset($_GET['status']) && $_GET['status']==4}active{/if}"><a href="{url:/ucenter/order/status/4}">待评价（{$count}）</a></li>
+            <li class="{if:isset($_GET['status']) && $_GET['status']==5}active{/if}"><a href="{url:/ucenter/order/status/5}">已完成</a></li>
+        </ul>
+        {foreach:items = $result}
+        {set: $order_id=$item['id']}
+        <table class="table table-bordered order-item f-12 m-b-20">
+            <tr class="active">
+                <td colspan="8">
+                    <span class="text-muted m-r-30 pull-left">{$item['create_time']}</span>
+                    <span class="text-muted">订单号：</span> <a href="{url:/ucenter/order_detail/id/$order_id}">{$item['order_no']}</a>
+                </td>
+            </tr>
+            {set: $orderStatus = Order_Class::getOrderStatus($item)}
+            {set: $_goods_list = Api::run('getOrderGoodsListByGoodsid_cache',array('#order_id#',$order_id));}
+            {set: $_goods_rows = count($_goods_list); }
+
+            {foreach: items=$_goods_list item=$good key=$index}
+            {set: $_good_info = JSON::decode($good['goods_array'])}
+                <tr class="item-bd">
+                    <!-- 产品略缩图 -->
+                    <td class="no-border-lr" width="85">
+                        <a href="{url:/site/products/id/$good['goods_id']}" title="{$_good_info['name']} {$_good_info['value']}" target="_blank" class="show m-l-15">
+                            <img src="{webroot:}{echo:Thumb::get($good['img'],70,70)}" width="70" height="70" alt="{$_good_info['name']} {$_good_info['value']}"/>
+                        </a>
+                    </td>
+                    <!-- 产品名称 -->
+                    <td class="no-border-lr text-left">
+                        <p><a href="{url:/site/products/id/$good['goods_id']}" target="_blank">{$_good_info['name']}</a></p>
+                        <p class="text-muted">{$_good_info['value']}</p>
+                    </td>
+                    <!-- 购买数量 -->
+                    <td class="no-border-lr" width="50">
+                        <span class="text-muted">&times; {$good['goods_nums']}</span>
+                    </td>
+                    <!-- 是否可评价 -->
+                    <td class="no-border-lr" width="60">
+                        {if: $item['status'] == 5 }
+                            {set: $_comment_row = Api::run('getOrderComment', $item['order_no'], $good['goods_id']); }
+                            {if: isset($_comment_row['status'])}
+                                {if: $_comment_row['status']}
+                                    <span class="text-muted">已评价</span>
+                                {else:}
+                                    <a href="{url:/site/comments/id/$_comment_row['id']}" class="color-orange">待评价</a>
+                                {/if}
+                            {/if}
+                        {/if}
+                        &nbsp;
+                    </td>
+
+                    {if: $index == 0}
+                        <!-- 收件人 -->
+                        <td width="95" rowspan="{$_goods_rows}">
+                            {$item['accept_name']}
+                        </td>
+
+                        <!-- 金额 -->
+                        <td width="95" rowspan="{$_goods_rows}">
+                            <strong>￥{echo:($item['order_amount'])}</strong>
+                        </td>
+
+                        <!-- 订单状态 和 详情 -->
+                        <td width="95" rowspan="{$_goods_rows}">
+                            <?php
+                                switch($orderStatus)
+                                {
+                                    case 2: //等待付款
+                                        $status_class = "text-danger";
+                                        break;
+                                    case 3: //已发货
+                                    case 11:
+                                        $status_class = "text-success";
+                                        break;
+                                    case 4: //等待发货
+                                        $status_class = "text-primary";
+                                        break;
+                                    default: 
+                                        $status_class = "text-muted";
+                                }
+
+                            ?>
+                            <p class="{echo: $status_class}">{echo:Order_Class::orderStatusText($orderStatus)}</p>
+                            <p><a href="{url:/ucenter/order_detail/id/$order_id}">订单详情</a></p>
+                        </td>
+
+                        <!-- 确认收货 / 取消订单 / 再次购买 / 订单评价 -->
+                        <td width="95" rowspan="{$_goods_rows}">
+                            {if:$orderStatus == 2}
+                                <p><a class="btn btn-sm btn-danger" type="button" href="{url:/block/payment/id/$order_id}">立即付款</a></p>
+                            {/if}
+
+                            {if:in_array($orderStatus,array(1,2))}
+                                <p>
+                                    <a href="javascript:;" onclick="confirm('确定取消订单吗？', function(){window.location.href='{url:/ucenter/order_status/order_id/$order_id/op/cancel}';})">取消订单</a>
+                                </p>
+                            {/if}
+
+                            {if:in_array($orderStatus,array(11,3))}
+                                <p>
+                                    <a class="btn btn-sm btn-primary" type="button" href="{url:/ucenter/order_status/order_id/$order_id/op/confirm}">确认收货</a>
+                                </p>
+                            {/if}
+
+                            {if: Order_Class::isRefundmentApply($item)}
+                                <p>
+                                    <a href="{url:/ucenter/refunds_edit/order_id/$order_id}">申请退款</a>
+                                </p>
+                            {/if}
+                            &nbsp;
+                        </td>
+                    {/if}
+                </tr>
+            {/foreach}
+        </table>
+        {/foreach}
+
+        <div class="pagebar">
+            {$queryOrderList->getPageBar()}
+        </div>
+
+    </div>
+</div>

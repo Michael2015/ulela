@@ -1,0 +1,159 @@
+<link rel="stylesheet" href="{skin:xiaomi/css/product.css?v=20160929}" />
+
+<div class="body-contain bg-gray ov-hidden">
+	<div class="w1230 margin-0-auto">
+		<!--position-->
+		<ol class="breadcrumb f-12">
+			<li><a href='{url:}'>首页</a></li>
+			<li>
+				<a href="{url:/site/products/id/$this->goodsRow['id']}">{$this->goodsRow['name']}</a>
+			</li>
+			<li class="active">商品咨询</li>
+		</ol>
+		<!--position-->
+	</div>
+
+	<!-- 商品咨询 -->
+	<div class="w1230 margin-0-auto ov-hidden m-b-40">
+		<!-- 商品内容 -->
+		<div class="product-left pull-left ov-hidden bg-white">			
+			<!-- 热卖排行 -->
+			<h3 class="text-center">
+				商品信息
+			</h3>
+			<div class="list-unstyled left-hot-sell">
+				<div class="item">
+	            	<a class="item-image margin-0-auto" href="{url:/site/products/id/$this->goodsRow['id']}" target="_blank">
+	             		<img src="{url:/pic/thumb/img/$this->goodsRow['img']/w/170/h/170}" alt="{$this->goodsRow['name']}" height="170" width="170">
+	            	</a>
+	            	<p class="text-center f-12">
+	            		<a href="{url:/site/products/id/$this->goodsRow['id']}" target="_blank">{$this->goodsRow['name']}</a>
+	            	</p>
+		            <div class="m-t-10">
+		            	<div class="pull-left text-danger">
+							￥{$this->goodsRow['sell_price']}
+		            	</div>
+		               	<div class="pull-right">
+							<div class="pull-left m-0 grade-star g-star{$this->goodsRow['apoint']}"></div>
+		            	</div>
+		            </div>
+		        </div>
+			</div>
+		</div>
+
+		<!-- 商品咨询详情 -->
+		<div class="product-right pull-left ov-hidden bg-white">
+			<!-- 商品咨询 -->
+			<div class="ov-hidden">
+				<h3>商品咨询</h3>
+
+				<div class="p-30">
+					<form action='{url:/site/consult_act}' method='post' name='consult'>
+						<input type='hidden' name='goods_id' value="{$this->goodsRow['id']}" />
+		                <ul class="info-form form-content">
+		                    <li class="clearfix">
+		                        <div class="info-label pull-left text-right">咨询类型</div>
+		                        <div class="info-input pull-left large-input">
+		                            <div class="form-item clearfix">
+		                                <div class="form-item-right">
+		                                    <ul class="checkbox-list">
+					                            <li class="dis-i-b checkbox-item">
+					                                <input class="checkbox-item-radio" checked="checked" type="radio" name='type' value='0' id="type0"/>
+					                                <label for="type0" class="label-sm text-center">
+					                                    <span class="checkbox-item-line">商品咨询</span><br/>
+					                                    <i class="icon-18 icon-checked"></i>
+					                                </label>
+					                            </li>
+					                            <li class="dis-i-b checkbox-item">
+					                                <input class="checkbox-item-radio" type="radio" name='type' value='1' id="type1"/>
+					                                <label for="type1" class="label-sm text-center">
+					                                    <span class="checkbox-item-line">库存及配送</span><br/>
+					                                    <i class="icon-18 icon-checked"></i>
+					                                </label>
+					                            </li>
+					                            <li class="dis-i-b checkbox-item">
+					                                <input class="checkbox-item-radio" type="radio" name='type' value='2' id="type2"/>
+					                                <label for="type2" class="label-sm text-center">
+					                                    <span class="checkbox-item-line">支付问题</span><br/>
+					                                    <i class="icon-18 icon-checked"></i>
+					                                </label>
+					                            </li>
+					                            <li class="dis-i-b checkbox-item">
+					                                <input class="checkbox-item-radio" type="radio" name='type' value='3' id="type3"/>
+					                                <label for="type3" class="label-sm text-center">
+					                                    <span class="checkbox-item-line">发票及保修</span><br/>
+					                                    <i class="icon-18 icon-checked"></i>
+					                                </label>
+					                            </li>
+					                            <li class="dis-i-b checkbox-item">
+					                                <input class="checkbox-item-radio" type="radio" name='type' value='4' id="type4"/>
+					                                <label for="type4" class="label-sm text-center">
+					                                    <span class="checkbox-item-line">促销及商品</span><br/>
+					                                    <i class="icon-18 icon-checked"></i>
+					                                </label>
+					                            </li>
+					                        </ul>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="clearfix">
+		                        <div class="info-label pull-left text-right">咨询内容</div>
+		                        <div class="info-input pull-left large-input">
+		                            <div class="form-item clearfix">
+		                                <div class="form-item-right">
+		                                	<textarea name="question" pattern='required' alt="请填写咨询内容"></textarea>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </li>
+		                    <li class="clearfix">
+		                        <div class="info-label pull-left text-right">验证码</div>
+		                        <div class="info-input pull-left small-input">
+		                            <div class="form-item clearfix">
+		                                <div class="form-item-right">
+		                                    <input class="info-text pull-left" type="text" name='captcha' pattern='^\w{5,10}$' placeholder="填写右侧图片的字符" alt="请填写验证码">
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="pull-left">
+									<img src='{url:/site/getCaptcha}' id='captchaImg' /><span class="text-muted">看不清？</span> <a href="javascript:;" onclick="changeCaptcha();">换一张</a>
+		                        </div>
+		                    </li>
+
+
+		                    <li class="clearfix">
+		                        <div class="info-label pull-left text-right"></div>
+		                        <div class="info-input pull-left">
+		                            <button type="submit" class='btn btn-warning' >发表咨询</button>
+		                        </div>
+		                    </li>
+		                </ul>
+		            </form>	
+				</div>
+					
+				<div class="info-line">
+					<div class="line-left"></div>
+					<div class="line-right"></div>
+				</div>
+
+				<div class="p-30 f-12 text-muted">
+					<p class="f-14">
+						温馨提醒：
+					</p>
+					<p>
+						您可在购买前对产品包装、颜色、运输、库存等方面进行咨询，我们有专人进行回复！
+					</p>
+					<p>
+						因厂家随时会更改一些产品的包装、颜色、产地等参数，所以该回复仅在当时对提问者有效，其他网友仅供参考！
+					</p>
+					<p>
+						咨询回复的工作时间为：<strong>周一至周五，9:00至18:00</strong>，请耐心等待工作人员回复。
+					</p>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</div>

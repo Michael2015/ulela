@@ -1,0 +1,81 @@
+{js:artTemplate}
+{js:my97date}
+<div class="headbar">
+	<div class="position"><span>模板</span><span>></span><span>模板管理</span><span>></span><span>模板列表</span></div>
+</div>
+<form action="" method="post" name="orderForm">
+	<div class="content">
+		<table class="list_table">
+			<colgroup>
+				<col width="100px" />
+				<col width="180px" />
+				<col width="90px" />
+				<col width="70px" />
+				<col width="80px" />
+				<col width="70px" />
+				<col width="110px" />
+			</colgroup>
+
+			<thead>
+			<tr>
+				<th>模板名称</th>
+				<th>模板分类</th>
+				<th>模板类型</th>
+				<th>显示状态</th>
+				<th>创建时间</th>
+				<th>排序</th>
+				<th>操作</th>
+			</tr>
+			</thead>
+
+			<tbody>
+			{foreach:items = $this->templateHandle->find()}
+			<tr>
+				<td>{$item['tpl_name']}</td>
+				<td>
+					{set:$catName = array()}
+					{query:name=category_extend as ce join=left join category as cd on cd.id eq ce.category_id fields=cd.name where=ce.goods_id eq $item[id] order=cd.id asc item=$catData}
+					[{$catData['name']}]
+					{/query}
+				</td>
+				<td>
+					<select class="auto" name="tpl_type" onchange="change({$item['id']},this)">
+						<option value="1" {echo:$item['tpl_type']==1 ? 'selected':''}>PC详情头部</option>
+						<option value="2" {echo:$item['tpl_type']==2 ? 'selected':''}>移动详情头部</option>
+						<option value="3" {echo:$item['tpl_type']==3 ? 'selected':''}>PC详情尾部</option>
+						<option value="4" {echo:$item['tpl_type']==4 ? 'selected':''}>移动详情尾部</option>
+					</select>
+				</td>
+				<td>
+					{echo:$item['tpl_is_display']?'显示':'不显示'}
+				</td>
+				<td>{$item['tpl_create_time']}</td>
+				<td><input type="text" class="tiny" name="tpl_sort" value="{$item['tpl_sort']}" onchange="change({$item['id']},this);" /></td>
+				<td>
+					<a href="{url:/goods/edit_template/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" alt="编辑" /></a>
+					<a href="javascript:void(0)" onclick="delModel({link:'{url:/goods/template_del/id/$item[id]}'})" ><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a>
+				</td>
+			</tr>
+			{/foreach}
+			</tbody>
+		</table>
+	</div>
+</form>
+{$this->templateHandle->getPageBar()}
+<script>
+    //改变类型、显示状态事件
+    function change(id,obj) {
+        console.log($(obj).serialize());
+        $.post("/goods/edit_template/id/"+id,$(obj).serialize(),function(json)
+        {
+            art.dialog({
+                title: '提示',
+                content: '操作成功',
+                icon: 'succeed',
+                ok: function(){
+                    window.location.reload();
+                }
+            });
+        });
+    }
+</script>

@@ -1,0 +1,38 @@
+<div class="bg-white p-10">
+	<div class="info-head"><span>优惠券</span></div>
+	{if:isset($propId) && $propId!=''}
+	
+	{set:$queryPropList = Api::run('getPropList',$propId)}
+	{foreach:items = $queryPropList->find()}
+	<ul class="list-unstyled">
+		<li class="common-list">
+			<table class="table table-striped table-condensed mb-0 font-sm">
+				<tr>
+					<td width="25%" class="text-muted">编号</td>
+					<td>{$item['card_name']}</td>
+				</tr>
+				<tr>
+					<td class="text-muted">面值</td>
+					<td>{$item['value']}元</td>
+				</tr>
+				<tr>
+					<td class="text-muted">有效时间</td>
+					<td>{echo:substr($item['end_time'],0,10)}</td>
+				</tr>
+				<tr>
+					<td class="text-muted">状况</td>
+					<td>{if:$item['is_userd']==1}已使用{elseif:$item['is_close']==1}已禁用{elseif:$item['is_close']==2}临时锁定{elseif:(strtotime('now')-strtotime($item['end_time']))>0}已过期{else:}可使用{/if}</td>
+				</tr>
+			</table>
+		</li>
+	</ul>
+	{/foreach}
+	{$queryPropList->getPageBar()}
+	{else:}
+	<div class="msg bg-white">
+		<p><i class="iconfont icon-31wentifankui"></i></p>
+		<p><span>“</span>您当前暂无优惠券<span>”</span></p>
+	</div>
+	{/if}
+
+</div>

@@ -1,0 +1,72 @@
+{set:$queryPointLog = Api::run('getUcenterPointLog',$this->user['user_id'],$this->c_datetime)}
+{set:$items = $queryPointLog->find()}
+<div class="bg-white p-10">
+	<ul class="nav nav-tabs nav-2-tabs mb-10">
+		<li class="active"><a href="#point-record" data-toggle="tab">积分记录</a></li>
+		<li><a href="#point-change" data-toggle="tab">积分兑换</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane active" id="point-record">
+			<div class="well well-sm">
+				积分合计：<strong class="color-light-red">{$this->memberRow['point']}</strong>
+			</div>
+
+			<!--积分消耗列表 开始-->
+			{if:$items}
+			{foreach:items = $items}
+			<ul class="list-unstyled">
+				<li class="common-list">
+					<table class="table table-striped table-condensed mb-0 font-sm">
+						<tr>
+							<td width="16%" class="text-muted">时间</td>
+							<td>{$item['datetime']}</td>
+							<td width="16%" class="text-muted">积分</td>
+							<td class="color-light-red">{$item['value']}分</td>
+						</tr>
+						<tr>
+							<td class="text-muted">说明</td>
+							<td colspan="3">{$item['intro']}</td>
+						</tr>
+					</table>
+				</li>
+			</ul>
+			{/foreach}
+			{$queryPointLog->getPageBar()}
+			<!--积分消耗列表 结束-->
+
+			{else:}
+			<div class="msg bg-white">
+				<p><i class="iconfont icon-31wentifankui"></i></p>
+				<p><span>“</span>当前暂无数据<span>”</span></p>
+			</div>
+			{/if}
+		</div>
+		<div class="tab-pane" id="point-change">
+			<div class="well well-sm">
+				积分合计：<strong class="color-light-red">{$this->memberRow['point']}</strong>
+			</div>
+
+			<form action='{url:/ucenter/trade_ticket}' method='post'>
+				{set:$nowtime = ITime::getDateTime();$isHasTicket = false;}
+				{foreach:items=Api::run('getTicketList',array('#nowtime#',$nowtime),20)}
+				{set:$isHasTicket = true;}
+				<ul class="list-unstyled mb-10">
+					<li class="common-list">
+						<div class="radio mb-10">
+							<label>
+								<input type="radio" name='ticket_id' value="{$item['id']}" class=""> {$item['name']}：{$item['value']}元（需要{$item['point']}积分）
+							</label>
+						</div>
+						<div class="mb-10 font-sm text-muted">有效日期：{$item['start_time']} 至 {$item['end_time']}</div>
+					</li>
+				</ul>
+				{/foreach}
+				<div class="mb-10">
+					<button class="btn  btn-block" type="submit">兑换优惠券</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>

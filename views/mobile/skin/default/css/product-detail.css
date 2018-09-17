@@ -1,0 +1,265 @@
+/*覆盖bootstrap轮播*/
+
+.carousel-indicators {
+    bottom: 3rem;
+}
+
+.footer-fixed-nav{
+    display: none;
+}
+
+.bottom-fixed-area.product-bottom{
+   bottom:0;
+}
+
+.detail-price {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    line-height: 2rem;
+    padding:0 10px;
+    font-size:1rem;
+    background-color:rgba(255, 255, 255, 0.3);
+    z-index:20;
+}
+.product-info-list li a{
+    display:block;
+    overflow: hidden;
+}
+
+
+/*商品选择模块 开始*/
+
+body.no-scroll{
+    overflow-y: hidden;
+}
+#mask{
+    display:none;
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    background-color:rgba(0,0,0,.8);
+    z-index:999;
+}
+#chosenBox{
+    width:100%;
+    position:fixed;
+    bottom:-5px;
+    left:0;
+    transform: translateY(100%);
+    transition: all .3s ease-out;
+    background:#fff;
+    padding:5px;
+    visibility: hidden;
+    z-index: 1001;
+}
+#chosenBox.show-height{
+    transform: translateY(100%);
+}
+#chosenBox.on{
+    visibility: visible;
+    transform: translateY(0);
+}
+.chosenBox-header{
+    position: relative;
+    padding:5px 0;
+    border-bottom:1px solid #eee;
+}
+.chosenBox-header .good-title{
+    width:90%;
+}
+.chosenBox-header .good-pic{
+    width:16%;
+    height:16%;
+    margin-right:2%;
+    border:1px solid #eee;
+    padding: 1px;
+}
+
+.chosenBox-header .good-card {
+    width: 80%;
+}
+
+.chosenBox-closeBtn{
+    position:absolute;
+    right:10px;
+    top:5px;
+    width:30px;
+    height:30px;
+    background:url(../images/close.png) no-repeat center center;
+    background-size:30px 30px;
+}
+.chosenBox-content{
+    overflow-y: auto;
+}
+
+.chosenBox-list li button{
+    display:inline-block;
+    padding:5px 10px;
+    margin-bottom: 5px;
+    border:1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    outline: none;
+}
+.button-color{
+    background: #fff;
+}
+.chosenBox-list li button.current{
+    border-color:orangered;
+}
+.disabled_spec{
+    border: 2px solid #ccc;
+    border-radius: 3px;
+    background:#ccc;
+    color: #fff;
+}
+.chosenBox-bottom{
+    margin-bottom:5px;
+    padding:10px 5px;
+    border-bottom:1px solid #ccc;
+}
+.chosenBox-nextBtn{
+    margin-bottom:10px;
+}
+.chosenBox-nextBtn:hover{
+    color:#fff;
+}
+/*商品选择模块 结束*/
+
+/* loading  */
+.loading{
+    position: absolute;
+    width:120px;
+    height:100px;
+    top:50%;
+    left:50%;
+    margin-left:-60px;
+    margin-top:-50px;
+    text-align:center;
+    display:none;
+    z-index:1002;
+}
+.loading.show-on{
+    display:block;
+}
+.loading
+.loader {
+    font-size: 12px;
+    margin: 40% auto;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: relative;
+    text-indent: -9999em;
+    -webkit-animation: load4 1.3s infinite linear;
+    animation: load 1.3s infinite linear;
+}
+@-webkit-keyframes load {
+    0%,
+    100% {
+        box-shadow: 0em -3em 0em 0.2em #ccc, 2em -2em 0 0em #ccc, 3em
+        0em 0 -0.5em #ccc, 2em 2em 0 -0.5em #ccc, 0em 3em 0 -0.5em
+        #ccc, -2em 2em 0 -0.5em #ccc, -3em 0em 0 -0.5em #ccc, -2em -2em
+        0 0em #ccc;
+    }
+    12.5% {
+        box-shadow: 0em -3em 0em 0em #ccc, 2em -2em 0 0.2em #ccc, 3em
+        0em 0 0em #ccc, 2em 2em 0 -0.5em #ccc, 0em 3em 0 -0.5em #ccc,
+        -2em 2em 0 -0.5em #ccc, -3em 0em 0 -0.5em #ccc, -2em -2em 0 -0.5em
+        #ccc;
+    }
+    25% {
+        box-shadow: 0em -3em 0em -0.5em #ccc, 2em -2em 0 0em #ccc, 3em
+        0em 0 0.2em #ccc, 2em 2em 0 0em #ccc, 0em 3em 0 -0.5em #ccc,
+        -2em 2em 0 -0.5em #ccc, -3em 0em 0 -0.5em #ccc, -2em -2em 0 -0.5em
+        #ccc;
+    }
+    37.5% {
+        box-shadow: 0em -3em 0em -0.5em #ccc, 2em -2em 0 -0.5em #ccc,
+        3em 0em 0 0em #ccc, 2em 2em 0 0.2em #ccc, 0em 3em 0 0em #ccc,
+        -2em 2em 0 -0.5em #ccc, -3em 0em 0 -0.5em #ccc, -2em -2em 0 -0.5em
+        #ccc;
+    }
+    50% {
+        box-shadow: 0em -3em 0em -0.5em #ccc, 2em -2em 0 -0.5em #ccc,
+        3em 0em 0 -0.5em #ccc, 2em 2em 0 0em #ccc, 0em 3em 0 0.2em
+        #ccc, -2em 2em 0 0em #ccc, -3em 0em 0 -0.5em #ccc, -2em -2em 0
+        -0.5em #ccc;
+    }
+    62.5% {
+        box-shadow: 0em -3em 0em -0.5em #ccc, 2em -2em 0 -0.5em #ccc,
+        3em 0em 0 -0.5em #ccc, 2em 2em 0 -0.5em #ccc, 0em 3em 0 0em
+        #ccc, -2em 2em 0 0.2em #ccc, -3em 0em 0 0em #ccc, -2em -2em 0
+        -0.5em #ccc;
+    }
+    75% {
+        box-shadow: 0em -3em 0em -0.5em #ccc, 2em -2em 0 -0.5em #ccc,
+        3em 0em 0 -0.5em #ccc, 2em 2em 0 -0.5em #ccc, 0em 3em 0 -0.5em
+        #ccc, -2em 2em 0 0em #ccc, -3em 0em 0 0.2em #ccc, -2em -2em 0
+        0em #ccc;
+    }
+    87.5% {
+        box-shadow: 0em -3em 0em 0em #ccc, 2em -2em 0 -0.5em #ccc, 3em
+        0em 0 -0.5em #ccc, 2em 2em 0 -0.5em #ccc, 0em 3em 0 -0.5em
+        #ccc, -2em 2em 0 0em #ccc, -3em 0em 0 0em #ccc, -2em -2em 0
+        0.2em #ccc;
+    }
+}
+@keyframes load4 {
+    0%,
+    100% {
+        box-shadow: 0em -3em 0em 0.2em #ccc, 2em -2em 0 0em #ccc, 3em
+        0em 0 -0.5em #ccc, 2em 2em 0 -0.5em #ccc, 0em 3em 0 -0.5em
+        #ccc, -2em 2em 0 -0.5em #ccc, -3em 0em 0 -0.5em #ccc, -2em -2em
+        0 0em #ccc;
+    }
+    12.5% {
+        box-shadow: 0em -3em 0em 0em #ccc, 2em -2em 0 0.2em #ccc, 3em
+        0em 0 0em #ccc, 2em 2em 0 -0.5em #ccc, 0em 3em 0 -0.5em #ccc,
+        -2em 2em 0 -0.5em #ccc, -3em 0em 0 -0.5em #ccc, -2em -2em 0 -0.5em
+        #ccc;
+    }
+    25% {
+        box-shadow: 0em -3em 0em -0.5em #ccc, 2em -2em 0 0em #ccc, 3em
+        0em 0 0.2em #ccc, 2em 2em 0 0em #ccc, 0em 3em 0 -0.5em #ccc,
+        -2em 2em 0 -0.5em #ccc, -3em 0em 0 -0.5em #ccc, -2em -2em 0 -0.5em
+        #ccc;
+    }
+    37.5% {
+        box-shadow: 0em -3em 0em -0.5em #ccc, 2em -2em 0 -0.5em #ccc,
+        3em 0em 0 0em #ccc, 2em 2em 0 0.2em #ccc, 0em 3em 0 0em #ccc,
+        -2em 2em 0 -0.5em #ccc, -3em 0em 0 -0.5em #ccc, -2em -2em 0 -0.5em
+        #ccc;
+    }
+    50% {
+        box-shadow: 0em -3em 0em -0.5em #ccc, 2em -2em 0 -0.5em #ccc,
+        3em 0em 0 -0.5em #ccc, 2em 2em 0 0em #ccc, 0em 3em 0 0.2em
+        #ccc, -2em 2em 0 0em #ccc, -3em 0em 0 -0.5em #ccc, -2em -2em 0
+        -0.5em #ccc;
+    }
+    62.5% {
+        box-shadow: 0em -3em 0em -0.5em #ccc, 2em -2em 0 -0.5em #ccc,
+        3em 0em 0 -0.5em #ccc, 2em 2em 0 -0.5em #ccc, 0em 3em 0 0em
+        #ccc, -2em 2em 0 0.2em #ccc, -3em 0em 0 0em #ccc, -2em -2em 0
+        -0.5em #ccc;
+    }
+    75% {
+        box-shadow: 0em -3em 0em -0.5em #ccc, 2em -2em 0 -0.5em #ccc,
+        3em 0em 0 -0.5em #ccc, 2em 2em 0 -0.5em #ccc, 0em 3em 0 -0.5em
+        #ccc, -2em 2em 0 0em #ccc, -3em 0em 0 0.2em #ccc, -2em -2em 0
+        0em #ccc;
+    }
+    87.5% {
+        box-shadow: 0em -3em 0em 0em #ccc, 2em -2em 0 -0.5em #ccc, 3em
+        0em 0 -0.5em #ccc, 2em 2em 0 -0.5em #ccc, 0em 3em 0 -0.5em
+        #ccc, -2em 2em 0 0em #ccc, -3em 0em 0 0em #ccc, -2em -2em 0
+        0.2em #ccc;
+    }
+}
+
+/* loading  */

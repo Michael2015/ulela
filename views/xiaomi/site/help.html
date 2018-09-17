@@ -1,0 +1,37 @@
+<div class="body-contain bg-gray ov-hidden">
+    <div class="w1230 margin-0-auto">
+        <!--position-->
+        <ol class="breadcrumb f-12">
+            <li><a href='{url:}'>首页</a></li>
+            <li><a href="{url:/site/help_list/id/$this->cat_row['id']}">{$this->cat_row['name']}</a></li>
+            <li class="active">{$this->help_row['name']}</li>
+        </ol>
+        <!--position-->
+
+        <div class="u-section-left bg-white pull-left m-b-60">
+            {foreach:items=Api::run('getHelpCategoryLeft',10)}
+            <div class="p-15">
+                <h4 class="text-muted">{$item['name']}</h4>
+                <div class="side-box-content">
+                    <ul class="list-unstyled h-list">
+                        {foreach:items=Api::run('getHelpListByCatidAll',$this->help_row['cat_id']) item=$help_row}
+                        <li><a class="f-12" href="{url:/site/help/id/$help_row[id]/}">{$help_row['name']} <span class="glyphicon glyphicon-chevron-right text-muted"></span></a></li>
+                        {/foreach}
+                    </ul>
+                </div>
+            </div>
+            {/foreach}
+        </div>
+
+        <div class="u-section-right bg-white pull-left m-b-60">
+            <div class="p-30">
+                <h3 class="m-b-40 m-t-20">{$this->help_row['name']}</h3>
+                <div class="hc-content f-12">
+                    {$this->help_row['content']}
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

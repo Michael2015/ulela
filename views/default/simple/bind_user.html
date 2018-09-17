@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>第三方登录_{$this->_siteConfig->name}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<link type="image/x-icon" href="{webroot:favicon.ico}" rel="icon">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	{js:jquery}
+	{js:validate}
+	{js:form}
+	{js:dialog}
+	<style type="text/css">
+		.valid-msg{display:none;line-height:0px}
+		.header {
+		    color: #848484;
+		    height: 63px;
+		    text-align: right;
+		}
+		.header .logo {
+		    float: left;
+		    height: 53px;
+		    overflow: hidden;
+		    width: 250px;
+		}
+		.header .logo a {
+		    display: block;
+		    height: 53px;
+		    line-height: 53px;
+		    text-indent: 9999px;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+		<h1 class="logo"><a title="{$this->_siteConfig->name}" style="background:url({if:$this->_siteConfig->logo}{webroot:$this->_siteConfig->logo}{else:}{skin:images/front/logo.gif}{/if});" href="{url:}">{$this->_siteConfig->name}</a></h1>
+	</div>
+
+	<hr/>
+
+	<div class="container-fluid">
+	{set:$type = IReq::get('bind_type')}
+	{if:$type == 'exists'}
+	<h3>登录已有账号进行绑定</h3>
+	<form action='{url:/simple/bind_exists_user}' method='post' class="form-horizontal">
+		<div class="form-group">
+			<p class="text-primary bg-info" style="padding:15px">
+				绑定已有账号信息，您可以直接把第三方登录的用户信息与您已经注册过的账号进行绑定
+			</p>
+		</div>
+
+		<div class="form-group">
+			<label class="col-xs-4 control-label">用户名/邮箱/手机号：</label>
+			<div class="col-xs-4">
+				<input type="text" name="login_info" class="form-control" pattern="required" alt="请输入正确的用户名或者邮箱地址" />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-xs-4 control-label">密码：</label>
+			<div class="col-xs-4">
+				<input type="password" name='password' class="form-control" pattern="^\S{4,20}$" alt="请输入正确的密码4-20个字符" />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-xs-offset-4 col-xs-4">
+				<input type="submit" value="登录绑定" class="btn btn-primary" />
+				<input type="button" value="没有账号" class="btn btn-warning" onclick="window.location.href='{url:/simple/bind_user}';" />
+			</div>
+		</div>
+	</form>
+
+	{else:}
+
+	<h3>完善基本的账号信息</h3>
+	<form action='{url:/simple/bind_not_exists_user}' method='post' class="form-horizontal">
+		<div class="form-group">
+			<p class="text-primary bg-info" style="padding:15px">
+				完善了基本信息后，您可以直接把第三方登录的用户信息与您的注册账号进行绑定
+			</p>
+		</div>
+
+		{if:$this->_siteConfig->reg_option == 1}
+		<div class="form-group">
+			<label class="col-xs-offset-2 col-xs-2 control-label">邮箱：</label>
+			<div class="col-xs-3">
+				<input class="form-control" type="text" name='email' pattern="email" alt="填写正确的邮箱格式" />
+			</div>
+			<div class="col-xs-5">
+				<span class="help-block">填写正确的邮箱格式</span>
+			</div>
+		</div>
+		{/if}
+
+		<div class="form-group">
+			<label class="col-xs-offset-2 col-xs-2 control-label">用户名：</label>
+			<div class="col-xs-3">
+				<input class="form-control" name='username' type="text" value="{$name}" pattern="^[\w\u0391-\uFFE5]{2,20}$" alt="填写2-20个字符，可以为字数，数字下划线和中文" />
+			</div>
+			<div class="col-xs-5">
+				<span class="help-block">格式为2-20个字符，可以为字数，数字下划线和中文</span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-xs-offset-2 col-xs-2 control-label">设置密码：</label>
+			<div class="col-xs-3">
+				<input class="form-control" type="password" name='password' pattern="^\S{6,32}$" bind='repassword' alt='填写6-32个字符' />
+			</div>
+			<div class="col-xs-5">
+				<span class="help-block">填写登录密码，6-32个字符</span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-xs-offset-2 col-xs-2 control-label">确认密码：</label>
+			<div class="col-xs-3">
+				<input class="form-control" type="password" name='repassword' pattern="^\S{6,32}$" bind='password' alt='重复上面所填写的密码' />
+			</div>
+			<div class="col-xs-5">
+				<span class="help-block">重复上面所填写的密码</span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-xs-offset-2 col-xs-2 control-label">验证码：</label>
+			<div class="col-xs-2">
+				<input class='form-control' type='text' name='captcha' pattern='^\w{5,10}$' alt='填写图片所示的字符' />
+			</div>
+			<div class="col-xs-1">
+				<img src='{url:/simple/getCaptcha}' id='captchaImg' onclick="changeCaptcha();" />
+			</div>
+			<div class="col-xs-5">
+				<span class="help-block">填写图片所示的字符</span>
+			</div>
+		</div>
+
+		{if:$this->_siteConfig->reg_option == 3}
+		<div class="form-group">
+			<label class="col-xs-offset-2 col-xs-2 control-label">手机号：</label>
+			<div class="col-xs-3">
+				<input class="form-control" type="text" name='mobile' pattern="mobi" alt="填写正确的手机格式" />
+			</div>
+			<div class="col-xs-5">
+				<span class="help-block">填写正确的手机格式</span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-xs-offset-2 col-xs-2 control-label">手机验证：</label>
+			<div class="col-xs-2">
+				<input class='form-control' type='text' name='mobile_code' pattern='^\w{4,6}$' />
+			</div>
+			<div class="col-xs-1">
+				<input class="btn btn-default" onclick="_sendMobileCode(this);" type="button" value="获取验证码" />
+			</div>
+			<div class="col-xs-5">
+				<span class="help-block">填写手机短信验证码</span>
+			</div>
+		</div>
+		{/if}
+
+		<div class="form-group">
+			<div class="col-xs-offset-4 col-xs-4">
+				<input type="submit" value="注册绑定" class="btn btn-primary" />
+				<input type="button" value="我有账号" class="btn btn-warning" onclick="window.location.href='{url:/simple/bind_user/bind_type/exists}';" />
+			</div>
+		</div>
+	</form>
+	{/if}
+	</div>
+</body>
+</html>

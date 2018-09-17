@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>使用优惠券</title>
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	{js:form}
+	{js:jquery}
+	{js:dialog}
+	{js:artTemplate}
+	{js:validate}
+	<style type="text/css">
+		.valid-msg{display:none}
+		.invalid-msg {font-size: 12px;font-weight: 300;}
+		label.control-label{margin-bottom:0; padding-top: 6px;text-align: right;}
+		select.form-control { margin-bottom:4px;}
+	</style>
+</head>
+
+<body>
+<div class="container-fluid">
+	<form action="#" method="post" name="ticketForm" class="form-horizontal">
+		<div class="form-group form-group-sm text-danger">
+			注：优惠券仅能抵扣一个商家的商品金额
+		</div>
+
+		<div class="form-group form-group-sm">
+			<input type="button" onclick="cancel_ticket();" class="btn btn-danger btn-sm" value="不用优惠券" />
+		</div>
+
+		<div class="form-group form-group-sm" id="ticket_show_box"></div>
+		<hr />
+		<div class="form-group form-group-sm text-success">有实体优惠券？</div>
+
+		<div class="form-group form-group-sm">
+			<label for="ticket_pwd" class="control-label col-xs-3 text-right">卡号：</label>
+			<div class="col-xs-9">
+				<input type='text' class='form-control' id='ticket_num' placeholder="卡号" />
+			</div>
+		</div>
+
+		<div class="form-group form-group-sm">
+			<label for="ticket_pwd" class="control-label col-xs-3 text-right">密码：</label>
+			<div class="col-xs-9">
+				<input type='password' class='form-control' id='ticket_pwd' placeholder="密码" />
+			</div>
+		</div>
+
+		<div class="form-group form-group-sm">
+			<div class="col-xs-offset-3 col-xs-9">
+				<input type="button" class="btn btn-success btn-sm" onclick="add_ticket();" value="添加优惠券" />
+			</div>
+		</div>
+		<hr />
+	</form>
+</div>
+</body>
+
+<!--优惠券模板-->
+<script type='text/html' id='ticketTrTemplate'>
+<div class="radio">
+	<label>
+
+		<input name="ticket_id" onclick="userTicket(<%=item.seller_id%>);" type="radio" value="<%=item.id%>" price="<%=item.value%>" seller="<%=item.seller_id%>" <%if(!item.can_use){%>disabled="disabled"<%}%> />
+		<span  <%if(!item.can_use){%>class="text-muted"<%}%>>
+			<%=item.name%>
+			【￥<%=item.value%>】
+		</span>
+	</label>
+</div>
+</script>
+
+<script type='text/javascript'>
+jQuery(function()
+{
+	{if:$this->prop}
+	{foreach:items=$this->prop}
+	var propItem = template.render("ticketTrTemplate",{"item":{echo:JSON::encode($item)}});
+	$('#ticket_show_box').prepend(propItem);
+	{/foreach}
+	$('#ticket_show_box').show();
+	{/if}
+})
+
+/**
+ * @brief 选择优惠券
+ * @param seller_id int 商家ID
+ */
+function userTicket(seller_id)
+{
+	var sellerInfo = "{$this->sellerInfo}";
+	var sellerArray= sellerInfo.split("_");
+
+	if(jQuery.inArray(seller_id,sellerArray) !== -1 || seller_id == 0)
+	{
+		return true;
+	}
+
+	alert("该优惠券不能用于此商家");
+	$('[name="ticket_id"]').prop('checked',false);
+	return false;
+}
+
+//取消红包
+function cancel_ticket()
+{
+	$('[name="ticket_id"]').prop('checked',false);
+}
+
+//添加优惠券
+function add_ticket()
+{
+	var ticket_num = $('#ticket_num').val();
+	var ticket_pwd = $('#ticket_pwd').val();
+
+	if(ticket_num == '' || ticket_pwd == '')
+	{
+		alert('请填写卡号和密码');
+		return '';
+	}
+
+	$.getJSON("{url:/block/add_download_ticket}",{"ticket_num":ticket_num,"ticket_pwd":ticket_pwd},function(content){
+		if(content.isError == false)
+		{
+			if($('[name="ticket_id"][value="'+content.data.id+'"]').length > 0)
+			{
+				alert('优惠券已经存在，不要重复添加');
+				return;
+			}
+
+			var ticketHtml = template.render('ticketTrTemplate',{item:content.data});
+			$('#ticket_show_box').prepend(ticketHtml);
+
+			$('#ticket_show_box').show();
+			$('[name="ticket_id"]').prop('checked',true);
+			$('[name="ticket_id"]:first').trigger('click');
+
+			$('#ticket_num').val('');
+			$('#ticket_pwd').val('');
+		}
+		else
+		{
+			alert(content.message);
+		}
+	});
+}
+</script>
+</html>

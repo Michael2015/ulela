@@ -1,0 +1,52 @@
+<div class="main_fr f_r">
+	<div class="uc_title m_10">
+		<label class="current"><span>我的经验值</span></label>
+	</div>
+	<div class="box m_10">
+		<p class="text">
+			您当前的经验值：<b class="brown">{$this->memberRow['exp']}</b>
+			&nbsp;&nbsp;
+			<?php 
+				$_next_group = false;
+				foreach($this->level_up as $_gid => $_lexp)
+				{
+					if($_next_group)
+					{
+						$_next_group = $_gid;
+						break;
+					}
+
+					if($_gid == $this->memberRow['group_id'])
+					{
+						$_next_group = true;
+					}
+				}  
+			?>
+			<?php if(is_numeric($_next_group)): ?>
+				距离下一等级【<?php echo $this->user_group_arr[$_next_group]; ?>】还差<?php echo $this->level_up[$_next_group] - $this->memberRow['exp']; ?>点经验值
+			<?php endif; ?>
+			
+		</p>
+	</div>
+	<div class="form_content m_10">
+		<div class="cont">
+			<table class="list_table" width="100%" cellpadding="0" cellspacing="0">
+			<col width="200px" />
+			<col width="200px" />
+			<col />
+			<thead><tr><th>记录时间</th><th>经验值</th><th>说明</th></tr></thead>
+			<tbody>
+				{set:$user_id = $this->user['user_id']}
+				{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+                {set:$queryExpLog = Api::run('getExpList',$user_id)}
+				{foreach:items = $queryExpLog->find()}
+				<tr>
+					<td>{$item['datetime']}</td><td>{$item['value']}</td><td><span class="blue">{$item['intro']}</span></td>
+				</tr>
+                {/foreach}
+                <tr><td colspan='3'>{$queryExpLog->getPageBar()}</td></tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+</div>

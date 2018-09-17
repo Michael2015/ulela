@@ -1,0 +1,47 @@
+<style type="text/css">
+	
+* {
+  letter-spacing: 0px;
+}
+.yui3-u-16-24  {
+  color: #555;
+  font-size: 15px;
+}
+.wrapper{
+  margin: 0 10px;
+  background-color: #fff;
+  padding: 10px 10px;
+}
+li {
+ 
+  border-bottom: 1px solid #ececec;
+  padding: 20px 0;
+
+}
+.title2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #555
+}
+</style>
+
+<div class="wrapper clearfix container_2 yui3-g-r">
+
+	<div class="main f_r">
+		<div class="box m_10">
+			<div class="title2">{if:$catRow}{$catRow['name']}{else:}最新资讯{/if}</div>
+			<div class="cont">
+				
+				<ul class="newslist">
+				    {foreach:items = $queryArticle->find()}
+					<li ><a class="yui3-u-16-24" href="{url:/site/article_detail/id/$item[id]}">{$item['title']}</a>
+                   <span class="yui3-u-7-24">{echo:date('Y-m-d',strtotime($item['create_time']))}</span>
+					</li>
+					
+					{/foreach}
+				</ul>
+				{$queryArticle->getPageBar()}
+			</div>
+		</div>
+	</div>
+</div>

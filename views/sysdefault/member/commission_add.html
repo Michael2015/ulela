@@ -1,0 +1,51 @@
+{js:kindeditor}
+<div class="headbar">
+	<div class="position"><span>会员</span><span>></span><span>会员管理</span><span>></span><span>佣金手动发放</span></div>
+</div>
+<div class="content_box">
+	<div class="content form_content">
+		<form action="{url:/member/member_commission_add}" method="post" id="member_inviter">
+			<table class="form_table" cellpadding="0" cellspacing="0">
+				<colgroup>
+					<col width="150px" />
+					<col />
+				</colgroup>
+
+				<tr>
+					<th>发放用户名：</th>
+					<td>
+						<input class="normal" id="username" name="username" type="text" value="" pattern="required" alt="用户名不能为空" /><label>* 必选项</label>
+						<label>队长用户名</label>
+					</td>
+				</tr>
+				<tr>
+					<th>金额：</th>
+					<td>
+						<input class="normal" id="money" name="money" type="text" value="" pattern="required" alt="金额不能为空" /><label>* 必选项</label>
+						<label>需要发放的金额，支持小数</label>
+					</td>
+				</tr>
+				<tr>
+					<th>备注：</th>
+					<td>
+						<input class="normal" id="message" name="message" type="text" value="xx队yyyy年mm月团队业绩达标奖励" pattern="required" alt="备注不能为空" /><label>* 必选项</label>
+						<label>填写备注</label>
+					</td>
+				</tr>
+				<tr>
+					<th>类型：</th>
+					<td>
+						<select name="type" class="normal">
+							<option value="add_commission">佣金</option>
+							<option value="drawback">退款</option>
+						</select>
+						<label>* 必选项</label>
+					</td>
+				</tr>
+				<tr>
+					<td></td><td><input class="submit" type="submit" value="确 定"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>

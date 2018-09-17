@@ -1,0 +1,465 @@
+{js:artTemplate}
+<script type='text/javascript' src='{theme:javascript/orderFormClass.js?v=20170119}'></script>
+
+
+
+
+<form action='{url:/simple/cart3}' method='post' name='order_form' onsubmit='return orderFormInstance.isSubmit();'>
+	<input type='hidden' name='direct_gid' value='{$this->gid}'/>
+	<input type='hidden' name='direct_type' value='{$this->type}'/>
+	<input type='hidden' name='direct_num' value='{$this->num}'/>
+	<input type='hidden' name='direct_promo' value='{$this->promo}'/>
+	<input type='hidden' name='direct_active_id' value='{$this->active_id}'/>
+	<!--自提点数据-->
+	{if: $this->takeselfRow}
+	<input type="hidden" name="takeself" value="{echo: $this->takeselfRow['id']}">
+	{/if}
+
+	<!--地址管理 开始-->
+	<div class="bg-white mb-10 p-10 pt-15 pb-15 font-sm">
+		<div class="pull-left text-muted mr-15">
+			<span>收货信息</span>
+		</div>
+
+
+		<!--收货表单信息 开始-->
+		<div class="ov-h">
+			<ul class="addr-list font-sm ov-h pos-relative radio-fold-list">
+				{foreach:items=$this->addressList key=$_index}
+				<li class="pb-10 mb-10 bd-btm-1s bd-color-gray item" id="addressItem{$item['id']}" {if: $_index>0}style="display:none"{/if}>
+					<div class="cart-radio radio-fold">
+						<label for="address_{$item['id']}">
+							<input id="address_{$item['id']}" class="radio" data-idpre="addressItem" name="radio_address" type="radio" value="{$item['id']}" onclick='orderFormInstance.getDelivery({$item['province']});'/>
+							<!-- 是否选择 -->
+							<div class="radio-style">
+								<i class="iconfont icon-weixuanzhong text-muted font-xl"></i>
+								<i class="iconfont icon-xuanzhong text-warning font-xl"></i>
+							</div>
+
+							<strong>{$item['accept_name']}&nbsp;&nbsp;{$item['mobile']}</strong>
+							{if: $this->is_cbe}
+							<br>
+							{if: $item['accept_id']}
+							<span class="text-muted">{$item['accept_id']}</span>
+							{else:}
+							<span class="text-danger">缺少身份证信息</span>
+							{/if}
+							{/if}
+							<p class="text-muted">{$item['province_val']} {$item['city_val']} {$item['area_val']} {$item['address']}</p>
+						</label>
+					</div>
+					<p class="clearfix">
+						<a href="javascript:;" onclick="orderFormInstance.addressEdit({$item['id']}, {echo: $this->is_cbe?$this->is_cbe:0});"><span class="label label-thin label-warning">修改地址</span></a>
+						&nbsp;
+						<a href="javascript:;" onclick="orderFormInstance.addressDel({$item['id']});"><span class="label label-thin label-gray">删除</span></a>
+					</p>
+				</li>
+				{/foreach}
+				<li class="show-list-button" onclick="showMoreList(this, 'radio_address')" data-status="0">
+					<i class="iconfont icon-unfold"></i>
+					<i class="iconfont icon-fold" style="display:none"></i>
+					<span class="tips">展开</span>
+				</li>
+			</ul>
+			<div class="clearfix">
+				<a class="btn btn-xs btn-primary btn-sm" onclick='orderFormInstance.addressAdd({echo: $this->is_cbe?$this->is_cbe:0});' href="javascript:;">
+					<i class="iconfont icon-add font-df lh-sm"></i>新地址
+				</a>
+			</div>
+
+			<!--收货地址项模板-->
+			<script type='text/html' id='addressLiTemplate'>
+				<li class="pb-10 mb-10 bd-btm-1s bd-color-gray item" id="addressItem<%=item['id']%>">
+					<div class="cart-radio radio-fold">
+						<label for="address_<%=item['id']%>">
+							<input id="address_<%=item['id']%>" class="radio" data-idpre="addressItem" name="radio_address" type="radio" value="<%=item['id']%>" onclick='orderFormInstance.getDelivery(<%=item['province']%>);'/>
+							<!-- 是否选择 -->
+							<div class="radio-style">
+								<i class="iconfont icon-weixuanzhong text-muted font-xl"></i>
+								<i class="iconfont icon-xuanzhong text-warning font-xl"></i>
+							</div>
+
+							<strong><%=item['accept_name']%>&nbsp;&nbsp;<%=item['mobile']%></strong>
+							{if: $this->is_cbe}
+							<br>
+							<span class="text-muted"><%=item['accept_id']%></span>
+							{/if}
+							<p class="text-muted"><%=item['province_val']%> <%=item['city_val']%> <%=item['area_val']%> <%=item['address']%></p>
+						</label>
+					</div>
+					<p class="clearfix">
+						<a href="javascript:;" onclick="orderFormInstance.addressEdit(<%=item['id']%>, {echo: $this->is_cbe?$this->is_cbe:0});"><span class="label label-thin label-warning">修改地址</span></a>
+						&nbsp;
+						<a href="javascript:;" onclick="orderFormInstance.addressDel(<%=item['id']%>);"><span class="label label-thin label-gray">删除</span></a>
+					</p>
+				</li>
+			</script>
+		</div>
+	</div>
+	<!--地址管理 结束-->
+
+	<!--配送方式 开始-->
+	<div class="bg-white mb-10 p-10 pt-15 pb-15 font-sm">
+		<div class="pull-left text-muted mr-15">
+			<span>配送方式</span>
+		</div>
+
+		<!--收货表单信息 开始-->
+		<div class="ov-h">
+			<ul class="font-sm ov-h pos-relative radio-fold-list">
+				<!--增加跨境电商专用物流方式-->
+				{set:$deliveryData = Api::run('getDeliveryList', array("#is_cbe#", intval($this->is_cbe)))}
+				{foreach:items = $deliveryData key=$_index}
+				<li class="pb-10 mb-10 bd-btm-1s bd-color-gray item" id="deliveryItem{$item['id']}" {if: $_index>0}style="display:none"{/if}>
+					<div class="cart-radio radio-fold">
+						<label for="delivery_{$item['id']}" class="mb-0">
+							<input id="delivery_{$item['id']}" class="radio" data-idpre="deliveryItem" name="delivery_id" type="radio" value="{$item['id']}" onclick='orderFormInstance.deliverySelected({$item['id']});'/>
+							<!-- 是否选择 -->
+							<div class="radio-style">
+								<i class="iconfont icon-weixuanzhong text-muted font-xl"></i>
+								<i class="iconfont icon-xuanzhong text-warning font-xl"></i>
+							</div>
+
+							<strong>{$item['name']}</strong>
+							<p class="text-muted" id="deliveryShow{$item['id']}"></p>
+						</label>
+					</div>
+					<p class="clearfix text-ov-h mt-5">
+						{if:$item['type'] == 2}
+						<a href="javascript:orderFormInstance.selectTakeself({$item['id']});"><span class="label label-thin label-warning">选择自提点</span></a>
+						<span id="takeself{$item['id']}" class="text-muted"></span>
+						{/if}
+					</p>
+				</li>
+				{/foreach}
+				<li class="show-list-button" onclick="showMoreList(this, 'delivery_id')" data-status="0">
+					<i class="iconfont icon-unfold"></i>
+					<i class="iconfont icon-fold" style="display:none"></i>
+					<span class="tips">展开</span>
+				</li>
+			</ul>
+
+			<!--配送方式展示模板-->
+			<script type='delivery' id='deliveryTemplate'>
+				运费：<span class="color-orange"><%=item['price']%></span>元
+				<%if(item['protect_price'] > 0){%> 
+					, 保价：<span class="color-orange"><%=item['protect_price']%></span>元
+				<%}%>
+			</script>
+
+			<!--自提点模版-->
+			<script type='text/html' id='takeselfTemplate'>
+				已选择：<%=item['name']%>
+			</script>
+
+		</div>
+	</div>
+	<!--配送方式 结束-->
+
+	<!--支付方式 开始-->
+	<!--<div class="bg-white mb-10 p-10 pt-15 pb-10 font-sm">
+		<div class="pull-left text-muted mr-15">
+			<span>支付方式</span>
+		</div>
+
+		<div class="ov-h">
+			<ul class="font-sm ov-h">
+				{set:$paymentList=Api::run('getPaymentList', $this->is_cbe)}
+				{foreach:items = $paymentList}
+				{set:$paymentPrice = CountSum::getGoodsPaymentPrice($item['id'],$this->sum);}
+				<li class="pb-10 mb-10 bd-btm-1s bd-color-gray">
+					<div class="cart-radio">
+						<label for="paytype_{$item['id']}" class="mb-0">
+							<input id="paytype_{$item['id']}" class="radio" alt="{$paymentPrice}" name="payment" type="radio" value="{$item['id']}" onclick='orderFormInstance.paymentSelected({$item['id']});'/>
+							<div class="radio-style">
+								<i class="iconfont icon-weixuanzhong text-muted font-xl"></i>
+								<i class="iconfont icon-xuanzhong text-warning font-xl"></i>
+							</div>
+
+							<strong>{$item['name']}</strong>
+						</label>
+					</div>
+				</li>
+				{/foreach}
+			</ul>
+		</div>
+	</div>-->
+	<!--支付方式 结束-->
+
+	<!--订单留言 开始-->
+	<div class="bg-white mb-10 p-10 pt-15 pb-10 font-sm">
+		<div class="pull-left text-muted mr-15 mt-6">
+			<span>订单附言</span>
+		</div>
+
+		<div class="ov-h">
+			<input class="form-control input-sm" type="text" name='message'/>
+		</div>
+	</div>
+	<!--订单留言 结束-->
+
+	<!--购买清单 开始-->
+	<div class="bg-white mb-10 p-10 pt-15 pb-5 font-sm">
+		<!-- 商品展示 开始-->
+		<ul class="list-unstyled">
+			{foreach:items = $this->goodsList}
+			<li class="pb-10 mb-10 bd-btm-1s bd-color-gray">
+				<div class="media">
+					<a class="media-left" href="{url:/site/products/id/$item['goods_id']}">
+						<img src="{url:/pic/thumb/img/$item['img']/w/60/h/60}" width="60" height="60" alt="{$item['name']}">
+					</a>
+					<div class="media-body">
+						<p><a href="{url:/site/products/id/$item['goods_id']}">{$item['name']}</a></p>
+						{if:isset($item['spec_array'])}
+						<p class="text-muted">
+							{set:$spec_array=Block::show_spec($item['spec_array']);}
+							{foreach:items=$spec_array item=$specValue key=$specName}
+							{$specValue}&nbsp;&nbsp;
+							{/foreach}
+						</p>
+						{/if}
+						<p class="text-muted mt-5">
+							<strong>&times; {$item['count']}</strong>
+							&nbsp;&nbsp;小计: <span class="color-orange" id="deliveryFeeBox_{$item['goods_id']}_{$item['product_id']}_{$item['count']}">{$item['sum']}</span>元
+						</p>
+					</div>
+				</div>
+			</li>
+			{/foreach}
+		</ul>
+		<!-- 商品展示 结束-->
+	</div>
+	<!--购买清单 结束-->
+
+	<!--优惠券 开始-->
+	<div class="bg-white mb-10 p-10 pt-15 pb-10 font-sm">
+		<div class="pull-left text-muted mr-15 mt-6">
+			<span>优惠券</span>
+		</div>
+
+		<div class="ov-h">
+			<select id="ticket_select" class="form-control input-sm"><option value="0">不使用</option></select>
+		</div>
+	</div>
+	<!--优惠券 结束-->
+
+	<!--金额结算-->
+	<div class="bg-white mb-10 p-10 pt-15 font-sm text-muted">
+
+		<div class="clearfix bd-btm-1s bd-color-gray pb-5 mb-5">
+			<div class="pull-left text-muted mr-15">
+				<span>{if:$this->final_sum != $this->sum}优惠后总金额{else:}商品总金额{/if}</span>
+			</div>
+			<p class="text-right"><span class="color-orange">{$this->final_sum}</span> 元</p>
+		</div>
+
+		<div class="clearfix bd-btm-1s bd-color-gray pb-5 mb-5">
+			<div class="pull-left text-muted mr-15">
+				<span>优惠券</span>
+			</div>
+			<p class="text-right">-<span name='ticket_value' class="color-orange">0</span> 元</p>
+		</div>
+
+		<div class="hide clearfix bd-btm-1s bd-color-gray pb-5 mb-5">
+			<div class="pull-left text-muted mr-15">
+				<span>税金</span>
+			</div>
+			<p class="text-right">+<span id='tax_fee' class="color-orange">0</span> 元</p>
+		</div>
+
+		<div class="clearfix bd-btm-1s bd-color-gray pb-5 mb-5">
+			<div class="pull-left text-muted mr-15">
+				<span>运费</span>
+			</div>
+			<p class="text-right">+<span id='delivery_fee_show' class="color-orange">0</span> 元</p>
+		</div>
+
+		<div class="clearfix bd-btm-1s bd-color-gray pb-5 mb-5">
+			<div class="pull-left text-muted mr-15">
+				<span>保价</span>
+			</div>
+			<p class="text-right">+<span id='protect_price_value' class="color-orange">0</span> 元</p>
+		</div>
+
+		<div class="hide clearfix bd-btm-1s bd-color-gray pb-5 mb-5">
+			<div class="pull-left text-muted mr-15">
+				<span>手续费</span>
+			</div>
+			<p class="text-right">+<span id='payment_value' class="color-orange">0</span> 元</p>
+		</div>
+
+		{if: $this->my_commission}
+		<div class="clearfix">
+			<div class="text-center text-muted mr-15">
+				<span>（预计返现：{$this->my_commission}元）</span>
+			</div>
+		</div>
+		{/if}
+	</div>
+
+	<!--暂时关闭发票
+	<ul class="bg-white p-10 mb-10">
+		
+		<li>
+			<div class="checkbox">
+				<label>
+					<input class="radio" onclick="orderFormInstance.doAccount();$('#tax_title').toggle();" name="taxes"
+						   type="checkbox" value="{$this->goodsTax}"/>
+					是否需要发票？(税金:￥{$this->goodsTax})
+				</label>
+			</div>
+		</li>
+		<li class="pb-10">
+			<div id="tax_title">
+				<div class="input-group">
+					<div class="input-group-addon font-sm">发票抬头</div>
+					<input type="text" class="form-control input-sm" name="tax_title">
+				</div>
+			</div>
+		</li>
+	</ul>-->
+</form>
+
+<!--底部固定模块 开始-->
+<div class="footer-fixed-nav product-bottom container-fluid">
+	<div class="row height100 text-center">
+		<!-- 应付总额 -->
+		<div class="col-xs-8 height100 bd-top-1s">
+			<p class="color-orange lh-xxl text-center">
+				应付合计： <strong id='final_sum'>{$this->final_sum}</strong> 元
+			</p>
+		</div>
+
+		<!-- 提交订单 -->
+		<div class="col-xs-4 height100">
+			<button onclick="$('form[name=\'order_form\']').submit();" class="btn btn-warning">提交订单</button>
+		</div>
+
+	</div>
+</div>
+<!--底部固定模块 结束-->
+
+<script type="text/javascript">
+    // 展开更多地址/配送方式(手机版专用)
+    function showMoreList(obj, itemName)
+    {
+        var status = $(obj).attr('data-status');
+
+        if (status == 0) //展开
+        {
+            $('input[type="radio"][name="'+itemName+'"]').parent().parent().parent().siblings('li.item').show();
+            $(obj).attr('data-status', 1);
+            $(obj).find('span.tips').text("折叠");
+            $(obj).find('i.icon-fold').show();
+            $(obj).find('i.icon-unfold').hide();
+        }
+        else
+        {
+            showCheckedRadioOnly(itemName);
+        }
+    }
+
+    // 只显示已选中的地址
+    function showCheckedRadioOnly(itemName)
+    {
+        //选中的value值
+        var item_value = $('input[type="radio"][name="'+itemName+'"]:checked').attr('value');
+
+
+        if(item_value != 'undefined') //存在已选中的地址, 更换至第一位
+        {
+            //选中的item_id
+            var item_id = $('input[type="radio"][name="'+itemName+'"][value="'+item_value+'"]').attr('data-idpre') + item_value;
+
+            var list = $('#'+item_id).parent();
+
+            $('#'+item_id).prependTo(list);
+
+            //隐藏列表非第一个的元素
+            list.children('li.item:first').show();
+            list.children('li.item:not(:first)').hide();
+            list.children('.show-list-button').attr('data-status', 0);
+            list.children('.show-list-button').children('span.tips').text("展开");
+            list.children('.show-list-button').children('i.icon-unfold').show();
+            list.children('.show-list-button').children('i.icon-fold').hide();
+        }
+        //返回顶部
+        window.scrollTo(0,0);
+    }
+</script>
+
+<script type='text/javascript'>
+    //创建订单表单实例
+    orderFormInstance = new orderFormClass();
+
+    //DOM加载完毕
+    jQuery(function(){
+
+        //单选选中后触发
+        $('.radio-fold input[type="radio"]').change(function(){
+            showCheckedRadioOnly($(this).attr('name'));
+        });
+
+
+        //商家信息
+        orderFormInstance.seller = {echo:JSON::encode($this->seller)};
+
+        //商品价格
+        orderFormInstance.goodsSum = "{$this->final_sum}";
+
+        //配送方式初始化
+        orderFormInstance.deliveryInit("{$this->custom['delivery']}");
+
+        //收货地址数据
+        orderFormInstance.addressInit();
+
+        //支付方式
+        //orderFormInstance.paymentInit("{$this->custom['payment']}");
+
+        //免运费
+        orderFormInstance.freeFreight = {echo:JSON::encode($this->freeFreight)};
+
+        //dyg_jzw 20150815 自提点地址初始化
+        {if: $this->takeselfRow}
+        $('#takeself{$this->custom['delivery']}').html(template.render('takeselfTemplate',{"item":{echo: json_encode($this->takeselfRow);}}));
+        {/if}
+
+        //获取优惠券
+        orderFormInstance.ticketShow1();
+        //优惠券使用
+        $('#ticket_select').on("change", function(){
+            var obj = $(this).find("option:selected");
+            orderFormInstance.ticketShow2(obj);
+        });
+    });
+</script>
+{if:$this->isLayer}
+<script>
+    jQuery(function(){
+        //大客户提示 10.17
+        layer.open({
+            type: 1
+            , title: "【温馨提示】" //不显示标题栏
+            , closeBtn: false
+            , area: 'auto'
+            , maxWidth: '600'
+            , shade: 0
+            , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            , resize: false
+            , btn: ['好的,我知道了']
+            , btnAlign: 'c'
+            , moveType: 1 //拖拽模式，0或者1
+            , content: $('#layer-content')
+            , success: function () {
+            }
+        });
+    });
+</script>
+<!--大客户提示 10.17-->
+<div id="layer-content" style="display: none;padding: 10px 20px;color: #888;">
+	<p>1、关于鲜草物流: 鲜草订单如需发快递，请您选择顺丰到付，运费将由总部与大客户月结，如需机场空运请选择自提并备注留言发空运（鲜草订单满300根包邮）；</p>
+	<p>2、关于化妆品物流: 化妆品订单运费不可月结，如需快递发出，请您在商城选择所需的物流方式，顺丰到付则会实际到付，由快递员收取运费（化妆品不包邮）；</p>
+	<p>3、关于物料物流: 物料订单可选择顺丰快递、中通、普通物流方式配送，运费可到付或者月结，请选择自提并订单留言所需的配送方式。</p>
+	<p>4、如有其他要求，请在订单备注处留言。</p>
+</div>
+{/if}

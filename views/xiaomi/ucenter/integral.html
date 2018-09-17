@@ -1,0 +1,163 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li class="active">个人积分</li>
+        </ul>
+
+        <div class="clearfix">
+            <div class="media tips-media">
+                <div class="media-left">
+                    <img src="{skin:xiaomi/images/point.png}" alt="">
+                </div>
+                <div class="media-body">
+                    <p>当前积分： <span class="color-orange f-w-b">{$this->memberRow['point']}</span></p>
+                    <p class="text-muted f-12">积分通过购买产品获得，可用于兑换代金卷</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white m-b-20">
+            <h5>积分兑换</h5>
+            <form action='{url:/ucenter/trade_ticket}' method='post'>
+                <div class="ticket-content clearfix">
+                    {set:$nowtime = ITime::getDateTime();$isHasTicket = false;}
+                    {set: $items = Api::run('getTicketList',array('#nowtime#',$nowtime),20)}
+                    {if: $items}
+                        {foreach:items=$items}
+                            <div class="ticket-item checkbox-item f-12">
+                                <input class="checkbox-item-radio" type="radio" name="ticket_id" value="{$item['id']}" id="ticket_{$item['id']}"/>
+                                <label for="ticket_{$item['id']}">
+                                    <div class="ticket-main p-10">
+                                        <p class="text-danger text-center m-b-5 f-14">
+                                            <strong>{$item['point']}</strong> 积分兑换
+                                        </p>
+                                        <p class="text-center bd-t-1s p-t-10 m-b-5">
+                                            <span class="f-14">{$item['name']}</span>
+                                        </p>
+                                        <div class="text-center f-20 text-warning m-b-5">
+                                            <strong>￥{$item['value']}</strong>
+                                        </div>
+                                        {if: $item['at_least_money'] > 0 }
+                                            <p class="text-center text-muted m-b-5 f-12">订单满{$item['at_least_money']}元（不含运费）</p>
+                                        {else:}
+                                            <p class="text-center text-muted m-b-5 f-12">使用无限制</p>
+                                        {/if}
+                                        <p class="text-center text-muted m-b-10">{$item['start_time']} ~ {$item['end_time']}</p>
+                                    </div>
+                                    <div class="info-line"></div>
+                                    <div class="p-10">
+                                        <p class="m-b-5">
+                                            使用说明：
+                                        </p>
+                                        <p class="text-muted">
+                                            {if:$item['readme']}
+                                                {$item['readme']}
+                                            {else:}
+                                                <em>暂无使用描述</em>
+                                            {/if}
+                                        </p>
+                                    </div>
+                                    <i class="icon-18 icon-checked"></i>
+                                </label>
+                            </div>
+                        {/foreach}
+                    {else:}
+                        <div class="col-xs-12 text-muted f-12">暂无可兑换的优惠券</div>
+                    {/if}
+                    <div class="col-sm-12 m-t-20 text-center">
+                        <button type="submit" class="btn btn-sm btn-warning">确认兑换优惠券</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="bg-white p-30 f-12 bg-gray text-muted">
+            <p><strong>提示：</strong></p>
+            <p class="indent">1、您兑换的优惠券为电子券，根据优惠券的不同，会具有不同的有效期</p>
+            <p class="indent">2、电子优惠券仅限本ID使用，不能折算为现金、也不能再次兑换为积分</p>
+    </div>
+
+    <div class="info-line">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+    </div>
+
+    <div class="p-30">
+        <div class="bg-white m-b-20">
+            <div class="clearfix m-b-20">
+                <h5 class="pull-left">积分明细</h5>
+                <div class="pull-right">
+                    <form action='{url:/ucenter/integral}' method='post' name='point_history'>
+                        <span>查询时间：</span>
+                        <div class="common-select">
+                            <select name="history_time">
+                                <option value="3">3个月前积分记录</option>
+                                <option value="default" selected=selected>近3个月内积分记录</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-warning">查询</button>
+                    </form>
+                </div>
+            </div>
+
+            {set:$queryPointLog = Api::run('getUcenterPointLog',$this->user['user_id'],$this->c_datetime)}
+            {set:$items = $queryPointLog->find()}
+            {if:$items}
+            <table class="table table-bordered text-center table-striped f-12 m-b-20">
+                <tbody>
+                <tr class="active text-muted">
+                    <td>记录日期</td>
+                    <td>积分收支</td>
+                    <td>说明</td>
+                </tr>
+                {foreach:items = $items}
+                <tr>
+                    <td class="text-muted">
+                        <span>{$item['datetime']}</span>
+                    </td>
+                    <td>
+                        {$item['value']}
+                    </td>
+                    <td >
+                        {$item['intro']}
+                    </td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+
+            <div class="pagebar">
+                {$queryPointLog->getPageBar()}
+            </div>
+
+            {else:}
+            <div class="m-t-40 m-b-20">
+                <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+                <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+            </div>
+            {/if}
+        </div>
+    </div>
+
+
+    
+
+    
+</div>
+
+<script type='text/javascript'>
+    var FromObj = new Form('point_history');
+    FromObj.init
+    ({
+        'history_time':'{$this->historyTime}'
+    });
+</script>

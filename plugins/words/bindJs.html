@@ -1,0 +1,22 @@
+<script type="text/javascript">
+/**
+ *分解名称关键词
+ */
+function wordsPart()
+{
+	var goodsName = $('input[name="name"]').val();
+	if(goodsName)
+	{
+		$.getJSON("{url:$data}",{"content":goodsName},function(json)
+		{
+			if(json.result == 'success')
+			{
+				$('input[name="search_words"]').val(json.data);
+			}
+		});
+	}
+}
+
+//绑定页面中的控件
+$("input[name='name']").on("blur",wordsPart);
+</script>

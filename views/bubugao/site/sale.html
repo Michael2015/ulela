@@ -1,0 +1,36 @@
+<style type="text/css">
+body{background:#ed3b6a;}	
+p{padding:0 5px 0 5px;}
+</style>
+<div class="wrapper clearfix">
+	<!--首页推荐商品-->
+	{foreach:items=Api::run('getSaleList') item=$promRow}
+	<div class="box m_10" name="showGoods" style="border:none;background:#ed3b6a;">
+		<div class="title title3" style="background:#ed3b6a">
+			<h2><strong style="color:#fff;font-size:21px">{$promRow['name']}</strong></h2>
+		</div>
+
+		<div class="cont clearfix">
+			<ul class="prolist">
+				{foreach:items=$promRow['goodsList']}
+				<li style="overflow:hidden;width:286px;height:350px;background:#fff">
+					<a href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/285/h/285}" width="285" height="285" alt="{$item['name']}" title="{$item['name']}" /></a>
+					<p class="pro_title"><a style="font-size:15px;color:#666;" title="{$item['name']}" href="{url:/site/products/id/$item[id]}">{$item['name']}</a></p>
+					<p class="brown" style="float:left"><b style="color:#f40;font-size:20px;">￥{$item['sell_price']}</b></p>
+					<p class="light_gray"  style="float:right;margin-right:5px"><s>￥{$item['market_price']}</s></p>
+				</li>
+				{/foreach}
+			</ul>
+		</div>
+	</div>
+	{/foreach}
+</div>
+
+<script type="text/javascript">
+//商品变色
+var colorArray = ['green','yellow','purple','black'];
+$('div[name="showGoods"]').each(function(i)
+{
+	$(this).addClass(colorArray[i%colorArray.length]);
+});
+</script>

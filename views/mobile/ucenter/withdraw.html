@@ -1,0 +1,98 @@
+{set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+{set:$user_id = $this->user['user_id']}
+{set:$queryWithdrawList = Api::run('getWithdrawList',$user_id)}
+{set:$items = $queryWithdrawList->find()}
+
+<div class="bg-white p-10">
+	<ul class="nav nav-tabs nav-2-tabs mb-10">
+		<li class="active"><a href="#withdraw-apply" data-toggle="tab">提现申请</a></li>
+		<li><a href="#withdraw-record" data-toggle="tab">历史提现</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane active" id="withdraw-apply">
+			<div class="well well-sm">
+				账户余额：<strong class="color-light-red">￥{$this->memberRow['balance']}</strong>
+			</div>
+			<form action="{url:/ucenter/withdraw_act}" name="withdraw" method="POST" class="form-inline form" role="form">
+				<ul class="user-info">
+					<li>
+						<div class="input-group input-style">
+							<div class="input-group-addon"><span>支付宝账号</span></div>
+							<input class='form-control' initmsg="输入正确" type="text" name='note' pattern="required" alt="请填写支付宝账号" placeholder="填写提现支付宝账号"/>
+						</div>
+					</li>
+
+					<li>
+						<div class="input-group input-style">
+							<div class="input-group-addon"><span>收款人姓名</span></div>
+							<input class='form-control' initmsg="输入正确" type="text" name='name' pattern="required" alt="请填写收款人姓名" placeholder="填写收款人姓名"/>
+						</div>
+					</li>
+
+					<li>
+						<div class="input-group input-style">
+							<div class="input-group-addon"><span>提现金额</span></div>
+							<input class='form-control' initmsg="输入正确" type="text" name='amount' pattern="float" alt="请填写正确的金额" placeholder="填写提现金额"/>
+						</div>
+					</li> 
+
+					<li class="enter text-right">
+						<button type="submit" class="btn">提交提现申请</button>
+					</li>
+				</ul>
+			</form>
+
+		</div>
+		<div class="tab-pane" id="withdraw-record">
+			{if:$items}
+			{foreach:items = $items}
+			<ul class="list-unstyled">
+				<li class="common-list">
+					<table class="table table-striped table-condensed mb-0 font-sm">
+						<tr>
+							<td width="25%" class="text-muted">会员备注</td>
+							<td>{$item['note']}</td>
+						</tr>
+						<tr>
+							<td class="text-muted">管理员备注</td>
+							<td>{$item['re_note']}</td>
+						</tr>
+						<tr>
+							<td class="text-muted">金额</td>
+							<td>{$item['amount']} 元</td>
+						</tr>
+						<tr>
+							<td class="text-muted">申请时间</td>
+							<td>{$item['time']}</td>
+						</tr>
+						<tr>
+							<td class="text-muted">状态</td>
+							<td>
+								{echo:AccountLog::getWithdrawStatus($item['status'])}
+								{if:$item['status']==0}
+									<button type="button" class="btn btn-no-shadow btn-default btn-xs pull-right" onclick="delModel({link:'{url:/ucenter/withdraw_del/id/$item[id]}'});">取消申请</button>
+								{/if}
+							</td>
+						</tr>
+						
+					</table>
+				</li>
+			</ul>
+			{/foreach}
+			{$queryWithdrawList->getPageBar()}
+			{else:}
+			<p class="text-center text-muted mb-10">暂无提现记录</p>
+			{/if}
+		</div>
+	</div>
+</div>
+
+<script type='text/javascript'>
+	var formObj = new Form('withdraw');
+	formObj.init({
+		'name':'{$this->withdrawRow['name']}',
+		'note':'{$this->withdrawRow['note']}',
+		'amount':'{$this->withdrawRow['amount']}'
+	});
+</script>

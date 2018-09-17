@@ -1,0 +1,140 @@
+{set:$store_num_warning = $this->_siteConfig->store_num_warning ? $this->_siteConfig->store_num_warning : 20}
+<form action="{url:/}" method="get" name="storeNumWarning">
+	<input type='hidden' name='controller' value='goods' />
+	<input type='hidden' name='action' value='goods_list' />
+	<input type='hidden' name='search[store_nums]' value='go.store_nums < {$store_num_warning}' />
+</form>
+
+<div class="content_box" style="border:none">
+	<div class="content">
+		{set:$safeInstance = new safeStrategy();$checkResult = $safeInstance->check();}
+		{if:$checkResult}
+		<ul class="red_box">
+		{foreach:items=$checkResult}
+		<li><img src="{skin:images/admin/error.gif}" />{$item['content']}</li>
+		{/foreach}
+		</ul>
+		{/if}
+		<table width="31%" cellspacing="0" cellpadding="5" class="border_table_org" style="float:left">
+			<thead>
+				<tr><th>系统信息</th></tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<table class="list_table2" width="100%">
+							<colgroup>
+								<col width="80px" />
+								<col />
+							</colgroup>
+							<tbody>
+								<tr><th>购买及服务</th><td><a href='http://wpa.qq.com/msgrd?v=3&uin=846327344&site=qq&menu=yes' target='_blank'><b class='red3'>联系我们</b></a></td></tr>
+								<tr><th>当前版本号</th><td>{echo:Common::getLocalVersion()}</td></tr>
+								<tr><th>最新版本号</th><td>...</td></tr>
+								<tr><th>官网地址</th><td><a href='http://www.aircheng.com' target='_blank'><b class='red3'>www.aircheng.com</b></a></td></tr>
+								<tr><th>服务器软件</th><td>{$_SERVER['SERVER_SOFTWARE']}</td></tr>
+								<tr><th>附件上传容量</th><td>{echo:IUpload::getMaxSize()}</td></tr>
+								<tr><th>授权信息</th><td>...</td></tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<table width="32%" cellspacing="0" cellpadding="5" class="border_table_org" style="float:left">
+			<thead>
+				<tr><th>基础统计</th></tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<table class="list_table2" width="100%">
+							<colgroup>
+								<col width="80px" />
+								<col />
+							</colgroup>
+							<tbody>
+								<tr><th>商家数量</th><td>{query:name=seller fields=count(*) as amount}<a href="{url:/member/seller_list}"><b class="f14 red3">{$item['amount']}</b> 家</a>{/query}</td></tr>
+								<tr><th>销售总额</th><td>{query:name=order fields=sum(order_amount) as amount where=`status` eq 5}<a href="{url:/market/amount}"><b class="f14 red3">{echo:empty($item['amount']) ? 0 : $item['amount']}</b> 元</a>{/query}</td></tr>
+								<tr><th>注册用户</th><td>{query:name=user fields=count(id) as countNums }<a href="{url:/member/member_list}"><b class="f14 red3">{$item['countNums']}</b> 个</a>{/query}</td></tr>
+								<tr><th>产品数量</th><td><a href="{url:/goods/goods_list}"><b class="f14 red3">{echo:statistics::goodsCount()}</b> 个</a></td></tr>
+								<tr><th>品牌数量</th><td>{query:name=brand fields=count(id) as countNums}<a href="{url:/brand/brand_list}"><b class="f14 red3">{$item['countNums']}</b> 个</a>{/query}</td></tr>
+								<tr><th>订单数量</th><td>{query:name=order fields=count(id) as countNums where=if_del eq 0}<a href="{url:/order/order_list}"><b class="f14 red3">{$item['countNums']}</b> 个</a>{/query}</td></tr>
+								<tr><th>库存预警</th><td>{query:name=goods fields=count(id) as countNums where=is_del eq 0 and store_nums l $store_num_warning}<a href="javascript:formSubmit('storeNumWarning');"><b class="f14 red3">{$item['countNums']}</b> 个</a>{/query}</td></tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<table width="33%" cellspacing="0" cellpadding="5" class="border_table_org" style="float:left">
+			<thead>
+				<tr><th>待处理</th></tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<table class="list_table2" width="100%">
+							<colgroup>
+								<col width="80px" />
+								<col />
+							</colgroup>
+
+							<tbody>
+								<tr><th>待回复评论</th><td><a href="{url:/comment/comment_list/search[c.recomment_time]/=0}"><b class="red3 f14">{echo:statistics::commentCount()}</b></a> 个</td></tr>
+								<tr><th>待回复建议</th><td>{query:name=suggestion where=re_time is null fields=count(*) as countNums}<a href='{url:/comment/suggestion_list/search[a.re_time=]/0}'><b class="red3 f14">{$item['countNums']}</b></a>{/query} 个</td></tr>
+								<tr><th>待回复咨询</th><td><a href="{url:/comment/refer_list/search[r.status=]/0}"><b class="red3 f14">{echo:statistics::referWaitCount()}</b></a> 个</td></tr>
+								<tr><th>未发货订单</th><td>{query:name=order fields=count(id) as countNums where=distribution_status eq 0 and if_del eq 0}<a href="{url:/order/order_list/search[distribution_status]/0}"><b class="f14 red3">{$item['countNums']}</b></a> 个{/query}</td></tr>
+								<tr><th>退款申请</th><td><a href="{url:/order/refundment_list}"><b class="red3 f14">{echo:statistics::refundsCount()}</b></a> 个</td></tr>
+								<tr><th>待审商家</th><td>{query:name=seller fields=count(id) as countNums where=is_lock eq 1}<a href="{url:/member/seller_list/search[is_lock=]/1}"><b class="red3 f14">{$item['countNums']}</b></a> 个{/query}</td></tr>
+								<tr><th>待审商品</th><td>{query:name=goods fields=count(id) as countNums where=is_del eq 3}<a href="{url:/goods/goods_list/search[is_del]/3}"><b class="red3 f14">{$item['countNums']}</b></a> 个{/query}</td></tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<table width="98%" cellspacing="0" cellpadding="0" class="border_table_org" style="float:left">
+			<thead>
+				<tr><th>最新10条等待处理订单</th></tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="padding:5px 0">
+						<table class="list_table3" width="100%">
+							<thead>
+								<th>订单号</th>
+								<th>收货人</th>
+								<th>支付状态</th>
+								<th>金额</th>
+								<th>下单时间</th>
+								<th>操作</th>
+							</thead>
+							<tbody>
+							{query: name=order as o join=left join delivery as d on o.distribution eq d.id left join payment as p on o.pay_type eq p.id left join user as u on u.id eq o.user_id fields=o.id as oid,d.name as dname,p.name as pname,o.order_no,o.accept_name,o.pay_status,o.distribution_status,u.username,o.create_time,o.status,o.order_amount where=o.status l 3 and if_del eq 0 order=o.id desc limit=10}
+							<tr>
+								<td>{$item['order_no']}</td>
+								<td><b>{$item['accept_name']}</b></td>
+								<td>{if:$item['pay_status']==0}未付款{elseif:$item['pay_status']==1}<b>已付款</b>{elseif:$item['pay_status']==2}退款完成{else:}<span class="red"><b>申请退款</b></span>{/if}</td>
+								<td><b class="red3">￥{$item['order_amount']}</b></td>
+								<td>{$item['create_time']}</td>
+								<td>
+									<a href="{url:/order/order_show/id/$item[oid]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a>
+									{if:$item['status']<3}
+									<a href="{url:/order/order_edit/id/$item[oid]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" title="编辑"/></a>
+									{/if}
+									<a href="javascript:void(0)" onclick="delModel({link:'{url:/order/order_del/id/$item[oid]}'})" ><img class="operator" src="{skin:images/admin/icon_del.gif}" title="删除"/></a>
+								</td>
+							</tr>
+							{/query}
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

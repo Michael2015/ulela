@@ -1,0 +1,106 @@
+<div class="bg-white p-10 mb-15 text-center">
+	<h2 class="text-warning font-xxl">
+		<strong>{$this->user['username']}</strong>
+	</h2>
+	<p class="text-muted">您的邀请码</p>
+</div>
+
+<div class="bg-white p-15 font-sm mb-15">
+	<p>推荐新注册的用户，<strong>“邀请人”</strong>填入您的用户名：<strong class="text-warning font-df">{$this->user['username']}</strong></p>
+	<p class="mb-15 text-muted">即可成为您的团队成员，Ta的消费将按一定比例返还预存款到您的账户上</p>
+    <p>也可以分享下列链接给好友注册：</p>
+    {set:$username = urlencode($this->user['username'])}
+    {set:$hostname = $_SERVER['HTTP_HOST']}
+    <p><a class="text-muted" href="http://{$hostname}{url:/simple/reg?inviter=$username}" target="_blank">http://{$hostname}{url:/simple/reg?inviter=$username}</a></p>
+</div>
+
+<div class="bg-white font-sm mb-15">
+	<p class="text-center p-10 text-warning"><strong>邀请奖励①：赠送现金奖励</strong></p>
+	<table class="table table-striped text-center mb-0">
+		<tbody>
+            <tr class="text-muted">
+                <th class="text-center">邀请直接加入的会员等级</th>
+                <th class="text-center">奖励邀请人现金</th>
+            </tr>
+            <tr>
+                <td>阳光合伙人(城市级)</td>
+                <td class="text-danger">2000元</td>
+            </tr>
+            <tr>
+                <td>阳光合伙人(驿站级)</td>
+                <td class="text-danger">1000元</td>
+            </tr>
+            <tr>
+                <td>阳光创客M1</td>
+                <td class="text-danger">800元</td>
+            </tr>
+            <tr>
+                <td>至尊阳光会员</td>
+                <td class="text-danger">500元</td>
+            </tr>
+            <tr>
+                <td>阳光会员V3</td>
+                <td class="text-danger">200元</td>
+            </tr>
+            <tr>
+                <td>阳光会员V2</td>
+                <td class="text-danger">100元</td>
+            </tr>
+            <tr>
+                <td>阳光会员V1</td>
+                <td class="text-danger">50元</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-muted">注意：各个等级的 加入门槛 和 如何加入 请咨询在线客服</td>
+            </tr>
+        </tbody>
+	</table>
+</div>
+
+<div class="bg-white font-sm mb-15">
+	<p class="text-center p-10 text-warning"><strong>邀请奖励②：持续消费提成奖励</strong></p>
+	<p class="p-15 bg-light-gray">
+		被邀请人的每笔有效订单（确认收货后30天无退款）的产品成交额按一定奖励比例以预存款形式实时返还奖励给邀请人。具体奖励比例在邀请成功后，可在“我的团队”中查看。
+        <br>奖励时效：长期有效，除被邀请人六个月后申请加入其他团队外。
+	</p>
+</div>
+
+<div class="bg-white font-sm mb-15">
+	<p class="text-center p-10 text-warning"><strong>邀请奖励③：赠送经验值奖励</strong></p>
+	<table class="table table-striped text-center mb-0">
+		<tbody>
+            <tr class="active text-muted">
+                <th class="text-center">邀请<strong>直接加入</strong>的会员等级</th>
+                <th class="text-center">奖励邀请人经验值</th>
+            </tr>
+            <tr>
+                <td>阳光合伙人(城市级)</td>
+                <td>20000点</td>
+            </tr>
+            <tr>
+                <td>阳光合伙人(驿站级)</td>
+                <td>10000点</td>
+            </tr>
+            <tr>
+                <td>阳光创客M1</td>
+                <td>8000点</td>
+            </tr>
+            <tr>
+                <td>至尊阳光会员</td>
+                <td>5000点</td>
+            </tr>
+            <tr>
+                <td>阳光会员V3</td>
+                <td>3000点</td>
+            </tr>
+            <tr>
+                <td>阳光会员V2</td>
+                <td>2000点</td>
+            </tr>
+            <tr>
+                <td>阳光会员V1</td>
+                <td>1000点</td>
+            </tr>
+        </tbody>
+	</table>
+</div>

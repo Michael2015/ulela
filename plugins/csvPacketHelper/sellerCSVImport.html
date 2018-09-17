@@ -1,0 +1,69 @@
+<h4 class="alert_info">
+	1、默认的CSV文件编码不是UTF-8编码的，必须要先转换编码，利用工具另存为UTF-8格式。
+	2、导入的商品必须插入到指定的一个或者多个商品分类中。
+	3、导入的CSV数据包必须是小于 {echo:IUpload::getMaxSize()} 的.ZIP压缩包，您可以通过修改php.ini中的 &lt;post_max_size&gt;和&lt;upload_max_filesize&gt;和&lt;memory_limit&gt;选项来修改上传数据包的大小。
+	4、数据包里面一级目录必须包括CSV文件和与之对应的CSV图片文件夹，且两者的名字必须相同对应起来且必须是英文。例如：&lt;summer.csv&gt; 和 &lt;summer&gt;。
+</h4>
+
+<article class="module width_full">
+	<header>
+		<h3 class="tabs_involved">CSV数据包导入</h3>
+	</header>
+
+	<form action='{url:/seller/csvImport}' method='post' enctype='multipart/form-data' callback='checkForm();'>
+
+		<div class="module_content">
+			<fieldset>
+				<label>CSV数据类型</label>
+				<div class="box">
+					<select name='csvType' pattern='required' class='auto'>
+						<option value=''>请选择</option>
+						<option value='taobao'>淘宝csv数据包</option>
+					</select>
+					<label class="tip">选择要导入的CSV数据格式</label>
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<label>添加到商品分类</label>
+				<div class="box">
+					<div id="__categoryBox" style="margin-bottom:8px"></div>
+					<button class="btn" type="button" name="_goodsCategoryButton"><span class="add">设置分类</span></button>
+					{set:plugin::trigger('goodsCategoryWidget',array("type" => "checkbox","name" => "category[]"))}
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<label>上传ZIP压缩包</label>
+				<div class="box"><input type="file" name="csvPacket" class="file" /></div>
+			</fieldset>
+		</div>
+
+		<footer>
+			<div class="submit_link">
+				<input class="alt_btn" type="submit" value="确 定">
+				<input type="reset" value="重 置">
+			</div>
+		</footer>
+	</form>
+
+</article>
+
+
+<script type='text/javascript'>
+//检测form表单
+function checkForm()
+{
+	if($('[name="csvPacket"]').val() == '')
+	{
+		alert('请上传csv数据包');
+		return false;
+	}
+	document.forms[0].submit();
+}
+
+{if:$result == true}
+alert('商品导入完成');
+{/if}
+</script>
+</html>

@@ -1,0 +1,34 @@
+<div class="container-fluid bg-white">
+	<div class="row mb-10 mt-6">
+		<div class="col-xs-12">
+			<div class="search-box pos-relative font-xs">
+				<form method='get' action='{url:/}'>
+					<input type='hidden' name='controller' value='site' />
+					<input type='hidden' name='action' value='search_list' />
+					<input class="form-control input-sm" type="text" name='word' placeholder="搜索商品名称" value="" />
+					<button type="submit" class="search-btn" title="搜索商品"><i class="iconfont icon-31sousuo font-df"></i></button>
+				</form>
+			</div>
+			<div class="search-bottom"></div>
+		</div>
+	</div>
+
+
+</div>
+<div class="p-10">
+	<!-- 热门搜索词 -->
+	<p class="text-muted font-sm">
+		热搜：
+		<ul class="list-inline">
+			{foreach:items=Api::run('getKeywordList', 2) }
+            {set:$tmpWord = urlencode($item['word']);}
+            <li>
+                <a href="{url:/site/search_list/word/$tmpWord}">
+                    <span class="label label-gray label-thin">{$item['word']}</span>
+                </a>
+            </li>
+            {/foreach}
+		</ul>
+	</p>
+</div>
+

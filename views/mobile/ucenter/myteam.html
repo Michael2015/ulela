@@ -1,0 +1,40 @@
+<div class="bg-white p-10">
+    <ul class="nav nav-tabs nav-2-tabs">
+        <li class="active"><a href="javascript:;">我的团队</a></li>
+        <li><a href="{url:/ucenter/freeze_log}">销售记录</a></li>
+    </ul>
+
+    {if: $this->team_users_arr}
+        <ul class="list-unstyled pt-10">
+            {foreach: items = $this->team_users_arr}
+                <li class="common-list">
+                    <table class="table table-striped table-condensed mb-0 font-sm">
+                        <tr>
+                            <td width="22%" class="text-muted text-right">用户名</td>
+                            <td>{$item['username']}</td>
+                            <td class="text-muted text-right">真实姓名</td>
+                            <td>{$item['info']['true_name']}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted text-right">注册时间</td>
+                            <td>{echo: substr($item['info']['time'], 0, 10)}</td>
+                            <td class="text-muted text-right">当前等级</td>
+                            {set:$group_name = $item['info']['group_id']?$this->user_group_arr[$item['info']['group_id']]:'无'}
+                            <td>{$group_name}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted text-right">累计消费</td>
+                            <td colspan="3"><span class="color-light-red">{$item['info']['total_consume']}</span> 元</td>
+                        </tr>
+                    </table>
+                </li>
+            {/foreach}
+        </ul>
+    {else:}
+        <div class="msg bg-white">
+            <p><i class="iconfont icon-31wentifankui"></i></p>
+            <p><span>“</span>暂无队员<span>”</span></p>
+        </div>
+    {/if}
+</div>
+

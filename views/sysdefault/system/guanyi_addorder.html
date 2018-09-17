@@ -1,0 +1,21 @@
+{js:my97date}
+<div class="headbar">
+	<div class="position"><span>系统</span><span>></span><span>第三方平台</span><span>></span><span>管易订单同步</span></div>
+	<div class="operating">
+		<div class="search f_l">
+			<form name="addorder" action="{url:/}" method="get">
+				<input type='hidden' name='controller' value='system' />
+				<input type='hidden' name='action' value='guanyi_addorder' />
+				订单同步：从 <input type="text" name='start' value='{$this->startDate}' class="Wdate" pattern='datetime' alt='' onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" empty /> 到 <input type="text" name='end' value='{$this->endDate}' empty pattern='datetime' class="Wdate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+				&nbsp;&nbsp;
+				或单笔添加
+				订单号：
+				<input class="normal" name="orderno" type="text" value="">
+				<button class="btn" type="submit"><span class="sch">同 步</span></button>
+			</form>
+		</div>
+	</div>
+	<p>
+		<?php echo $this->msg; ?>
+	</p>
+</div>

@@ -1,0 +1,82 @@
+<div class="u-section-right bg-white m-b-20 pull-left">
+
+    <div class="p-30">
+        <ul class="nav nav-tabs ucenter-tabs">
+            <li class="active">商品咨询</li>
+        </ul>
+
+        <div>
+            {set:$queryConsultList = Api::run('getUcenterConsult', $this->user['user_id'])}
+            {set:$items = $queryConsultList->find()}
+            {if:$items}
+            <table class="table table-bordered text-center f-12 m-b-20">
+                <tbody>
+                <tr class="active text-muted">
+                    <td>商品名称</td>
+                    <td>内容</td>
+                    <td>咨询时间</td>
+                    <td>回复</td>
+                </tr>
+                {foreach:items = $items}
+                <tr>
+                    <td>
+                        <a href="{url:/site/products/id/$item['gid']}" target="_black">{$item['name']}</a>
+                    </td>
+                    <td>
+                        {$item['question']}
+                    </td>
+                    <td class="text-muted">
+                        {echo: $item['time']}
+                    </td>
+                    <td>
+                        {if:$item['status']==1}
+                            <a class="color-orange" href="javascript:;" onclick='show_msg(this,{echo:JSON::encode($item)})'>查看</a>
+                        {else:}
+                            <span class="text-muted">未回复</span>
+                        {/if}
+                    </td>
+                </tr>
+                {/foreach}
+                {if:isset($item['time'])}
+                <tr id='show_msg' class="text-left" style="display:none;">
+                    <td colspan="4" class="f-12">
+                        <a class="text-danger pull-right" href="javascript:void(0);" onclick='$(this).parent().parent().hide()'>
+							<span class="glyphicon glyphicon-remove"></span> 关闭
+						</a>
+                        <h6 class="text-muted">商家给您做了如下解答：（<span id='reply_time'></span>）</h6>
+                        <p id='answer'></p>
+                    </td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+
+            <div class="pagebar">
+                {$queryConsultList->getPageBar()}
+            </div>
+
+            {else:}
+            <div class="m-t-40 m-b-20">
+                <p class="text-center"><img src="{skin:xiaomi/images/no-data.jpg}" alt=""></p>
+                <p class="text-center f-18 text-muted">当前暂无数据 :-)</p>
+            </div>
+            {/if}
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function show_msg(_self,obj)
+    {
+        $('#show_msg').insertAfter($(_self).parent().parent());
+        $('#show_msg').show();
+
+        //设置数据
+        obj.answer ? $('#show_msg').show() : $('#show_msg').hide();
+        for(var i in obj)
+        {
+            $('#show_msg #'+i).text(obj[i]);
+        }
+    }
+</script>

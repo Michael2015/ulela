@@ -1,0 +1,93 @@
+<div class="bg-white p-15 mb-10  font-sm">
+	<p class="mb-5"><strong>评价商品：</strong></p>
+	<div class="media m-0">
+		<a class="media-left" href="{url:/site/products/id/$this->goods['goods_id']}">
+            <img src="{url:/pic/thumb/img/$this->goods['img']/w/60/h/60}" alt="{$this->goods['name']}" height="60" width="60">
+		</a>
+		<div class="media-body">
+			<p class="mb-5">
+				<a href="{url:/site/products/id/$this->goods['goods_id']}" target="_blank">{$this->goods['name']}</a>
+			</p>
+			<p class="text-danger">
+				￥{$this->goods['sell_price']}
+			</p>
+		</div>
+	</div>
+</div>
+
+<div class="bg-white p-15 mb-10 font-sm">
+	<form action="{url:/site/comment_add}" method="post" id="comment_add" onsubmit="return comment_add();">
+		<input type="hidden" name="id" value="{$this->comment['id']}">
+		<input type="hidden" name="point" value="0" id="comment_point">
+		<p class="mb-5"><strong>发表评价：</strong></p>
+		<ul class="list-inline mb-5 star-point text-warning">
+			<li data-index="1"><i class="iconfont icon-favor"></i></li>
+			<li data-index="2"><i class="iconfont icon-favor"></i></li>
+			<li data-index="3"><i class="iconfont icon-favor"></i></li>
+			<li data-index="4"><i class="iconfont icon-favor"></i></li>
+			<li data-index="5"><i class="iconfont icon-favor"></i></li>
+		</ul>
+		<p class="mb-10">
+			<textarea class="form-control input-sm" name="contents" rows="3"></textarea>
+		</p>
+		<p><button class="btn btn-block btn-warning" type="submit">提交评价</button></p>
+	</form>
+</div>
+
+<script>
+	/*
+	 * dyg_lzq 20150829星星评分
+	 */
+	var starPoint = {
+		star_objs : $('.star-point li'),
+		star_icons: $('.star-point li i'),
+		star_length: $('.star-point li').length,
+
+		change_star_state: function(index){
+			starPoint.star_icons.each(function(i,ele){
+				$(ele).removeClass('icon-favorfill').addClass('icon-favor');
+			});
+			for(var i=0;i<index;i++){
+
+				$(starPoint.star_icons[i]).removeClass('icon-favor').addClass('icon-favorfill');
+			}
+		},
+
+		star_point: function(obj){
+			var points = $(obj).attr('data-index');
+			//console.log(points);
+			starPoint.change_star_state(points);
+		}
+	};	
+
+	function comment_add()
+	{
+		var point = 0;
+		for(var i=0;i<starPoint.star_length;i++){
+			if($(starPoint.star_icons[i]).hasClass('icon-favorfill')){
+				point++;
+			}
+		}
+		if(point==0) {
+			tips("请选择评分");
+			return false;
+		}
+
+		if($('#comment_add [name="contents"]').val().length == 0) {
+			tips("请填写评价内容");
+			return false;
+		}
+
+		$('#comment_point').val(point);
+		return true;
+	}
+
+	$(function(){
+		for(var i=0;i<starPoint.star_length;i++){
+
+			starPoint.star_objs[i].onclick = function(){
+				starPoint.star_point(this);
+			}
+		}
+	});
+</script>

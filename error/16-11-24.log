@@ -1,0 +1,76 @@
+<ERROR_BLOCK>
+excepInfo: INSERT INTO iwebshop_notify_registry ( `email`,`user_id`,`mobile`,`goods_id`,`register_time` ) VALUES ( '','','','130','2016-11-24 20:04:46' ) 
+ -- Cannot add or update a child row: a foreign key constraint fails (`iwebshop`.`iwebshop_notify_registry`, CONSTRAINT `iwebshop_notify_registry_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `iwebshop_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE)
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 152
+excepCode: 1000
+excepTime: 2016-11-24 20:04:46
+#0 IWEB_PATH/lib/web/model/model_class.php(125): IDB->query(INSERT INTO iwebshop_notify_registry ( `email`,`user_id`,`mobile`,`goods_id`,`register_time` ) VALUES ( '','','','130','2016-11-24 20:04:46' ) )
+#1 IWEB_PATH/controllers/simple.php(852): IModel->add()
+#2 : Simple->arrival_notice()
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(arrival_notice)
+#6 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: INSERT INTO iwebshop_notify_registry ( `email`,`user_id`,`mobile`,`goods_id`,`register_time` ) VALUES ( '','','','130','2016-11-24 20:07:06' ) 
+ -- Cannot add or update a child row: a foreign key constraint fails (`iwebshop`.`iwebshop_notify_registry`, CONSTRAINT `iwebshop_notify_registry_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `iwebshop_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE)
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 152
+excepCode: 1000
+excepTime: 2016-11-24 20:07:06
+#0 IWEB_PATH/lib/web/model/model_class.php(125): IDB->query(INSERT INTO iwebshop_notify_registry ( `email`,`user_id`,`mobile`,`goods_id`,`register_time` ) VALUES ( '','','','130','2016-11-24 20:07:06' ) )
+#1 IWEB_PATH/controllers/simple.php(852): IModel->add()
+#2 : Simple->arrival_notice()
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(arrival_notice)
+#6 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: INSERT INTO iwebshop_notify_registry ( `email`,`user_id`,`mobile`,`goods_id`,`register_time` ) VALUES ( '263436934@qq.com','','','130','2016-11-24 20:07:16' ) 
+ -- Cannot add or update a child row: a foreign key constraint fails (`iwebshop`.`iwebshop_notify_registry`, CONSTRAINT `iwebshop_notify_registry_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `iwebshop_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE)
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 152
+excepCode: 1000
+excepTime: 2016-11-24 20:07:16
+#0 IWEB_PATH/lib/web/model/model_class.php(125): IDB->query(INSERT INTO iwebshop_notify_registry ( `email`,`user_id`,`mobile`,`goods_id`,`register_time` ) VALUES ( '263436934@qq.com','','','130','2016-11-24 20:07:16' ) )
+#1 IWEB_PATH/controllers/simple.php(852): IModel->add()
+#2 : Simple->arrival_notice()
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(arrival_notice)
+#6 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select count(*) as total from iwebshop_goods as go  where go.is_del = 0 and favicon.ico   
+ -- Unknown column 'favicon.ico' in 'where clause'
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 119
+excepCode: 1000
+excepTime: 2016-11-24 20:15:52
+#0 IWEB_PATH/lib/core/paging_class.php(56): IDB->query(select count(*) as total from iwebshop_goods as go  where go.is_del = 0 and favicon.ico   )
+#1 IWEB_PATH/lib/core/paging_class.php(41): IPaging->setSql(select distinct go.id,go.name,go.sell_price,go.market_price,go.store_nums,go.img,go.is_del,go.seller_id,go.is_share,go.sort from iwebshop_goods as go  where go.is_del = 0 and favicon.ico   order by go.id desc )
+#2 IWEB_PATH/lib/core/query_class.php(151): IPaging->__construct(select distinct go.id,go.name,go.sell_price,go.market_price,go.store_nums,go.img,go.is_del,go.seller_id,go.is_share,go.sort from iwebshop_goods as go  where go.is_del = 0 and favicon.ico   order by go.id desc ,20,10)
+#3 IWEB_PATH/runtime/views/sysdefault/goods/goods_list.php(172): IQuery->find()
+#4 IWEB_PATH/lib/web/controller/controllerbase_class.php(115): require(IWEB_PATH/runtime/views/sysdefault/goods/goods_list.php)
+#5 IWEB_PATH/lib/web/controller/controllerbase_class.php(81): IControllerBase->requireFile(IWEB_PATH/runtime/views/sysdefault/goods/goods_list.php)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(166): IControllerBase->renderView(IWEB_PATH/views/sysdefault/goods/goods_list)
+#7 IWEB_PATH/lib/web/action/view_action.php(32): IController->render(IWEB_PATH/views/sysdefault/goods/goods_list)
+#8 IWEB_PATH/lib/web/controller/controller_class.php(367): IViewAction->run()
+#9 IWEB_PATH/controllers/goods.php(394): IController->redirect(goods_list)
+#10 : Goods->goods_list()
+#11 IWEB_PATH/lib/web/action/inline_action.php(24): call_user_func()
+#12 IWEB_PATH/lib/web/controller/controller_class.php(115): IInlineAction->run()
+#13 IWEB_PATH/lib/core/webapplication_class.php(75): IController->run(goods_list)
+#14 IWEB_PATH/lib/core/application_class.php(94): IWebApplication->execRequest()
+#15 IWEB_PATH/index.php(5): IApplication->run()
+</ERROR_BLOCK>
+
