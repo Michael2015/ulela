@@ -70,33 +70,36 @@
 							<label>只有上架的商品才会在前台显示出来，客户是无法看到下架商品</label>
 						</td>
 					</tr>
-					<tr>
+					<input type="hidden" name="is_share" value="1">
+					<!--<tr>
 						<th>是否共享：</th>
 						<td>
 							<label class='attr'><input type="radio" name="is_share" value="1"> 是</label>
 							<label class='attr'><input type="radio" name="is_share" value="0" checked> 否</label>
 							<label>共享商品，只有商城平台的商品可以被商家复制，分销</label>
 						</td>
-					</tr>
+					</tr>-->
 					<!--dyg_jzw 20170220 是否支持积分支付-->
-					<tr>
+					<input type="hidden" name="is_point" value="0">
+					<!--<tr>
 						<th>是否支持积分支付：</th>
 						<td>
 							<label class='attr'><input type="radio" name="is_point" value="1"> 是</label>
 							<label class='attr'><input type="radio" name="is_point" value="0" checked> 否</label>
 							<label>如是，则商品支持普通支付和积分支付</label>
 						</td>
-					</tr>
+					</tr>-->
 					<!--dyg_jzw 20160304 是否跨境电商产品-->
-					<tr>
+					<input type="hidden" name="is_cbe" value="1">
+					<!--<tr>
 						<th>是否跨境产品：</th>
 						<td>
 							<label class='attr'><input type="radio" name="is_cbe" value="1"> 是</label>
 							<label class='attr'><input type="radio" name="is_cbe" value="0" checked> 否</label>
 							<label>跨境产品与其他产品不能与其他商品同时存入购物车，而且支付方式不同</label>
 						</td>
-					</tr>
-					<tr>
+					</tr>-->
+					<!--<tr>
 						<th>海关数据：</th>
 						<td>
 							<div class="con">
@@ -127,15 +130,15 @@
 								<label>跨境产品必填，否则无法上传海关订单（多品种混合可不填）。注意商品税率只填写数字，可为小数；计量代码和原产国代码为3位；海关商品编码为10位</label>
 							</div>
 						</td>
-					</tr>
-					<tr>
+					</tr>-->
+					<!--<tr>
 						<th>附属数据：</th>
 						<td>
 							<div class="con">
 								<table class="border_table">
 									<thead>
 										<tr>
-											<th>购买成功增加积分</th><th>排序</th><th>计量单位显示</th><th>购买成功增加经验值(每消费1元)<!--dyg_jzw 20150806--></th>
+											<th>购买成功增加积分</th><th>排序</th><th>计量单位显示</th><th>购买成功增加经验值(每消费1元)&lt;!&ndash;dyg_jzw 20150806&ndash;&gt;</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -149,7 +152,7 @@
 								</table>
 							</div>
 						</td>
-					</tr>
+					</tr>-->
 					<tr>
 						<th>基本数据：</th>
 						<td>
@@ -226,7 +229,9 @@
 							</div>
 						</td>
 					</tr>
-					<tr>
+
+					<input type="hidden" name="model_id" value="0">
+					<!--<tr>
 						<th>商品模型：</th>
 						<td>
 							<select class="auto" name="model_id" onchange="create_attr(this.value)">
@@ -237,7 +242,7 @@
 							</select>
 							<label>可以加入商品扩展属性，比如：型号，年代，款式...</label>
 						</td>
-					</tr>
+					</tr>-->
 					<tr id="properties" style="display:none">
 						<th>扩展属性：</th>
 						<td>
@@ -292,7 +297,7 @@
 							<label class="attr"><input name="_goods_commend[]" type="checkbox" value="4" />推荐商品</label>
 						</td>
 					</tr>
-					<tr>
+					<!--<tr>
 						<th>商品品牌：</th>
 						<td>
 							<select class="auto" name="brand_id">
@@ -302,7 +307,7 @@
 								{/query}
 							</select>
 						</td>
-					</tr>
+					</tr>-->
 					<tr>
 						<th>产品相册：</th>
 						<td>

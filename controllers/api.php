@@ -24,12 +24,28 @@ class Api extends IController
         echo json_encode($this->result);
 	}
 	//获取分类
-
     public function get_category()
     {
         $catObj       = new IModel('category');
         $catRow = $catObj->query('parent_id = 0','id,name,sort');
         $this->result['data']= $catRow;
+        echo json_encode($this->result);
+    }
+
+    //根据分类id 获取对应的商品
+    public function get_category_goods()
+    {
+        $catId = IFilter::act(IReq::get('cat_id'),'int');//分类id
+
+        $goodsObj = search_goods::find(array('category_extend' => $catId), 20);
+        $resultData = $goodsObj->find();
+
+        array_walk($resultData,function(&$v)
+        {
+            $v['img'] = self::HOST.'/'.$v['img'];
+
+        });
+        $this->result['data']= $resultData;
         echo json_encode($this->result);
     }
 
