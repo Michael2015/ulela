@@ -19,7 +19,7 @@
   'mobile' => '',
   'phone' => '13794888292',
   'address' => '广东省深圳市南山科技园',
-  'site_footer_code' => '<div class=\\"footer\\"> <p class=\\"links\\">   <a href=\\"http://www.dyg.cn\\">关于我们</a> | <a href=\\"/site/help/id/4\\">购买流程</a> | <a href=\\"/site/help/id/53\\">如何付款</a> | <a href=\\"/site/help/id/48\\">联系我们</a> | <a href=\\"http://www.dyg.cn/open\\">合作提案</a>   </p>  <p class=\\"copyright\\">   Powered by <a href=\\"http://www.dyg.cn\\">东阳光大健康电商</a>   </p>Copyright © 2013-2015 <a class=\\"copyys\\" href=\\"http://www.miibeian.gov.cn/\\" target=\\"_blank\\">粤ICP备15070469号-2</a> </div>',
+  'site_footer_code' => '',
   'tax' => '0',
   'stockup_time' => '1',
   'index_seo_title' => 'Ulela商城',
@@ -45,6 +45,6 @@
   'wechat_AppSecret' => '',
   'wechat_AutoLogin' => '0',
   'commission' => '',
-  'index_slide_mobile' => 'a:2:{i:0;a:3:{s:4:"name";s:37:"东阳光鲜草 · 鲜的冬虫夏草";s:3:"url";s:20:"/site/products/id/35";s:3:"img";s:39:"upload/2016/12/12/20161212111413564.jpg";}i:1;a:3:{s:4:"name";s:37:"东阳光鲜草 · 鲜的冬虫夏草";s:3:"url";s:20:"/site/products/id/35";s:3:"img";s:39:"upload/2016/12/12/20161212111934448.jpg";}}',
+  'index_slide_mobile' => 'a:2:{i:0;a:3:{s:4:"name";s:12:"列表标题";s:3:"url";s:7:"http://";s:3:"img";s:39:"upload/2018/09/18/20180918035636816.jpg";}i:1;a:3:{s:4:"name";s:12:"列表标题";s:3:"url";s:7:"http://";s:3:"img";s:39:"upload/2018/09/18/20180918035636371.jpg";}}',
   'order_my_reward_time' => '1',
 )?>

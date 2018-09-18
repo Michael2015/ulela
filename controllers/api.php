@@ -39,7 +39,7 @@ class Api extends IController
     {
         $catId = IFilter::act(IReq::get('cat_id'), 'int');//分类id
 
-        $goodsObj = search_goods::find(array('category_extend' => $catId), 20);
+        $goodsObj = search_goods::find(array('category_extend' => $catId), 20);  
         $resultData = $goodsObj->find();
 
         if ($resultData) {

@@ -13,7 +13,7 @@
       array (
         'host' => '127.0.0.1:3306',
         'user' => 'root',
-        'passwd' => 'root',
+        'passwd' => 'Ulela123',
         'name' => 'iwebshop',
       ),
     ),
@@ -21,7 +21,7 @@
     array (
       'host' => '127.0.0.1:3306',
       'user' => 'root',
-      'passwd' => 'root',
+      'passwd' => 'Ulela123',
       'name' => 'iwebshop',
     ),
   ),
@@ -35,7 +35,7 @@
   'viewPath' => 'views',
   'skinPath' => 'skin',
   'classes' => 'classes.*',
-  'rewriteRule' => 'pathinfo',
+  'rewriteRule' => 'url',
   'theme' => 
   array (
     'pc' => 
