@@ -12,7 +12,7 @@ class Api extends IController
 
     private $result = ['code' => 200, 'msg' => 'success', 'data' => []];
 
-    //banner - 获取banner
+    //banner - 获取首页banner
     public function get_banner()
     {
         $data = array_merge(IWeb::$app->config, $this->_siteConfig->getInfo(), array("form_index" => IFilter::act(IReq::get('form_index'))));
@@ -24,6 +24,21 @@ class Api extends IController
         $this->result['data'] = $index_slide;
         echo json_encode($this->result);
     }
+
+
+    //banner - 获取列表banner
+    public function get_list_banner()
+    {
+        $data = array_merge(IWeb::$app->config, $this->_siteConfig->getInfo(), array("form_index" => IFilter::act(IReq::get('form_index'))));
+        $index_slide = unserialize($data['index_slide_mobile']);
+        array_walk($index_slide, function (&$v) {
+            $v['img'] = self::HOST . '/' . $v['img'];
+
+        });
+        $this->result['data'] = $index_slide;
+        echo json_encode($this->result);
+    }
+
 
     //获取分类
     public function get_category()
