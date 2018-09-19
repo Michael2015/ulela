@@ -352,15 +352,16 @@
 				<table class="form_table">
 					<col width="150px" />
 					<col />
-					<tr>
+					<!--<tr>
 						<th>SEO关键词：</th>
 						<td>
-							<input class="normal" name="keywords" type="text" pattern="required" value="" />
+							<input class="normal" name="keywords" type="text" pattern="required" value="SEO关键词" />
 							<label>精简版标题，格式："精简标题#|#精简描述"</label>
 						</td>
-					</tr>
+					</tr>-->
+					<input class="normal" name="keywords" type="hidden" pattern="required" value="SEO关键词" />
 					<tr>
-						<th>SEO描述：</th>
+						<th>副标题描述：</th>
 						<td>
 							<textarea name="description" pattern="required"></textarea>
 							<label>(副标题)促销信息或简介信息</label>
