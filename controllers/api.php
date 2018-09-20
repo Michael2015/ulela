@@ -54,7 +54,7 @@ class Api extends IController
     {
         $catId = IFilter::act(IReq::get('cat_id'), 'int');//分类id
 
-        $goodsObj = search_goods::find(array('category_extend' => $catId), 20);  
+        $goodsObj = search_goods::find(array('category_extend' => $catId), 20);
         $resultData = $goodsObj->find();
 
         if ($resultData) {
@@ -94,6 +94,95 @@ class Api extends IController
         $this->result['data'] = $data;
         echo json_encode($this->result);
     }
+
+    //根据商品id，获取对应的sku值
+    public function get_goods_attr()
+    {
+        $goods_id = IFilter::act(IReq::get('goods_id'),'int');
+        if(!$goods_id)
+        {
+            $this->result['msg'] = 'fail,缺少goods_id参数';
+            $this->result['code'] = 0;
+            echo json_encode($this->result);exit;
+        }
+
+        $attr_ids = IFilter::act(IReq::get('attr_ids'),'string');
+        if(!$attr_ids)
+        {
+            $this->result['msg'] = 'fail,缺少attr_ids参数';
+            $this->result['code'] = 0;
+            echo json_encode($this->result);exit;
+        }
+
+        $tb_products = new IModel('products');
+        $pro_list = $tb_products->query('goods_id ='.$goods_id,'id,goods_id,sell_price,spec_array');
+
+        $data = [];
+        foreach ( $pro_list as  $product)
+        {
+            $spec_array = json_decode($product['spec_array'],true);
+            $attr = '';
+            foreach ($spec_array as $spec)
+            {
+                $attr .= $spec['tip'].'-';
+            }
+            if($attr_ids === trim($attr,'-'))
+            {
+                $data = $product;
+                break;
+            }
+        }
+        $this->result['data'] = $data;
+        echo json_encode($this->result);
+    }
+
+    //加入购物车
+    public function add_to_cart()
+    {
+        $goods_id  = IFilter::act(IReq::get('goods_id'),'int');
+        if(!$goods_id)
+        {
+            $this->result['msg'] = 'fail,缺少goods_id参数';
+            $this->result['code'] = 0;
+            echo json_encode($this->result);exit;
+        }
+
+        $goods_num = IReq::get('goods_num') === null ? 1 : intval(IReq::get('goods_num'));
+        $type = 'products';
+
+        $cartObj   = new Cart();
+        $addResult = $cartObj->add($goods_id,$goods_num,$type);
+        if($addResult === false)
+        {
+            $this->result['msg'] = $cartObj->getError();
+            $this->result['code'] = 0;
+            echo json_encode($this->result);exit;
+        }
+        $this->result['msg'] = '添加成功!';
+        echo json_encode($this->result);exit;
+    }
+
+    //获取购物车
+    public function  get_cart()
+    {
+        $cartObj  = new Cart();
+        $cartList = $cartObj->getMyCart();
+        $data['goods_item'] = $cartList['product']['data'];
+
+
+        $tb_products = new IModel('products');
+        array_walk($data['goods_item'],function(&$v) use ($tb_products){
+            $v['spec_array'] = $tb_products->getObj('id ='.$v['id'],'spec_array')['spec_array'];
+        });
+        $data['count']= $cartList['count'];
+        $data['sum']  = $cartList['sum'];
+        $this->result['data'] = $data;
+        echo json_encode($this->result);exit;
+    }
+
+
+
+
 
 
 }
