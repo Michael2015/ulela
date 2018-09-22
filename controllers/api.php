@@ -182,7 +182,6 @@ class Api extends IController
 
 
     //检查登录接口
-
     public function login()
     {
         $code  = IFilter::act(IReq::get('code'),'string');
