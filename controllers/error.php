@@ -11,9 +11,10 @@ class Error extends IController
 {
 	public function error404()
 	{
-		$heading = '文件不存在';
-		$data    = '请确定要访问的页面在是否存在';
-		$this->redirect('/site/error/?msg='.urlencode($data).'&heading='.urlencode($heading));
+		#$heading = '文件不存在';
+		#$data    = '请确定要访问的页面在是否存在';
+                die('访问的页面不存在');
+		#$this->redirect('/site/error/?msg='.urlencode($data).'&heading='.urlencode($heading));
 	}
 
 	public function error403($data)
