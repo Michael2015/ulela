@@ -181,6 +181,27 @@ class Api extends IController
     }
 
 
+    //检查登录接口
+
+    public function login()
+    {
+        $code  = IFilter::act(IReq::get('code'),'string');
+        if(!$code)
+        {
+            $this->result['msg'] = 'fail,缺少code参数';
+            $this->result['code'] = 0;
+            echo json_encode($this->result);exit;
+        }
+        extract(miniprogram::login($code));
+        if($code === 200)
+        {
+            $this->result['data'] = ['token'=>$token];
+        }
+        $this->result['msg']  =  $msg;
+        $this->result['code'] =  $code;
+        echo json_encode($this->result);exit;
+    }
+
 
 
 

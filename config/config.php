@@ -11,7 +11,7 @@
     array (
       0 => 
       array (
-        'host' => '127.0.0.1:3306',
+        'host' => '119.23.239.216:3306',
         'user' => 'root',
         'passwd' => 'Ulela123',
         'name' => 'iwebshop',
@@ -19,7 +19,7 @@
     ),
     'write' => 
     array (
-      'host' => '127.0.0.1:3306',
+      'host' => '119.23.239.216:3306',
       'user' => 'root',
       'passwd' => 'Ulela123',
       'name' => 'iwebshop',
