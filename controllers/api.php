@@ -180,7 +180,7 @@ class Api extends IController
         echo json_encode($this->result);exit;
     }
 
-/*
+
     //检查登录接口
 
     public function login()
@@ -200,7 +200,7 @@ class Api extends IController
         $this->result['msg']  =  $msg;
         $this->result['code'] =  $code;
         echo json_encode($this->result);exit;
-    }*/
+    }
 
 
 
