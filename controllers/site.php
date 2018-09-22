@@ -20,7 +20,7 @@ class Site extends IController
     function init()
     {
 
-#        die('这是前端页面');
+        die('这是前端页面');
     }
 
     function index()
