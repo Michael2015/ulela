@@ -40,11 +40,28 @@ class Api extends IController
     }
 
 
-    //获取分类
+    //获取一级分类
     public function get_category()
     {
         $catObj = new IModel('category');
         $catRow = $catObj->query('parent_id = 0', 'id,name,sort');
+        $this->result['data'] = $catRow;
+        echo json_encode($this->result);
+    }
+    //获取二级分类
+
+    public function get_children_category()
+    {
+        $catObj = new IModel('category');
+        $parentId = IFilter::act(IReq::get('parent_id'), 'int');//父级id
+        if(!$parentId)
+        {
+            $this->result['msg'] = 'fail,缺少参数';
+            $this->result['code'] = 0;
+            echo json_encode($this->result);exit;
+        }
+
+        $catRow = $catObj->query('parent_id = '.$parentId, 'id,name,sort');
         $this->result['data'] = $catRow;
         echo json_encode($this->result);
     }
