@@ -108,7 +108,8 @@ class Api extends IController
                 preg_match_all('#<img\s+src="(.*?)"\s+alt="(.*?)"[^>]+>#',$img[0],$src);
                 if($src)
                 {
-                    $content[] = ['text'=>$src[2][0],'img'=>$src[1][0]];
+                    $content[] = ['type'=>'text','value'=>$src[2][0]];
+                    $content[] = ['type'=>'text','value'=>$src[1][0]];
                 }
             }
         }
