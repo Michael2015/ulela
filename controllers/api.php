@@ -293,7 +293,7 @@ class Api extends IController
         $id = IFilter::act( IReq::get('id'),'int' );
         $model = new IModel('address');
         $model->del('id = '.$id.' and user_id = '.$user_id);
-        $this->result['msg'] = '设置成功';
+        $this->result['msg'] = '删除成功';
         echo json_encode($this->result);exit;
     }
 
