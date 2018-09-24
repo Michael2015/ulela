@@ -38,18 +38,17 @@ class Api extends IController
         $this->result['data'] = $index_slide;
         echo json_encode($this->result);
     }
-
-
+    
     //获取一级分类
     public function get_category()
     {
         $catObj = new IModel('category');
-        $catRow = $catObj->query('parent_id = 0', 'id,name,sort');
+        $ids = $catObj->query('', 'parent_id');
+        $catRow = $catObj->query('parent_id = 0 and  id in ('.implode(',',array_column($ids,'parent_id')).')', 'id,name,sort');
         $this->result['data'] = $catRow;
         echo json_encode($this->result);
     }
     //获取二级分类
-
     public function get_children_category()
     {
         $catObj = new IModel('category');
