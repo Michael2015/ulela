@@ -38,7 +38,8 @@ class Api extends IController
         $this->result['data'] = $index_slide;
         echo json_encode($this->result);
     }
-    
+
+
     //获取一级分类
     public function get_category()
     {
@@ -97,13 +98,28 @@ class Api extends IController
         $tb_goods = new IModel('goods');
         $goods_info = $tb_goods->getObj('id='.$goods_id." AND is_del=0");
         $data = [];
+        preg_match_all('#<img.*?>#',$goods_info['content'],$match);
+
+        $content = [];
+        if($match)
+        {
+            foreach ($match as $img)
+            {
+                preg_match_all('#<img\s+src="(.*?)"\s+alt="(.*?)"[^>]+>#',$img[0],$src);
+                if($src)
+                {
+                    $content[] = ['text'=>$src[2][0],'img'=>$src[1][0]];
+                }
+            }
+        }
+
         if($goods_info)
         {
             $data['id'] = $goods_info['id'];
             $data['sell_price'] = $goods_info['sell_price'];
             $data['store_nums'] = $goods_info['store_nums'];
             $data['img'] = $goods_info['img'];
-            $data['content'] = $goods_info['content'];
+            $data['content'] = $content;
             $data['description'] = $goods_info['description'];
             $data['spec_array'] = $goods_info['spec_array'];
         }
