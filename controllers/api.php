@@ -1,5 +1,5 @@
 <?php
-
+/*
 /**
  * @brief 活动api
  * author dyg_jzw
@@ -186,7 +186,6 @@ class Api extends IController
         $cartList = $cartObj->getMyCart();
         $data['goods_item'] = $cartList['product']['data'];
 
-
         $tb_products = new IModel('products');
         array_walk($data['goods_item'],function(&$v) use ($tb_products){
             $v['spec_array'] = $tb_products->getObj('id ='.$v['id'],'spec_array')['spec_array'];
@@ -194,6 +193,107 @@ class Api extends IController
         $data['count']= $cartList['count'];
         $data['sum']  = $cartList['sum'];
         $this->result['data'] = $data;
+        echo json_encode($this->result);exit;
+    }
+
+    //添加地址
+    public function add_edit_address()
+    {
+        $id          = IFilter::act(IReq::get('id'),'int');
+        $token          = IFilter::act(IReq::get('token'),'string');
+        $accept_name = IFilter::act(IReq::get('accept_name'),'name');
+        $address = IFilter::act(IReq::get('address'));
+        $mobile      = IFilter::act(IReq::get('mobile'),'mobile');
+        $zone      = IFilter::act(IReq::get('zone'),'zone');
+        $default = IReq::get('is_default')!= 1 ? 0 : 1;
+        $model = new IModel('address');
+        $data = array(
+            'user_id'=>1,
+            'accept_name'=>$accept_name,
+            'province'=>'',
+            'city'=>'',
+            'area'=>'',
+            'address'=>$address,
+            'mobile'=>$mobile,
+            'zone'=>$zone,
+            'is_default'=>$default
+        );
+        if (empty($accept_name) || empty($address) || empty($mobile) || empty($zone))
+        {
+
+            $this->result['msg'] = '添加失败,信息不全';
+            $this->result['code'] = 0;
+            echo json_encode($this->result);exit;
+        }
+        $model->setData($data);
+
+        if($id == '')
+        {
+            $model->add();
+        }
+        else
+        {
+            $model->update('id = '.$id);
+        }
+        $this->result['msg'] = '成功';
+        echo json_encode($this->result);exit;
+    }
+
+    //获取地址列表
+    public function get_my_address()
+    {
+        $user_id = 1;
+        $query = new IQuery('address');
+        $query->where = 'user_id = '.$user_id;
+        $query->fields = 'zone,id,address,accept_name,mobile,is_default';
+        $address = $query->find();
+        $this->result['data'] = $address;
+        echo json_encode($this->result);exit;
+    }
+
+    //获取单个地址
+    public function get_address_by_id()
+    {
+
+        $id          = IFilter::act(IReq::get('id'),'int');
+        $user_id = 1;
+        $query = new IQuery('address');
+        $query->where = 'user_id = '.$user_id.' and id='.$id;
+        $query->fields = 'zone,id,address,accept_name,mobile,is_default';
+        $address = $query->find();
+        if($address)
+        {
+            $this->result['data'] = $address[0];
+            echo json_encode($this->result);exit;
+        }
+    }
+
+    //设置默认地址
+    public function set_address_default()
+    {
+        $user_id = 1;
+        $id = IFilter::act( IReq::get('id'),'int' );
+        $default = IFilter::act(IReq::get('is_default'));
+        $model = new IModel('address');
+        if($default == 1)
+        {
+            $model->setData(array('is_default' => 0));
+            $model->update("user_id = ".$user_id);
+        }
+        $model->setData(array('is_default' => $default));
+        $model->update("id = ".$id." and user_id = ".$user_id);
+        $this->result['msg'] = '设置成功';
+        echo json_encode($this->result);exit;
+    }
+    //删除地址
+
+    public function del_my_address()
+    {
+        $user_id = 1;
+        $id = IFilter::act( IReq::get('id'),'int' );
+        $model = new IModel('address');
+        $model->del('id = '.$id.' and user_id = '.$user_id);
+        $this->result['msg'] = '设置成功';
         echo json_encode($this->result);exit;
     }
 
