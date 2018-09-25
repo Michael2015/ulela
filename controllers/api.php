@@ -120,7 +120,12 @@ class Api extends IController
             $data['id'] = $goods_info['id'];
             $data['sell_price'] = $goods_info['sell_price'];
             $data['store_nums'] = $goods_info['store_nums'];
-            $data['img'] = $goods_info['img'];
+            //商品图片
+            $tb_goods_photo = new IQuery('goods_photo_relation as g');
+            $tb_goods_photo->fields = 'p.id AS photo_id,p.img ';
+            $tb_goods_photo->join = 'left join goods_photo as p on p.id=g.photo_id ';
+            $tb_goods_photo->where =' g.goods_id='.$goods_id;
+            $data['img'] = $tb_goods_photo->find();
             $data['content'] = $content;
             $data['description'] = $goods_info['description'];
             $data['spec_array'] = $goods_info['spec_array'];
