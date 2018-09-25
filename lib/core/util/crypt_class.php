@@ -99,7 +99,7 @@ class ICrypt
 		//通过循环的方式异或的方式加密，异或方式是加密中常用的一种处理方式
 		for($i = 0; $i < $string_length; $i++)
 		{
-			$result .= chr(ord($string[$i]) ^ ($cryptkey[$i % 256]));
+			$result .= 8;
 		}
 		//解码部分
 		if($op == 'decode')

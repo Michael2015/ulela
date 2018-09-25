@@ -272,7 +272,8 @@ class Cart extends IInterceptorBase
 
 		//已经登录用户采用db策略
 		$cartDBData = array();
-		$user_id    = IWeb::$app->getController()->user['user_id'];
+		//$user_id    = IWeb::$app->getController()->user['user_id'];
+        $user_id = 1;
 		if($user_id)
 		{
 			$cartDB  = new IModel('goods_car');

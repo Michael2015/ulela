@@ -9,8 +9,16 @@ class Api extends IController
 {
 
     const HOST = 'http://119.23.239.216';
+    private $user_id;
 
     private $result = ['code' => 200, 'msg' => 'success', 'data' => []];
+
+    public function __construct($app, $controllerId)
+    {
+        $this->user_id = 1;
+        parent::__construct($app, $controllerId);
+    }
+
 
     //banner - 获取首页banner
     public function get_banner()
@@ -230,7 +238,7 @@ class Api extends IController
         $default = IReq::get('is_default')!= 1 ? 0 : 1;
         $model = new IModel('address');
         $data = array(
-            'user_id'=>1,
+            'user_id'=>$this->user_id,
             'accept_name'=>$accept_name,
             'province'=>'',
             'city'=>'',
@@ -264,7 +272,7 @@ class Api extends IController
     //获取地址列表
     public function get_my_address()
     {
-        $user_id = 1;
+        $user_id = $this->user_id;
         $query = new IQuery('address');
         $query->where = 'user_id = '.$user_id;
         $query->fields = 'zone,id,address,accept_name,mobile,is_default';
@@ -278,7 +286,7 @@ class Api extends IController
     {
 
         $id          = IFilter::act(IReq::get('id'),'int');
-        $user_id = 1;
+        $user_id = $this->user_id;
         $query = new IQuery('address');
         $query->where = 'user_id = '.$user_id.' and id='.$id;
         $query->fields = 'zone,id,address,accept_name,mobile,is_default';
@@ -293,7 +301,7 @@ class Api extends IController
     //设置默认地址
     public function set_address_default()
     {
-        $user_id = 1;
+        $user_id = $this->user_id;
         $id = IFilter::act( IReq::get('id'),'int' );
         $default = IFilter::act(IReq::get('is_default'));
         $model = new IModel('address');
@@ -311,14 +319,46 @@ class Api extends IController
 
     public function del_my_address()
     {
-        $user_id = 1;
+        $user_id = $this->user_id;
         $id = IFilter::act( IReq::get('id'),'int' );
         $model = new IModel('address');
         $model->del('id = '.$id.' and user_id = '.$user_id);
         $this->result['msg'] = '删除成功';
         echo json_encode($this->result);exit;
     }
+    //我的订单
+    public function get_my_order()
+    {
+        $user_id = $this->user_id;
 
+        //计算商品
+        $countSumObj = new CountSum($user_id);
+
+        $result = $countSumObj->cart_count();
+        if($countSumObj->error)
+        {
+            $this->result['msg'] = $countSumObj->error;
+            echo json_encode($this->result);exit;
+        }
+
+        //获取收货地址
+        $addressObj  = new IModel('address');
+        $addressList = $addressObj->query('user_id = '.$this->user_id.' and (is_default = 1 OR is_default = 0)',"*","is_default desc,CONVERT( accept_name USING gbk ) COLLATE gbk_chinese_ci ASC",1);
+
+        $data = [];
+        if($result)
+        {
+            $data['address'] = isset($addressList[0]) ? $addressList[0] : [];
+            $data['goodsList'] = $result['goodsList'];
+            $data['final_sum'] = $result['final_sum'];
+            $data['count']     = $result['count'];
+            $data['reduce']    = $result['reduce'];
+            $data['promotion'] = [];
+        }
+
+        $this->result['data'] = $data;
+        echo json_encode($this->result);exit;
+    }
 
     //检查登录接口
     public function login()
