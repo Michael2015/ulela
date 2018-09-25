@@ -35,6 +35,7 @@ class Api extends IController
             $v['img'] = self::HOST . '/' . $v['img'];
 
         });
+        print_r($index_slide);exit;
         $this->result['data'] = $index_slide;
         echo json_encode($this->result);
     }
@@ -109,7 +110,7 @@ class Api extends IController
                 if($src)
                 {
                     $content[] = ['type'=>'text','value'=>$src[2][0]];
-                    $content[] = ['type'=>'text','value'=>$src[1][0]];
+                    $content[] = ['type'=>'img','value'=>$src[1][0]];
                 }
             }
         }
