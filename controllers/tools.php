@@ -242,7 +242,6 @@ class Tools extends IController implements adminAuthorization
 		$id = IFilter::act(IReq::get('id'),'int');
 		if($id)
 		{
-
 			//获取文章信息
 			$articleObj = new IModel('article');
 			$this->articleRow = $articleObj->getObj('id = '.$id);
@@ -265,6 +264,7 @@ class Tools extends IController implements adminAuthorization
 		$DataArray  = array(
 			'title'       => IFilter::act(IReq::get('title','post')),
 			'content'     => IFilter::act(IReq::get('content','post'), 'text'),
+            'content2'     => IFilter::act(IReq::get('content2','post'), 'text'),
 			'category_id' => IFilter::act(IReq::get('category_id','post'),'int'),
 			'create_time' => ITime::getDateTime(),
 			'keywords'    => IFilter::act(IReq::get('keywords','post')),
@@ -274,6 +274,8 @@ class Tools extends IController implements adminAuthorization
 			'sort'        => IFilter::act(IReq::get('sort','post'),'int'),
 			'style'       => IFilter::act(IReq::get('style','post')),
 			'color'       => IFilter::act(IReq::get('color','post')),
+            'mobile'       => IFilter::act(IReq::get('mobile','post')),
+            'address'       => IFilter::act(IReq::get('address','post')),
 		);
 
 		//检查catid是否为空

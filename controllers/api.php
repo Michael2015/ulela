@@ -360,6 +360,62 @@ class Api extends IController
         echo json_encode($this->result);exit;
     }
 
+
+    //线下活动
+    public function get_activity()
+    {
+        $obj = new IModel('article');
+        $data = $obj->query('','*','id desc','1');
+        $result = [];
+        if($data)
+        {
+            foreach ($data as $art)
+            {
+                $result['title'] = $art['title'];
+                $result['description'] = $art['description'];
+                $result['title'] = $art['title'];
+                preg_match_all('#<img\s+src="(.*?)"[^>]+>#',$art['content'],$match);
+                $img = [];
+                if($match)
+                {
+                    foreach ($match[1] as $pt)
+                    {
+                        $img[] = $pt;
+                    }
+                }
+                $result['img'] = $img;
+
+                preg_match_all('#<img\s+src="(.*?)"\s+alt="(.*?)"[^>]+#',$art['content2'],$match2);
+                $content = [];
+                if($match2[1])
+                {
+                    foreach ($match2[1] as $key=>$img)
+                    {
+                        if($img)
+                        {
+                            $content[] = ['type'=>'img','value'=>$match2[1][$key]];
+                            $content[] = ['type'=>'text','value'=>$match2[2][$key]];
+
+                        }
+                    }
+                }
+                $result['content'] = $content;
+                $result['mobile'] = $art['mobile'];
+                $result['address'] = $art['address'];
+                $address = file_get_contents('http://api.map.baidu.com/geocoder/v2/?address='.urlencode($art['address']).'&output=json&ak=454217bc1b2105e378d89dc3cf5a56c8');
+                $address = json_decode($address,true);
+                if(isset($address['status']) && $address['status'] === 0)
+                {
+                    $result['lng'] = $address['result']['location']['lng'];
+                    $result['lat'] = $address['result']['location']['lat'];
+                }
+            }
+        }
+        $this->result['data'] = $data;
+        echo json_encode($this->result);exit;
+    }
+
+
     //检查登录接口
     public function login()
     {
