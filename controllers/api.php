@@ -411,7 +411,7 @@ class Api extends IController
                 }
             }
         }
-        $this->result['data'] = $data;
+        $this->result['data'] = $result;
         echo json_encode($this->result);exit;
     }
 
