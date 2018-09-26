@@ -1,45 +1,39 @@
-<div class="headbar">
+<!--<div class="headbar">
 	<div class="position"><span>工具</span><span>></span><span>活动管理</span><span>></span><span>活动列表</span></div>
 	<div class="operating">
 		<a href="javascript:void(0)" onclick="event_link('{url:/tools/activity_edit}')"><button class="operating_btn" type="button"><span class="addition">添加活动</span></button></a>
 		<a href="javascript:void(0)" onclick="selectAll('id[]');"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0)" onclick="delModel();"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
 	</div>
-</div>
+</div>-->
 <div class="content">
 	<form action="{url:/tools/activity_del}" method="post" name="activity">
 		<table class="list_table">
 			<colgroup>
-				<col width="40px" />
-				<col width="*" />
-				<col width="100px" />
+				<col  />
+				<col  />
+				<col />
 				<col width="150px" />
-				<col width="110px" />
 			</colgroup>
 
 			<thead>
 				<tr>
-					<th>选择</th>
-					<th>标题</th>
-					<th>发布时间</th>
-					<th>展示</th>
-					<th>操作</th>
+					<th>姓名</th>
+					<th>电话</th>
+					<th>微信</th>
+					<th>留言</th>
 				</tr>
 			</thead>
 
 			<tbody>
 				{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-				{query: name=activity as ar page=$page fields=ar.id,ar.title,ar.create_time,ar.visibility}
+				{query: name=activity as ar page=$page fields=ar.title,ar.content_mobile,ar.description,ar.content}
 				<tr>
-					<td><input type="checkbox" name="id[]" value="{$item['id']}" /></td>
-					<td><a target="_blank" href='{url:/site/activity_detail/id/$item[id]}' title='查看'>{$item['title']}</a></td>
-					<td>{$item['create_time']}</td>
-					<td>{echo:($item['visibility']==1) ? '是':'否'}</td>
-					<td>
-						<a href='{url:/tools/activity_edit/id/$item[id]}'><img class="operator" src="{skin:images/admin/icon_edit.gif}" alt="编辑" title="编辑" /></a>
-						<a target="_blank" href='{url:/site/activity_detail/id/$item[id]}'><img class="operator" src="{skin:images/admin/icon_check.gif}" alt="查看" title="查看" /></a>
-						<a href='javascript:void(0)' onclick="delModel({link:'{url:/tools/activity_del/id/$item[id]}'});"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" title="删除" /></a>
-					</td>
+					<!--<td><input type="checkbox" name="id[]" value="{$item['id']}" /></td>-->
+					<td>{$item['title']}</td>
+					<td>{$item['content_mobile']}</td>
+					<td>{$item['description']}</td>
+					<td>{$item['content']}</td>
 				</tr>
 				{/query}
 			</tbody>

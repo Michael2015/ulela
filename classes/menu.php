@@ -162,10 +162,10 @@ class Menu
 				//'/tools/article_cat_list'=> '文章分类',
 				'/tools/article_list'=> '活动列表'
 			),
-/*
-			'活动管理'=>array(
-				'/tools/activity_list'=> '活动列表'
-			),*/
+
+			'代理管理'=>array(
+				'/tools/activity_list'=> '代理申请列表'
+			),
 
 			'帮助管理'=>array(
    				'/tools/help_cat_list'=> '帮助分类',

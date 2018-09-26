@@ -414,6 +414,27 @@ class Api extends IController
         $this->result['data'] = $result;
         echo json_encode($this->result);exit;
     }
+    //代理申请
+    public function add_agent()
+    {
+        $activityObj = new IModel('activity');
+        $DataArray  = array(
+            'title'       => IFilter::act(IReq::get('name')),
+            'content'     => IFilter::act(IReq::get('comments')),
+            'content_mobile'     => IFilter::act(IReq::get('mobile'),'string'),
+            'create_time' => ITime::getDateTime(),
+            'keywords'    => '',
+            'description' => IFilter::act(IReq::get('weixin'),'string'),
+            'visibility'   => 1
+        );
+
+        $activityObj->setData($DataArray);
+        if($activityObj->add())
+        {
+            $this->result['msg'] = '添加成功';
+            echo json_encode($this->result);exit;
+        }
+    }
 
 
     //检查登录接口
