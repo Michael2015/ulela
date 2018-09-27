@@ -688,7 +688,7 @@ class CountSum
 				return $sellerData;
 	    	}
 
-	    	$deliveryList = Delivery::getDelivery($province_id,$delivery_id,$goodsID,$productID,$num);
+	    	/*$deliveryList = Delivery::getDelivery($province_id,$delivery_id,$goodsID,$productID,$num);
 	    	if(is_string($deliveryList))
 	    	{
 				return $deliveryList;
@@ -704,12 +704,12 @@ class CountSum
 						$deliveryList['seller_price'][$sid] = 0;
 					}
 				}
-	    	}
+	    	}*/
 
 	    	$extendArray = array(
-	    		'deliveryOrigPrice' => $deliveryList['org_price'],
-	    		'deliveryPrice'     => $deliveryList['price'],
-	    		'insuredPrice'      => $deliveryList['protect_price'],
+	    		'deliveryOrigPrice' => 0,
+	    		'deliveryPrice'     => 0,
+	    		'insuredPrice'      => 0,
 	    		'taxPrice'          => $is_invoice == true ? $sellerData['tax'] : 0,
 	    		'paymentPrice'      => $payment_id != 0 ? self::getGoodsPaymentPrice($payment_id,$sellerData['final_sum']) : 0,
 	    		'goodsResult'       => $sellerData,
@@ -719,8 +719,8 @@ class CountSum
 	    	);
 	    	$orderAmountPrice = array_sum(array(
 		    	$sellerData['final_sum'],
-		    	$deliveryList['price'],
-		    	$deliveryList['protect_price'],
+		    	0,
+		    	0,
 		    	$extendArray['taxPrice'],
 		    	$extendArray['paymentPrice'],
 		    	$discount,

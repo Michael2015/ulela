@@ -16,6 +16,7 @@ class Api extends IController
     public function __construct($app, $controllerId)
     {
         $this->user_id = 1;
+        IWeb::$app->getController()->user['user_id'] = $this->user_id;
         parent::__construct($app, $controllerId);
     }
 
@@ -330,14 +331,34 @@ class Api extends IController
     public function get_my_order()
     {
         $user_id = $this->user_id;
+        //对选中的商品进行处理
+        $goods_ids = IFilter::act( IReq::get('ids'),'string' );
+        $selected_goods_ids = explode(',',$goods_ids);
+        $cartObj  = new Cart();
+        $cartObj->user_id = $this->user_id;
+        $cartList = $cartObj->getMyCart();
+        foreach ($cartList['product']['id'] as $goods_id)
+        {
+            if(!in_array($goods_id,$selected_goods_ids))
+            {
+                $cartObj->del($goods_id,'product');
+            }
+        }
+        $countSumObj = new CountSum($user_id);
 
         //计算商品
-        $countSumObj = new CountSum($user_id);
 
         $result = $countSumObj->cart_count();
         if($countSumObj->error)
         {
             $this->result['msg'] = $countSumObj->error;
+            echo json_encode($this->result);exit;
+        }
+
+        //判断商品是否存在
+        if(is_string($result) || empty($result['goodsList']))
+        {
+            $this->result['msg'] = '商品数据错误';
             echo json_encode($this->result);exit;
         }
 
@@ -356,6 +377,35 @@ class Api extends IController
             $data['promotion'] = [];
         }
 
+        $orderData = $countSumObj->countOrderFee($result,'','','','',0,'','');
+        foreach($orderData as $seller_id => $goodsResult)
+        {
+            //生成订单
+            $dataArray = array(
+                'order_no'            => Order_Class::createOrderNum(),
+                'user_id'             => $user_id,
+                'create_time'         => ITime::getDateTime(),
+                //商品价格
+                'payable_amount'      => $goodsResult['sum'],
+                'real_amount'         => $goodsResult['final_sum'],
+                'order_amount'        => $goodsResult['final_sum'],
+            );
+
+            $orderObj  = new IModel('order');
+            $orderObj->setData($dataArray);
+            $order_id = $orderObj->add();
+            if($order_id == false)
+            {
+                $this->result['msg'] = '订单生成错误';
+                echo json_encode($this->result);exit;
+            }
+
+            /*将订单中的商品插入到order_goods表*/
+            $orderInstance = new Order_Class();
+            $orderInstance->insertOrderGoods($order_id,$goodsResult['goodsResult']);
+        }
+
+        $data['order_id'] = $order_id;
         $this->result['data'] = $data;
         echo json_encode($this->result);exit;
     }

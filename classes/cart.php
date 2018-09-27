@@ -39,6 +39,8 @@ class Cart extends IInterceptorBase
 	//购物车的存储方式
 	private $saveType    = 'session';
 
+	public  $user_id;
+
 
 	/**
 	 * 获取新加入购物车的数据
@@ -213,7 +215,6 @@ class Cart extends IInterceptorBase
 			//dyg_jzw 20160307 删除是否海外商品标记
 			unset($cartInfo['cbe_ids'][$gid]);
 			unset($cartInfo['normal_ids'][$gid]);
-
 			$this->setMyCart($cartInfo);
 		}
 		else
@@ -359,7 +360,7 @@ class Cart extends IInterceptorBase
 		$goodsInfo = $this->encode($goodsInfo);
 
 		//1,用户存在写入db
-		$user_id = IWeb::$app->getController()->user['user_id'];
+		$user_id = $this->user_id;
 		if($user_id)
 		{
 			$cartDB = new IModel('goods_car');
