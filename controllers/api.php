@@ -406,6 +406,10 @@ class Api extends IController
         }
 
         $data['order_id'] = $order_id;
+        //清空购物车
+        $cartObj->user_id = 1;
+        $cartObj->clear();
+        //返回数据
         $this->result['data'] = $data;
         echo json_encode($this->result);exit;
     }

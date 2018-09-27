@@ -332,7 +332,7 @@ class Cart extends IInterceptorBase
 	public function clear()
 	{
 		//1,清空db
-		$user_id = IWeb::$app->getController()->user['user_id'];
+		$user_id = $this->user_id;
 		if($user_id)
 		{
 			$cartDB  = new IModel('goods_car');
