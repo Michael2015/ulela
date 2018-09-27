@@ -364,8 +364,17 @@ class Api extends IController
     //线下活动
     public function get_activity()
     {
+        $id = IFilter::act( IReq::get('id'),'int' );
         $obj = new IModel('article');
-        $data = $obj->query('','*','id desc','1');
+        if(!$id)
+        {
+            $data = $obj->query('','*','id desc','1');
+        }
+        else
+        {
+            $data = $obj->query('id = '.$id,'*');
+        }
+
         $result = [];
         if($data)
         {
