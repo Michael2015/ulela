@@ -499,6 +499,16 @@ class Api extends IController
         }
     }
 
+    //关于我们
+
+    public function about_us()
+    {
+        $data = array_merge(IWeb::$app->config, $this->_siteConfig->getInfo(), array("form_index" => IFilter::act(IReq::get('form_index'))));
+        $index_slide = $data['site_footer_code'];
+        $this->result['data'] = ['type'=>'text','value'=>strip_tags($index_slide)];
+        echo json_encode($this->result);exit;
+    }
+
 
     //检查登录接口
     public function login()
