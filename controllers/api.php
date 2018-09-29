@@ -16,8 +16,27 @@ class Api extends IController
     public function __construct($app, $controllerId)
     {
         $this->user_id = 1;
-        IWeb::$app->getController()->user['user_id'] = $this->user_id;
         parent::__construct($app, $controllerId);
+    }
+
+    //检查登录接口
+    public function login()
+    {
+        $code  = IFilter::act(IReq::get('code'),'string');
+        if(!$code)
+        {
+            $this->result['msg'] = 'fail,缺少code参数';
+            $this->result['code'] = 0;
+            echo json_encode($this->result);exit;
+        }
+        extract(miniprogram::login($code));
+        if($code === 200)
+        {
+            $this->result['data'] = ['token'=>$token];
+        }
+        $this->result['msg']  =  $msg;
+        $this->result['code'] =  $code;
+        echo json_encode($this->result);exit;
     }
 
 
@@ -44,7 +63,6 @@ class Api extends IController
             $v['img'] = self::HOST . '/' . $v['img'];
 
         });
-        print_r($index_slide);exit;
         $this->result['data'] = $index_slide;
         echo json_encode($this->result);
     }
@@ -414,6 +432,38 @@ class Api extends IController
         echo json_encode($this->result);exit;
     }
 
+    //历史订单
+
+    public function get_history_order()
+    {
+        $user_id = $this->user_id;
+        $page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+        $query = new IQuery('order as o');
+        $where = "user_id =".$user_id." and if_del= 0";
+        $query->where = $where;
+        $query->order = "id desc";
+        $query->page  = $page;
+        $my_order = $query->find();
+
+        $data = [];
+        foreach ($my_order as $key=>$order)
+        {
+            $goods_obj = new IQuery('order_goods as og');
+            $goods_obj->join = 'left join goods as go on og.goods_id = go.id';
+            $goods_obj->where = ' order_id ='.$order['id'];
+            $goods = $goods_obj->find();
+            foreach ($goods as $k=>$g)
+            {
+                $data[$key]['order_no'] = $order['order_no'];
+                $data[$key]['order_amount'] = $order['order_amount'];
+                $data[$key]['goods_list'][$k] = ['img'=>$g['img'],'goods_nums'=>$g['goods_nums'],'goods_array'=>$g['goods_array'],'goods_price'=>$g['goods_price']];
+            }
+        }
+        $this->result['data'] = $data;
+        echo json_encode($this->result);exit;
+    }
+
+
 
     //线下活动
     public function get_activity()
@@ -499,8 +549,108 @@ class Api extends IController
         }
     }
 
-    //关于我们
+    //获取个人资料
+    public function get_my_profile()
+    {
+        $userObj       = new IModel('user');
+        $where         = 'id = '.$this->user_id;
+        $userRow       = $userObj->getObj($where);
 
+        $memberObj       = new IModel('member');
+        $where           = 'user_id = '.$this->user_id;
+        $memberRow       = $memberObj->getObj($where);
+        $data = [];
+        if($userRow && $memberRow)
+        {
+            $data['username'] = $userRow['username'];
+            $data['head_ico'] = $userRow['head_ico'];
+            $data['sex'] = $memberRow['sex'] === 1 ? '男' : '女';
+            $data['mobile'] = $memberRow['mobile'];
+        }
+        $this->result['data'] = $data;
+        echo json_encode($this->result);exit;
+    }
+
+    //修改资料
+    public function edit_my_profile()
+    {
+        $user_id =$this->user_id;
+        $mobile    = IFilter::act( IReq::get('mobile'),'string');
+        $head_ico    = IFilter::act( IReq::get('head_ico'),'string');
+        $username    = IFilter::act( IReq::get('username'),'string');
+        $sex    = IFilter::act( IReq::get('sex'),'string');
+        if($mobile)
+        {
+            $memberObj       = new IModel('member');
+            $memberObj->setData(['mobile'=>$mobile]);
+            $memberObj->update('user_id ='.$user_id);
+        }
+        if($sex)
+        {
+            $memberObj       = new IModel('member');
+            $memberObj->setData(['sex'=>$sex]);
+            $memberObj->update('user_id = '.$user_id);
+        }
+        if($head_ico)
+        {
+            $userObj       = new IModel('user');
+            $userObj->setData(['sex'=>$sex]);
+            $userObj->update('id =' . $user_id);
+        }
+        if($username)
+        {
+            $userObj       = new IModel('user');
+            $userObj->setData(['username'=>$username]);
+            $userObj->update('id='.$user_id);
+        }
+        $this->result['msg'] = '修改成功';
+        echo json_encode($this->result);exit;
+    }
+
+    //上传头像
+    public function user_ico_upload()
+    {
+        if(isset($_FILES['attach']['name']) && $_FILES['attach']['name'] != '')
+        {
+            $photoObj = new PhotoUpload();
+            $photo    = $photoObj->run();
+
+            if(isset($photo['attach']['img']) && $photo['attach']['img'])
+            {
+                $user_id   = $this->user_id;
+                $user_obj  = new IModel('user');
+                $dataArray = array(
+                    'head_ico' => $photo['attach']['img'],
+                );
+                $user_obj->setData($dataArray);
+                $where  = 'id = '.$user_id;
+                $isSuss = $user_obj->update($where);
+
+                if($isSuss !== false)
+                {
+                    $result['data'] = IUrl::creatUrl().$photo['attach']['img'];
+                    $result['message'] = '上传成功';
+                }
+                else
+                {
+                    $result['message'] = '上传失败';
+                }
+            }
+            else
+            {
+                $result['message'] = '上传失败';
+            }
+        }
+        else
+        {
+            $result['message'] = '请选择图片';
+        }
+        $this->result['msg'] = $result['message'];
+        $this->result['data']['img_url'] = $result['data'] ? $result['data'] : '';
+        echo json_encode($this->result);exit;
+    }
+
+    //关于我们
     public function about_us()
     {
         $data = array_merge(IWeb::$app->config, $this->_siteConfig->getInfo(), array("form_index" => IFilter::act(IReq::get('form_index'))));
@@ -508,29 +658,6 @@ class Api extends IController
         $this->result['data'] = ['type'=>'text','value'=>strip_tags($index_slide)];
         echo json_encode($this->result);exit;
     }
-
-
-    //检查登录接口
-    public function login()
-    {
-        $code  = IFilter::act(IReq::get('code'),'string');
-        if(!$code)
-        {
-            $this->result['msg'] = 'fail,缺少code参数';
-            $this->result['code'] = 0;
-            echo json_encode($this->result);exit;
-        }
-        extract(miniprogram::login($code));
-        if($code === 200)
-        {
-            $this->result['data'] = ['token'=>$token];
-        }
-        $this->result['msg']  =  $msg;
-        $this->result['code'] =  $code;
-        echo json_encode($this->result);exit;
-    }
-
-
 
 
 
