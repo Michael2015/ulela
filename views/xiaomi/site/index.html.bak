@@ -1,0 +1,353 @@
+<link rel="stylesheet" href="{skin:xiaomi/css/index.css?v=20160929}" />
+<script type="text/javascript" src="{theme:javascript/jquery.kinMaxShow-1.1.min.js}"></script>
+
+
+<div class="w1230 margin-0-auto clearfix">
+	<div class="index-bn pos-relative">
+		<div class="carousel slide">
+			<div class="carousel-inner" role="listbox" id="kinMaxShow">
+				{if:$this->index_slide}
+					{foreach:items=$this->index_slide}
+						<div class="item">
+							<a href="{url:$item[url]}" target="_blank">
+								<img src="{webroot:$item[img]}"/>
+							</a>
+						</div>
+					{/foreach}
+				{/if}
+	    	</div>
+		</div>
+		<div class="index-menu category">
+			<div class="category-content">
+				<!--cat-list-->
+				<ul class="cat-list list-unstyled" id="div_allsort">
+					{foreach:items=Api::run('getCategoryListTop')  item=$first }
+						<li class="list-item">
+							<a href="{url:/site/pro_list/cat/$first['id']}" class="title">
+								{$first['name']}
+								<span class="glyphicon glyphicon-chevron-right"></span>
+							</a>
+							<div class="cat-sec">
+								{foreach:items=Api::run('getCategoryByParentid',$first['id'])  item=$second}
+									<a href="{url:/site/pro_list/cat/$second['id']}">{$second['name']}</a>
+								{/foreach}
+							</div>
+							
+		            		<div class="cat-pop">
+		            			<!--cat-layer-->
+								<div class="cat-layer clearfix">
+				                    <ul class="cat-col list-unstyled">
+					                    {foreach:items=Api::run('getCategoryByParentid',$first['id'])  item=$second}
+					                    	<li class="cat-item">
+					                    		<div class="level-title">
+					                    			<a href="{url:/site/pro_list/cat/$second['id']}">{$second['name']}</a>
+					                    			<span class="glyphicon glyphicon-chevron-right"></span>
+					                    		</div>
+					                    		<p class="level-list clearfix">
+													{foreach:items=Api::run('getCategoryByParentid',$second['id'])  item=$third}
+														<a href="{url:/site/pro_list/cat/$third['id']}">{$third['name']}</a>
+													{/foreach}
+					                    		</p>
+					                    	</li>
+					                   	{/foreach}
+				                    </ul>
+								</div>
+								<!--cat-layer-->
+		            		</div>
+			      		</li>
+			      	{/foreach}
+				</ul>
+				<!--cat-list-->
+			</div>
+		</div>
+	</div>
+
+	<div class="four-promote">
+		<div class="item pull-left">
+			<a class="item-hover" href="###">
+				{echo:Ad::show("pc首页四连图1")}
+			</a>
+		</div>
+		<div class="item pull-left">
+			<a class="item-hover" href="###">
+				{echo:Ad::show("pc首页四连图2")}
+			</a>
+		</div>
+		<div class="item pull-left">
+			<a class="item-hover" href="###">
+				{echo:Ad::show("pc首页四连图3")}
+			</a>
+		</div>
+		<div class="item pull-left">
+			<a class="item-hover" href="###">
+				{echo:Ad::show("pc首页四连图4")}
+			</a>
+		</div>
+	</div>
+
+</div>
+
+<div class="w1230 margin-0-auto clearfix">
+	<div class="hot-sell">
+		<div class="section-header clearfix">
+			<h3 class="header-title pull-left">热卖推荐</h3>
+			<div class="switch pull-right">
+				<a class="pull-left" id="switch-left" href="javascript:;"><span class="glyphicon glyphicon-chevron-left"></span></a>
+				<a class="pull-right" id="switch-right" href="javascript:;"><span class="glyphicon glyphicon-chevron-right"></span></a>
+			</div>
+		</div>
+		<div class="section-body clearfix">
+			<ul class="list-unstyled hot-sell-list" id="hot-sell-list">
+				{set: $tmp_index = 0}
+				{foreach:items=Api::run('getCommendHot',10)}
+					{set: $keyword_arr = explode("#|#",$item['keywords']); }
+					{set: $keyword_title = array_shift($keyword_arr); }
+					{set: $keyword_desc = array_shift($keyword_arr); }
+					{if: $tmp_index % 5 == 0}
+						{if: $tmp_index==0}
+							<li class="hot-sell-line" style="display:block">
+						{else:}
+							</li>
+							<li class="hot-sell-line">
+						{/if}
+					{/if}
+						<div class="product-item hot-sell-item item-hover">
+							<div class="item-image">
+								<a href="{url:/site/products/id/$item['id']}" target="_blank">
+									<img src="{webroot:}{echo:Thumb::get($item['img'],220,220)}" alt="{$item['name']}">
+								</a>
+							</div>
+							<h4 class="text-center"><a href="{url:/site/products/id/$item['id']}" target="_blank" title="{$item['name']}">{$keyword_title}</a></h4>
+							<p class="text-center text-muted">{$keyword_desc}</p>
+							<h4 class="text-center item-price">{set: echo floatval($item['sell_price']);}元</h4>
+						</div>
+					{set: $tmp_index++; }
+				{/foreach}
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="body-contain bg-gray ov-hidden">
+	<div class="w1230 margin-0-auto m-t-60 clearfix">
+
+		{foreach:items=Api::run('getCategoryListTop')  item=$first }
+
+		<div class="index-floor ov-hidden" id="floor-{$first['id']}">
+			<div class="section-header clearfix">
+				<h3 class="header-title pull-left">{$first['name']}</h3>
+				<div class="pull-right">
+					<a href="{url:/site/pro_list/cat/$first['id']}" class="f-16 more">
+						查看更多
+						<span class="glyphicon glyphicon-chevron-right"></span>
+					</a>
+				</div>
+			</div>
+			<div class="section-body">
+				<div class="section-left pull-left ov-hidden">
+					<div class="left-promotion">
+						<!--238*584-->
+						{echo:Ad::show("首页分类广告238*584", $first['id'])}
+					</div>
+				</div>
+				<div class="section-right pull-left">
+					<ul class="list-unstyled product-list">
+						{foreach:items=Api::run('getCategoryExtendList',$first['id'],8)}
+						{set: $keyword_arr = explode("#|#",$item['keywords']); }
+						{set: $keyword_title = array_shift($keyword_arr); }
+						{set: $keyword_desc = array_shift($keyword_arr); }
+							<li class="product-item item-hover pos-relative">
+								<div class="item-image">
+									<a href="{url:/site/products/id/$item['id']}" target="_blank">
+										<img src="{webroot:}{echo:Thumb::get($item['img'],160,160)}" alt="{$item['name']}">
+									</a>
+								</div>
+								<div class="item-title margin-0-auto ov-hidden">
+									<h4 class="text-center"><a href="{url:/site/products/id/$item['id']}" target="_blank" title="{$item['name']}">{$keyword_title}</a></h4>
+									<p class="text-center text-muted">{$keyword_desc}</p>
+								</div>
+								<h4 class="text-center item-price">{set: echo floatval($item['sell_price']);}元</h4>
+								{set: $commend_ids = Api::run('getCommendIdByGoods',$item['id']);}
+								{if: $commend_ids}
+									{foreach:items=$commend_ids item=$_commend}
+										{if: $_commend['commend_id'] == 1 }
+											<div class="item-tag bg-blue pos-absolute f-12 text-center">新品上市</div>
+											{set: break;}
+										{elseif: $_commend['commend_id'] == 2}
+											<div class="item-tag bg-orange pos-absolute f-12 text-center">特价商品</div>
+											{set: break;}
+										{elseif: $_commend['commend_id'] == 3}
+											<div class="item-tag bg-red pos-absolute f-12 text-center">热卖推荐</div>
+											{set: break;}
+										{elseif: $_commend['commend_id'] == 4}
+											<div class="item-tag bg-green pos-absolute f-12 text-center">商家推荐</div>
+											{set: break;}
+										{/if}
+									{/foreach}
+								{/if}
+								
+							</li>
+						{/foreach}
+					</ul>
+				</div>
+			</div>
+		</div>
+		{/foreach}
+
+
+		<!--推荐列表-->
+		<div class="index-recommend ov-hidden m-t-40 m-b-40">
+			<div class="recommend-list pull-left">
+				<h3>热卖推荐</h3>
+				<ul class="list-unstyled rlist">
+					{foreach:items=Api::run('getCommendHot',5)}
+						<li>
+							<div class="media">
+								<div class="media-left">
+									<a class="media-object" href="{url:/site/products/id/$item['id']}" target="_blank">
+										<img src="{webroot:}{echo:Thumb::get($item['img'],50,50)}" alt="{$item['name']}">
+									</a>
+								</div>
+								<div class="media-body media-middle">
+									<a class="f-12" href="{url:/site/products/id/$item['id']}" target="_blank" title="{$item['name']}">{$item['name']}</a>
+								</div>
+								<div class="media-right media-middle">
+									<h4 class="item-price m-0 f-14 text-right">{set: echo floatval($item['sell_price']);}元</h4>
+								</div>
+							</div>
+						</li>
+					{/foreach}
+				</ul>
+			</div>
+
+			<div class="recommend-list pull-left">
+				<h3>新品上市</h3>
+				<ul class="list-unstyled rlist">
+					{foreach:items=Api::run('getCommendNew',5)}
+						<li>
+							<div class="media">
+								<div class="media-left">
+									<a class="media-object" href="{url:/site/products/id/$item['id']}" target="_blank">
+										<img src="{webroot:}{echo:Thumb::get($item['img'],50,50)}" alt="{$item['name']}">
+									</a>
+								</div>
+								<div class="media-body media-middle">
+									<a class="f-12" href="{url:/site/products/id/$item['id']}" target="_blank" title="{$item['name']}">{$item['name']}</a>
+								</div>
+								<div class="media-right media-middle">
+									<h4 class="item-price m-0 f-14 text-right">{echo: floatval($item['sell_price']);}元</h4>
+								</div>
+							</div>
+						</li>
+					{/foreach}
+				</ul>
+			</div>
+
+			<div class="recommend-list pull-left">
+				<h3>特价商品</h3>
+				<ul class="list-unstyled rlist">
+					{foreach:items=Api::run('getCommendPrice',5)}
+						<li>
+							<div class="media">
+								<div class="media-left">
+									<a class="media-object" href="{url:/site/products/id/$item['id']}" target="_blank">
+										<img src="{webroot:}{echo:Thumb::get($item['img'],50,50)}" alt="{$item['name']}">
+									</a>
+								</div>
+								<div class="media-body media-middle">
+									<a class="f-12" href="{url:/site/products/id/$item['id']}" target="_blank" title="{$item['name']}">{$item['name']}</a>
+								</div>
+								<div class="media-right media-middle">
+									<h4 class="item-price m-0 f-14 text-right">{set: echo floatval($item['sell_price']);}元</h4>
+								</div>
+							</div>
+						</li>
+					{/foreach}
+				</ul>
+			</div>
+
+			<div class="recommend-list pull-left">
+				<h3>商家推荐</h3>
+				<ul class="list-unstyled rlist">
+					{foreach:items=Api::run('getCommendRecom',5)}
+						<li>
+							<div class="media">
+								<div class="media-left">
+									<a class="media-object" href="{url:/site/products/id/$item['id']}" target="_blank">
+										<img src="{webroot:}{echo:Thumb::get($item['img'],50,50)}" alt="{$item['name']}">
+									</a>
+								</div>
+								<div class="media-body media-middle">
+									<a class="f-12" href="{url:/site/products/id/$item['id']}" target="_blank" title="{$item['name']}">{$item['name']}</a>
+								</div>
+								<div class="media-right media-middle">
+									<h4 class="item-price m-0 f-14 text-right">{set: echo floatval($item['sell_price']);}元</h4>
+								</div>
+							</div>
+						</li>
+					{/foreach}
+				</ul>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+<script type='text/javascript'>
+
+//dom载入完毕执行
+jQuery(function()
+{
+	hot_list_switch.init();
+
+	$("#kinMaxShow").kinMaxShow({
+
+	  height:480,
+	  intervalTime:6,
+	  switchTime:1000,
+	  hoverPause:true, //是否悬停暂停， 鼠标停留在kinMaxShow内 是否暂停切换 默认true 悬停暂停，设置为false 悬停不暂停
+	  easing: "linear",
+	  button:{
+			//设置按钮上面不显示数字索引(默认也是不显示索引)
+			showIndex:false,
+			switchEvent:'mouseover',
+		  	//按钮常规下 样式设置 ，css写法，类似jQuery的 $('xxx').css({key:value,……})中css写法。
+		  	//【友情提示：可以设置透明度哦 不用区分浏览器 统一为 opacity，CSS3属性也支持哦 如：设置按钮圆角、投影等，只不过IE8及以下不支持】
+			normal:{background:'url({skin:xiaomi/images/button.png}) no-repeat -14px 0',marginRight:'8px',border:'0',right:'40.3%',bottom:'18px'},
+			//当前焦点图按钮样式 设置，写法同上
+			focus:{background:'url({skin:xiaomi/images/button.png}) no-repeat 0 0',border:'0'}
+	  },
+	  //焦点图切换回调，每张图片淡入、淡出都会调用。并且传入2个参数(index,action)。index 当前图片索引 0为第一张图片，action 切入 或是 切出 值:fadeIn或fadeOut
+	  //函数内 this指向 当前图片容器对象 可用来操作里面元素。本例中的焦点图动画主要就是靠callback实现的。
+	  callback:function(index,action){
+	  }
+  });
+
+
+	$(".index-menu .list-item").hover(function(){
+	    $(this).addClass("active");
+	  	$(this).children(".cat-pop").show();
+	},function(){
+		$(this).removeClass("active");
+		$(this).children(".cat-pop").hide();
+	});
+
+	//显示抢购倒计时
+	var cd_timer = new countdown();
+	{if:isset($countNumsItem) && $countNumsItem}
+	{foreach:items = $countNumsItem}
+		cd_timer.add({$item});
+	{/foreach}
+	{/if}
+
+	var colorArray_hl = ['floor-1','floor-2','floor-3','floor-4','floor-5','floor-6','floor-7'];
+	$('div[name="showGoods"]').each(function(i)
+	{
+		$(this).addClass(colorArray_hl[i%colorArray_hl.length]);
+	});
+
+});
+
+</script>
